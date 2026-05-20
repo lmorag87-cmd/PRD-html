@@ -13,6 +13,7 @@
 | aria-label 乱码 | PowerShell 默认编码 | 读写文件用 UTF-8 **无 BOM** |
 | 个别屏状态栏被挡 | `proto-nav { position:fixed }` 在舞台内 | 参考 `hmi-pay-scr-06`：`demo-wrap` + sticky |
 | 仅 01 有左侧栏、其它屏没有 | 单屏抄了旧模板 | **全无**：本套 pay 原型不在 `#stage` 内做 `aside.nav` |
+| proto-nav 顺序与 PRD 不符 | 按 SCR 编号硬排 | 改 `hmi-pay-nav.js`：00→01-F→01→02→**06→05**→07→08→09→10→11→12（03/04 无原型不占位） |
 
 ## 固定结构（合作停车场 pay 系列）
 
