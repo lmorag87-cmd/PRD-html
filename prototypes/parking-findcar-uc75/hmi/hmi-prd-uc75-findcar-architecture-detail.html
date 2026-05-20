@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>行车相机（影像记录）+ 停车场找车 / 透明底盘 — 功能架构示意（HTML）</title>
+  <style>
+    :root {
+      --bg: #eef1f6;
+      --panel: #ffffff;
+      --border: #d4dce8;
+      --text: #1a2332;
+      --muted: #5a6578;
+      --accent: #1e56c9;
+      --accent-soft: rgba(30, 86, 201, 0.09);
+      --lane-hmi: #e8eef9;
+      --lane-svc: #e8f4ee;
+      --lane-vision: #faf3e6;
+      --lane-data: #f3ecfa;
+      --lane-loc: #e6f3f8;
+      --lane-cloud: #faf0e6;
+      --base-top: #dce8f5;
+      --cross-bg: #fff5f7;
+      --cross-border: #f0c4d0;
+      --cross-title: #9d174d;
+      --cross-text: #5c3d45;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+    header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    header .sub {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 960px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    .section-block {
+      margin-top: 32px;
+    }
+    .section-block:first-of-type { margin-top: 8px; }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .section-head h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .section-head .tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #e8effc;
+      color: #1e4fad;
+      border: 1px solid #b8ccef;
+    }
+    .section-head .tag-base {
+      background: #fdf6e3;
+      color: #8a6914;
+      border-color: #e8d4a8;
+    }
+    .section-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 14px;
+      max-width: 1100px;
+    }
+
+    .lanes {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    .lanes-base .lane-base-h {
+      background: linear-gradient(180deg, var(--base-top) 0%, var(--panel) 40%);
+    }
+    .lane {
+      padding: 14px 12px 18px;
+      border-right: 1px solid var(--border);
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .lane:last-child { border-right: none; }
+    .lane-hmi { background: linear-gradient(180deg, var(--lane-hmi) 0%, var(--panel) 38%); }
+    .lane-svc { background: linear-gradient(180deg, var(--lane-svc) 0%, var(--panel) 38%); }
+    .lane-vision { background: linear-gradient(180deg, var(--lane-vision) 0%, var(--panel) 38%); }
+    .lane-data { background: linear-gradient(180deg, var(--lane-data) 0%, var(--panel) 38%); }
+    .lane-loc { background: linear-gradient(180deg, var(--lane-loc) 0%, var(--panel) 38%); }
+    .lane-cloud { background: linear-gradient(180deg, var(--lane-cloud) 0%, var(--panel) 38%); }
+    .lane-rec { background: linear-gradient(180deg, #f0e8fa 0%, var(--panel) 38%); }
+    .lane-trig { background: linear-gradient(180deg, #e6f5f1 0%, var(--panel) 38%); }
+
+    .lane-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .lane h3 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card {
+      background: #fafbfd;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 10px 8px;
+      box-shadow: 0 1px 2px rgba(26, 35, 50, 0.04);
+    }
+    .card strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .card ul {
+      margin: 0;
+      padding-left: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .card li { margin-bottom: 4px; }
+
+    .flow-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--accent-soft);
+      border: 1px solid #c5d4f0;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #2c3d66;
+    }
+    .flow-note.base {
+      background: #fdf8eb;
+      border-color: #e8d5b0;
+      color: #5c4a26;
+    }
+    .flow-note-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: var(--text);
+    }
+    .flow-note code {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      background: #e9edf5;
+      color: #1a2332;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .crosscut {
+      margin-top: 22px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: var(--cross-bg);
+      border: 1px solid var(--cross-border);
+    }
+    .crosscut h3 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--cross-title);
+    }
+    .crosscut-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px 16px;
+      font-size: 12px;
+      color: var(--cross-text);
+    }
+    .crosscut-grid div { padding-left: 12px; border-left: 2px solid #e8a4b8; }
+
+    .arrows-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 12px 0 4px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .arrows-row.base {
+      grid-template-columns: repeat(6, 1fr);
+      color: #7a6220;
+    }
+
+    footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>行车相机（影像记录）+ 停车场找车 / 透明底盘 — 功能架构分层示意</h1>
+      <p class="sub">
+        本页为 PRD 外置 HTML：<strong>第一节</strong>还原「行车相机 / 影像记录」主链路（预览、录制、紧急、存储、触发），与 PRD 5.x、7.1–7.4 及 UseCase 总览一致；<strong>第二节</strong>在共用视觉与存储骨架上，叠加 UC 7.5 找车、透明底盘与底盘拍照锚点、定位与车云扩展。不替代飞书正式签核架构图。
+      </p>
+      <div class="legend">
+        <span><i class="dot" style="background:#c9a227"></i>行车相机 / 影像记录主体</span>
+        <span><i class="dot" style="background:#3d6fd8"></i>找车与多源锚点扩展</span>
+        <span><i class="dot" style="background:#8b9cb3"></i>可选或平台差异（8155 / 8775 / 8676）</span>
+      </div>
+    </header>
+
+    <!-- ========== 一、行车相机（影像记录）主体 ========== -->
+    <section class="section-block">
+      <div class="section-head">
+        <h2>一、行车相机（影像记录）主体架构</h2>
+        <span class="tag tag-base">PRD 主功能 · 7.1–7.4</span>
+      </div>
+      <p class="section-desc">
+        对应「启动行车相机 / 主动拍摄与录制 / 紧急视频 / 视频查看与导出」等总览分支：以影像记录应用为入口，经业务策略与视觉服务，完成循环与紧急录制落盘、相册回看及车内外触发。
+      </p>
+
+      <div class="arrows-row base" aria-hidden="true">
+        <span>应用 HMI</span>
+        <span>策略与开关</span>
+        <span>视觉服务</span>
+        <span>编码与叠加</span>
+        <span>存储介质</span>
+        <span>触发与联动</span>
+      </div>
+
+      <div class="lanes lanes-base">
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 1</div>
+          <h3>影像记录应用</h3>
+          <div class="card">
+            <strong>首页与预览</strong>
+            <ul>
+              <li>四宫格环视预览（二代 8155 等）</li>
+              <li>前向行车画面（8775 / 8676 等与四宫格可切换）</li>
+              <li>拍照、录像、设置、回看入口</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>设置与说明</strong>
+            <ul>
+              <li>总开关、录制时长、移除介质、格式化/一键清除</li>
+              <li>容量查询、录音开关（按平台评估）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>状态与提示</strong>
+            <ul>
+              <li>状态栏 SD/U 盘图标、空间不足 Toast/对话框</li>
+              <li>首次启动说明与「不再显示」</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 2</div>
+          <h3>业务策略</h3>
+          <div class="card">
+            <strong>上电与锁车</strong>
+            <ul>
+              <li>总开开启：上电车机启动后自动录；锁车下电停录</li>
+              <li>用户关闭：本次上电不自动录，下次上电恢复自动</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>与哨兵互斥</strong>
+            <ul>
+              <li>哨兵启动后停止行车相机循环录制</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>介质门槛</strong>
+            <ul>
+              <li>未插入 SD/U 盘不可开总开；相关按钮置灰与提示</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 3</div>
+          <h3>视觉服务</h3>
+          <div class="card">
+            <strong>AVM / 环视</strong>
+            <ul>
+              <li>四路采集与合成预览（录制与预览同源）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>行车前视（若平台支持）</strong>
+            <ul>
+              <li>8775 / 8676 等：前视与四宫格同步录制策略</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>能力边界</strong>
+            <ul>
+              <li>近焦、畸变、高速场景体验限制（见 PRD 5.4）</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 4</div>
+          <h3>编码与时间线</h3>
+          <div class="card">
+            <strong>循环与分段</strong>
+            <ul>
+              <li>可配置片段时长（如 1/3/5 min），默认与落盘策略</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>信息叠加</strong>
+            <ul>
+              <li>日期时间、行车信号、VIN 等写入画面（PRD 4.4.1）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>紧急录制</strong>
+            <ul>
+              <li>独立片段、防循环覆盖；与自动/语音/方向盘触发协同</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 5</div>
+          <h3>存储与相册</h3>
+          <div class="card">
+            <strong>SD / U 盘写入</strong>
+            <ul>
+              <li>循环视频、紧急视频、照片、哨兵分区（与 PRD 表格一致）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>回看与导出</strong>
+            <ul>
+              <li>相册 Tab：循环 / 紧急 / 哨兵；全屏播放、倍速、删除、锁定</li>
+              <li>PC 等外设查看与异常断电丢帧上限说明</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>维护操作</strong>
+            <ul>
+              <li>拔出介质前最近文件落盘提示</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-base-h">
+          <div class="lane-title">Base 6</div>
+          <h3>触发与信号</h3>
+          <div class="card">
+            <strong>车内触发</strong>
+            <ul>
+              <li>语音指令触发紧急录制（冷却策略）</li>
+              <li>方向盘自定义键触发紧急（冷却 30s 等，以 PRD 为准）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>车辆信号（若接入）</strong>
+            <ul>
+              <li>碰撞、急刹、ESP、AEB 等自动紧急触发链路</li>
+              <li>IMU 等与紧急策略协同</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>录音（可选）</strong>
+            <ul>
+              <li>舱内与系统音同步、与唤醒/导航等互斥原则</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div class="flow-note base">
+        <strong class="flow-note-title">行车相机主链路（摘要）</strong>
+        影像记录 APP：预览 / 拍照 / 录像 / 设置
+        <code>→</code> 业务策略（总开关、自动录、哨兵互斥、介质校验）
+        <code>→</code> 环视（及支持平台的前视）采集与编码
+        <code>→</code> 叠加时间与车辆信息，循环或紧急写 SD/U 盘
+        <code>→</code> 相册回看、删除、锁定、导出；语音/方向盘/车身信号触发紧急支路并行。
+      </div>
+    </section>
+
+    <!-- ========== 二、找车 / 透明底盘 扩展 ========== -->
+    <section class="section-block">
+      <div class="section-head">
+        <h2>二、停车场找车与透明底盘（在主体之上扩展）</h2>
+        <span class="tag">UC 7.5 · 共用视觉与存储</span>
+      </div>
+      <p class="section-desc">
+        在第一节同一套「多路视觉 + 车机存储/相册能力」之上，增加车位记录编排、底盘锚点素材、定位/地图与车云 App；无透明底盘能力时按 PRD 降级。<strong>挪车后再次满足 P 挡零速采集条件时，新一轮静态拍照与记录点覆盖上一版</strong>，车机/App 仅保留最新有效版本。
+      </p>
+
+      <div class="arrows-row" style="grid-template-columns:repeat(6,1fr)" aria-hidden="true">
+        <span>人机触发</span>
+        <span>业务编排</span>
+        <span>视觉扩展</span>
+        <span>记录索引</span>
+        <span>定位地图</span>
+        <span>车云 App</span>
+      </div>
+
+      <div class="lanes">
+        <section class="lane lane-hmi">
+          <div class="lane-title">Ext 1</div>
+          <h3>人机与应用</h3>
+          <div class="card">
+            <strong>找车入口（叠加）</strong>
+            <ul>
+              <li>桌面卡片 / 停车应用 / 负一屏 / 语音「打开找车」</li>
+              <li>与影像记录、地图应用跳转关系（UE 定稿）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>车位卡片 / 会话 UI</strong>
+            <ul>
+              <li>环视缩略图 + 底盘素材 Tab/入口</li>
+              <li>P 挡零速「车位记录」与手动重录</li>
+              <li>仅展示当前有效一版（挪车后再拍覆盖旧素材）</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-svc">
+          <div class="lane-title">Ext 2</div>
+          <h3>车端业务服务</h3>
+          <div class="card">
+            <strong>车位记录编排器</strong>
+            <ul>
+              <li>会话 ID、与停车事件绑定、置信度与质量提示</li>
+              <li>P 挡零速触发采集窗口；检测车辆位移/再驻车后<strong>再采集则覆盖</strong>上一版素材与记录点（重录同逻辑）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>影像记录业务（共用）</strong>
+            <ul>
+              <li>循环/紧急/哨兵策略不变；找车素材命名与索引可扩展字段</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-vision">
+          <div class="lane-title">Ext 3</div>
+          <h3>视觉域扩展</h3>
+          <div class="card">
+            <strong>环视 / 周视（共用）</strong>
+            <ul>
+              <li>与第一节同一采集源；找车侧订阅帧或缩略图</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>透明底盘 / 透视</strong>
+            <ul>
+              <li>实时合成流接入车位记录管道</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>底盘拍照 / 抓拍</strong>
+            <ul>
+              <li>用户触发静止帧或短录像写入锚点库</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-data">
+          <div class="lane-title">Ext 4</div>
+          <h3>数据与存储</h3>
+          <div class="card">
+            <strong>车位记录素材库</strong>
+            <ul>
+              <li>与循环/相册索引并存；元数据含楼层/车位/时间</li>
+              <li>同会话内<strong>单活跃版本</strong>：再采集时替换索引与缩略图，不并列保留未区分多版</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>SD / U 盘（共用）</strong>
+            <ul>
+              <li>介质与配额策略延续第一节；分区策略项目定稿</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-loc">
+          <div class="lane-title">Ext 5</div>
+          <h3>定位与地图</h3>
+          <div class="card">
+            <strong>GNSS / 惯导 / 场端校正</strong>
+            <ul>
+              <li>室内地图或记录点降级、POI 文字指引</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="lane lane-cloud">
+          <div class="lane-title">Ext 6</div>
+          <h3>车云与 App</h3>
+          <div class="card">
+            <strong>会话同步与推送</strong>
+            <ul>
+              <li>记录点、会话版本、照片元数据；弱网重试</li>
+              <li>覆盖采集后递增会话版本并同步，App/车机拉取<strong>最新版</strong></li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>手机 App</strong>
+            <ul>
+              <li>同账号、一键导航、可选同行人分享</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div class="flow-note">
+        <strong class="flow-note-title">扩展主链路（摘要）</strong>
+        找车入口
+        <code>→</code> 车位记录编排器（P 挡零速窗口；挪车后再拍<strong>覆盖</strong>上一版）
+        <code>→</code> 复用环视/周视（+ 透明底盘 + 底盘抓拍）写入素材库
+        <code>→</code> 单活跃版本索引 + 记录点
+        <code>→</code> 定位与地图呈现
+        <code>→</code> 车云与 App（仅同步/展示最新版）；与第一节共用存储、账号与合规横切。
+      </div>
+    </section>
+
+    <div class="crosscut">
+      <h3>横切（两节共用）</h3>
+      <div class="crosscut-grid">
+        <div>数据安全与脱敏、个人信息保护（行车与找车影像同约束）</div>
+        <div>性能：录制帧率/分辨率基线（4.4.3）+ 找车补充表（4.4.3-1）</div>
+        <div>诊断：写盘失败、同步失败、合成时延可观测</div>
+        <div>OTA：能力探测后透明底盘链路降级</div>
+      </div>
+    </div>
+
+    <footer>
+      在线地址：<a href="https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-prd-uc75-findcar-architecture-detail.html">GitHub Pages · parking-findcar-uc75 架构图</a> · 源码 <code>prototypes/parking-findcar-uc75/hmi/</code>
+    </footer>
+  </div>
+</body>
+</html>

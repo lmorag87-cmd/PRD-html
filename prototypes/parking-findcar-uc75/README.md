@@ -1,4 +1,4 @@
-# 停车场找车（UC-FIND-1 / §7.5）
+# 停车场找车（UC-FIND-1 / §6.4）
 
 - **PRD**：[影像记录 PRD](https://baic.feishu.cn/docx/LK9ddVMlio0oamxWOTScarFXnXd)
 - **信息架构**：[architecture.md](./architecture.md)（IVI + 手机双端）
@@ -7,6 +7,7 @@
 ## 在线原型（GitHub Pages）
 
 - **总览**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/
+- **架构图（PRD §8）**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-prd-uc75-findcar-architecture-detail.html
 - **车机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-find-index-prototype.html
 - **手机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/mobile/mobile-uc-find-1-push-prototype.html
 
