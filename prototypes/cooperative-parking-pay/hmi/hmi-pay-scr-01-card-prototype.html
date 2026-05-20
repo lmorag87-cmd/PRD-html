@@ -30,7 +30,7 @@
     .meta { font-size: 18px; color: var(--muted); margin-top: 8px; }
     .sync-badge { font-size: 17px; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid #d8dee9; color: var(--muted); }
     .sync-badge.ok { color: var(--ok); border-color: rgba(5,150,105,.35); background: rgba(5,150,105,.08); }
-    .grid-2 { display: grid; grid-template-columns: 1fr 480px; gap: 22px; }
+    .content-stack { display: flex; flex-direction: column; gap: 22px; max-width: 1200px; margin: 0 auto; }
     .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9; padding: 24px 28px; box-shadow: 0 8px 28px rgba(15,23,42,.06); }
     .card h2 { margin: 0 0 16px; font-size: 26px; font-weight: 650; }
     .kv { display: grid; grid-template-columns: 130px 1fr; gap: 10px 16px; font-size: 19px; }
@@ -79,7 +79,7 @@
           </div>
           <span class="sync-badge ok" role="status">已与场端同步 ✓</span>
         </div>
-        <div class="grid-2">
+        <div class="content-stack">
           <section class="card">
             <h2>停车卡片</h2>
             <dl class="kv">
