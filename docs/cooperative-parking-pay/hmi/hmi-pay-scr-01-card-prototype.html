@@ -9,9 +9,9 @@
   <style>
     :root {
       --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
-      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px; --nav-w: 280px;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
       --page-bg: #0d1117; --frame-border: rgba(255,255,255,.12);
-      --bar-bg: #1c2128; --nav-bg: #161b22; --main-bg: #eceff4; --card-bg: #fff;
+      --bar-bg: #1c2128; --main-bg: #eceff4; --card-bg: #fff;
       --text: #1a1d24; --muted: #5c6570; --accent: #2563eb; --accent-soft: rgba(37,99,235,.12);
       --ok: #059669; --warn: #d97706; --radius: 14px;
     }
@@ -22,13 +22,7 @@
     .sess-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: rgba(5,150,105,.2); color: #6ee7b7; font-size: 15px; }
     .sess-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
     .shell { position: absolute; top: var(--topbar-h); left: 0; right: 0; bottom: var(--dock-h); display: flex; }
-    .nav { width: var(--nav-w); background: var(--nav-bg); border-right: 1px solid var(--frame-border); padding: 16px 10px; }
-    .nav .brand { font-size: 14px; color: #6b7280; padding: 8px 12px 12px; letter-spacing: .08em; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; font-size: 20px; color: #b8c0cc; text-decoration: none; min-height: 52px; }
-    .nav-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #374151; }
-    .nav-item.active { background: var(--accent-soft); color: #dbeafe; border: 1px solid rgba(37,99,235,.35); }
-    .nav-item.active .dot { background: var(--accent); }
-    .main { flex: 1; background: var(--main-bg); color: var(--text); padding: 24px 32px; overflow: auto; }
+    .main { flex: 1; width: 100%; background: var(--main-bg); color: var(--text); padding: 24px 32px; overflow: auto; }
     .banner-offline { padding: 12px 16px; border-radius: 10px; background: rgba(217,119,6,.12); border: 1px solid rgba(217,119,6,.35); font-size: 18px; color: #92400e; margin-bottom: 16px; display: none; }
     .banner-offline.show { display: block; }
     .main-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
@@ -74,12 +68,6 @@
       <span>信号 · 电量 · 示例</span>
     </header>
     <div class="shell">
-      <aside class="nav" aria-label="停车支付">
-        <div class="brand">停车 / 支付</div>
-        <a class="nav-item active" href="hmi-pay-scr-01-card-prototype.html"><span class="dot"></span>当前会话</a>
-        <a class="nav-item" href="hmi-pay-scr-02-billing-prototype.html"><span class="dot"></span>计费说明</a>
-        <a class="nav-item" href="hmi-pay-scr-06-qr-prototype.html"><span class="dot"></span>扫码兜底</a>
-      </aside>
       <main class="main">
         <div class="banner-offline" id="offlineBanner" role="alert">
           网络不佳，展示上次同步数据 · 16:38（示例）· 恢复后将自动对齐场端

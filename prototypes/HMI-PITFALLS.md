@@ -12,6 +12,7 @@
 | 线上无索引样式 | sync 只拷 html，未拷 css/js | `sync-pages-docs.ps1` 同步 `hmi-pay-proto-common.css`、`hmi-pay-nav.js` |
 | aria-label 乱码 | PowerShell 默认编码 | 读写文件用 UTF-8 **无 BOM** |
 | 个别屏状态栏被挡 | `proto-nav { position:fixed }` 在舞台内 | 参考 `hmi-pay-scr-06`：`demo-wrap` + sticky |
+| 仅 01 有左侧栏、其它屏没有 | 单屏抄了旧模板 | **全无**：本套 pay 原型不在 `#stage` 内做 `aside.nav` |
 
 ## 固定结构（合作停车场 pay 系列）
 
@@ -19,7 +20,7 @@
 body.hmi-proto-screen
   └── .demo-wrap          ← 宽 1920px，顶对齐
         ├── #proto-nav    ← hmi-pay-nav.js 填 13 项
-        └── #stage        ← 1920×1080，屏内 UI
+        └── #stage        ← 1920×1080，屏内 UI（无左侧 nav 侧栏）
 ```
 
 ## 发布前自检
