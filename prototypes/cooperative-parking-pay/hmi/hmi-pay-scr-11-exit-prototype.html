@@ -2,16 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SCR-PAY-11 · 离场引导</title>
   <style>
     :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; --ok: #059669; }
     html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
-    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
-    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
-    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
-    .proto-nav a.on { background: var(--accent); color: #fff; }
-    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    body { display: flex; align-items: center; justify-content: center;  min-height: 100vh; }
+#stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
     .shell { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; display: flex; background: #eceff4; }
     .main { flex: 1; padding: 28px 36px; color: #1a1d24; }
     h1 { margin: 0 0 8px; font-size: 32px; }
@@ -24,12 +22,11 @@
     .btn-dock { padding: 12px 28px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 20px; min-height: 52px; text-decoration: none; font-family: inherit; }
   </style>
 </head>
-<body>
-  <nav class="proto-nav">
-    <a href="hmi-pay-scr-07-success-prototype.html">07</a>
-    <a href="hmi-pay-scr-11-exit-prototype.html" class="on">11 离场</a>
-    <a href="hmi-pay-scr-12-ended-prototype.html">12</a>
-  </nav>
+<body class="hmi-proto-screen" data-nav-current="hmi-pay-scr-11-exit-prototype.html">
+<div class="demo-wrap">
+  <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+  <script src="hmi-pay-nav.js"></script>
+
   <article id="stage" aria-label="SCR-PAY-11 离场引导 F-11">
     <header style="position:absolute;top:0;left:0;right:0;height:48px;background:#1c2128;color:#9aa3b2;display:flex;align-items:center;padding:0 26px;font-size:16px"><span>已支付 · 请离场</span></header>
     <section class="shell">
@@ -53,5 +50,6 @@
       </span>
     </footer>
   </article>
+</div>
 </body>
 </html>

@@ -17,6 +17,10 @@ function Sync-Project($slug) {
       $to = Join-Path $dst $sub
       New-Item -ItemType Directory -Force -Path $to | Out-Null
       Copy-Item (Join-Path $from "*.html") $to -Force
+      if ($sub -eq "hmi") {
+        Copy-Item (Join-Path $from "hmi-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "hmi-pay-nav.js") $to -Force -ErrorAction SilentlyContinue
+      }
     }
   }
   $idx = Join-Path $src "index.html"
@@ -30,7 +34,9 @@ if ($Project) {
   Sync-Project $Project
 } else {
   Get-ChildItem $protoRoot -Directory | Where-Object {
-    $_.Name -notmatch '^\.' -and (Test-Path (Join-Path $_.FullName "hmi")) -or (Test-Path (Join-Path $_.FullName "mobile"))
+    $_.Name -notmatch '^\.' -and (
+      (Test-Path (Join-Path $_.FullName "hmi")) -or (Test-Path (Join-Path $_.FullName "mobile"))
+    )
   } | ForEach-Object { Sync-Project $_.Name }
 }
 

@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合作停车场支付 · IVI 原型索引</title>
   <!-- 索引页；各屏为 1920×1080 #stage；架构见 hmi-cooperative-parking-pay-architecture.md -->
@@ -11,7 +12,7 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); color: #e6e9ef; }
-    body { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    .proto-index-wrap { color: #e6e9ef; }
     h1 { font-size: 28px; margin: 0 0 8px; }
     .sub { color: #9aa3b2; font-size: 16px; margin-bottom: 32px; line-height: 1.6; }
     .sub a { color: #60a5fa; }
@@ -29,7 +30,10 @@
     .tag { font-size: 13px; padding: 4px 8px; border-radius: 6px; background: #2d333b; color: #9aa3b2; }
   </style>
 </head>
-<body>
+<body class="hmi-proto-index" data-nav-current="hmi-pay-index-prototype.html">
+  <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+  <script src="hmi-pay-nav.js"></script>
+  <div class="proto-index-wrap">
   <h1>合作停车场支付 · 车机 IVI 原型</h1>
   <p class="sub">
     1920×1080 固定舞台 · 示例数据 · 架构
@@ -74,5 +78,6 @@
   </section>
 
   <p class="sub" style="margin-top:32px">手机 App 镜像（只读）见 <a href="../mobile/mobile-pay-index-prototype.html">mobile/mobile-pay-index-prototype.html</a></p>
+  </div>
 </body>
 </html>

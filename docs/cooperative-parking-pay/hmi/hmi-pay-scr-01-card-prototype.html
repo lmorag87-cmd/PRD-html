@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SCR-PAY-01 · 停车卡片主页</title>
   <!-- 1920×1080 #stage；F-03/F-05/F-07；示例数据。架构 hmi-cooperative-parking-pay-architecture.md -->
@@ -16,10 +17,7 @@
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; background: var(--page-bg); font-family: var(--font-hmi); }
-    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 44px; }
-    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); border-bottom: 1px solid rgba(255,255,255,.1); font-size: 13px; }
-    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
-    .proto-nav a:hover, .proto-nav a.on { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+    body.hmi-proto-screen { min-height: 100vh; }
     #stage { width: 1920px; height: 1080px; position: relative; overflow: hidden; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border); background: #0b0f14; }
     .status-bar { position: absolute; top: 0; left: 0; right: 0; height: var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px); display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border); }
     .sess-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: rgba(5,150,105,.2); color: #6ee7b7; font-size: 15px; }
@@ -65,15 +63,11 @@
     .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
   </style>
 </head>
-<body>
-  <nav class="proto-nav" aria-label="原型导航">
-    <a href="hmi-pay-index-prototype.html">索引</a>
-    <a href="hmi-pay-scr-00-recognizing-prototype.html">00 识别</a>
-    <a href="hmi-pay-scr-01-card-prototype.html" class="on">01 卡片</a>
-    <a href="hmi-pay-scr-06-qr-prototype.html">06 扫码</a>
-    <a href="hmi-pay-scr-07-success-prototype.html">07 成功</a>
-    <a href="hmi-pay-scr-11-exit-prototype.html">11 离场</a>
-  </nav>
+<body class="hmi-proto-screen" data-nav-current="hmi-pay-scr-01-card-prototype.html">
+<div class="demo-wrap">
+  <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+  <script src="hmi-pay-nav.js"></script>
+
   <div id="stage" role="application" aria-label="SCR-PAY-01 停车卡片 1920×1080">
     <header class="status-bar">
       <span>16:42 · 5月20日</span>
@@ -145,5 +139,6 @@
       document.getElementById('offlineBanner').classList.toggle('show');
     });
   </script>
+</div>
 </body>
 </html>
