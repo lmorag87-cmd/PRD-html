@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UC-FIND-1 · PG-FIND-03 弱网离线</title>
+  <!-- 390×844 #phone-stage；无网静态卡；示例数据。 -->
+  <style>
+    :root {
+      --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
+      --fs-title: 24px; --fs-card-title: 18px; --fs-body: 16px; --fs-caption: 14px;
+      --page-bg: #0d1117; --app-bg: #f5f6f8; --app-surface: #fff;
+      --text: #1a1d24; --muted: #6b7280; --accent: #2563eb; --warn: #d97706; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--page-bg); font-family: var(--font-app); font-size: var(--fs-body); color: var(--text); }
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .screen-nav {
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; z-index: 100; font-size: 12px; max-width: 96vw;
+    }
+    .screen-nav a {
+      padding: 6px 10px; border-radius: 8px; background: rgba(0,0,0,.5);
+      color: #e2e8f0; text-decoration: none; border: 1px solid rgba(255,255,255,.15);
+    }
+    .screen-nav a.on { background: var(--accent); border-color: #1d4ed8; }
+    #phone-stage {
+      width: 390px; height: 844px; overflow: hidden; border-radius: 28px; background: var(--app-bg);
+      box-shadow: 0 24px 64px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
+      display: flex; flex-direction: column;
+    }
+    .app-header {
+      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 12px;
+      background: var(--app-surface); border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .back {
+      width: 44px; height: 44px; border: none; border-radius: 12px; background: #f3f4f6;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #1a1d24; text-decoration: none; flex-shrink: 0; cursor: pointer;
+    }
+    .back svg { display: block; width: 22px; height: 22px; }
+    .app-header h1 { margin: 0; flex: 1; font-size: var(--fs-title); font-weight: 650; }
+    .banner-offline {
+      margin: 12px var(--safe-inline) 0; padding: 12px 14px; border-radius: 12px;
+      background: rgba(217,119,6,.12); border: 1px solid rgba(217,119,6,.35);
+      font-size: var(--fs-caption); color: #92400e; line-height: 1.5;
+    }
+    .app-main { flex: 1; overflow-y: auto; padding: 12px var(--safe-inline) 16px; }
+    .card {
+      background: var(--app-surface); border-radius: var(--radius); border: 1px solid #e5e7eb;
+      padding: 16px; margin-bottom: 12px;
+    }
+    .snapshot {
+      height: 140px; border-radius: 12px; margin-bottom: 12px; border: 1px dashed #d1d5db;
+      background: repeating-linear-gradient(-45deg, #f3f4f6, #f3f4f6 8px, #e5e7eb 8px, #e5e7eb 16px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: var(--fs-caption); color: var(--muted); font-weight: 600; text-align: center; padding: 12px;
+    }
+    .spot-title { margin: 0 0 6px; font-size: var(--fs-card-title); font-weight: 650; }
+    .spot-meta { margin: 0; color: var(--muted); font-size: var(--fs-caption); line-height: 1.5; }
+    .kv { margin-top: 12px; display: grid; gap: 8px; }
+    .kv .row { display: flex; justify-content: space-between; font-size: var(--fs-caption); }
+    .kv .k { color: var(--muted); }
+    .share-card {
+      background: #f8fafc; border-radius: 12px; border: 1px solid #e5e7eb; padding: 14px;
+    }
+    .share-card h2 { margin: 0 0 8px; font-size: var(--fs-card-title); }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .chip {
+      min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #d1d5db;
+      background: #fff; font-size: var(--fs-caption); font-weight: 600; cursor: pointer; font-family: inherit;
+    }
+    .chip.on { border-color: var(--accent); background: rgba(37,99,235,.08); color: #1d4ed8; }
+    .app-footer {
+      flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
+      background: var(--app-surface); border-top: 1px solid #e5e7eb;
+    }
+    .btn {
+      width: 100%; min-height: 52px; border-radius: 14px; font-size: var(--fs-body); font-weight: 650;
+      cursor: pointer; font-family: inherit; border: none; background: #f3f4f6; color: var(--text);
+      border: 1px solid #e5e7eb;
+    }
+    .app-tabbar {
+      flex-shrink: 0; display: flex; border-top: 1px solid #e5e7eb; background: var(--app-surface);
+      padding: 8px var(--safe-inline) calc(8px + var(--safe-bottom));
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      min-height: 48px; border: none; background: none; font-family: inherit; font-size: 12px; color: var(--muted); cursor: pointer;
+    }
+    .tab-item.on { color: var(--accent); font-weight: 600; }
+    .tab-item .ico { font-size: 22px; }
+  </style>
+</head>
+<body>
+  <nav class="screen-nav" aria-label="原型页切换">
+    <a href="mobile-uc-find-1-push-prototype.html">00 推送</a>
+    <a href="mobile-uc-find-1-session-prototype.html">01 会话</a>
+    <a href="mobile-uc-find-1-nav-prototype.html">02 导航</a>
+    <a href="mobile-uc-find-1-offline-prototype.html" class="on">03 离线</a>
+    <a href="mobile-uc-find-1-supplement-prototype.html">04 补录</a>
+  </nav>
+  <div id="phone-stage" role="application" aria-label="手机 App · 弱网离线">
+    <header class="app-header">
+      <a class="back" href="mobile-uc-find-1-session-prototype.html" aria-label="返回">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 6.5L9 12l5.5 5.5" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <h1>找车</h1>
+    </header>
+    <p class="banner-offline" role="alert">
+      当前无网络 · 展示最近一次同步的停车信息（PRD FR-4 示例）。恢复网络后将自动更新地图与轨迹。
+    </p>
+    <main class="app-main">
+      <article class="card">
+        <div class="snapshot">离线地图快照占位<br>上次记录点 · B2</div>
+        <p class="spot-title">B2 · A区 · 车位 128</p>
+        <p class="spot-meta">记录时间 2026-05-18 16:41</p>
+        <div class="kv">
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span class="k">会话</span><span>FC-20260518-A3</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span class="k">同步</span><span>16:41 缓存</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px"><span class="k">楼层指引</span><span>乘扶梯至 B2 · A 区</span></div>
+        </div>
+      </article>
+      <article class="card share-card">
+        <h2>分享给同行人（可选）</h2>
+        <p class="spot-meta" style="margin:0">选择分享内容粒度（示例，以法务定稿为准）</p>
+        <div class="chips" role="group" aria-label="分享粒度">
+          <button type="button" class="chip on" data-mode="loc">仅位置</button>
+          <button type="button" class="chip" data-mode="photo">含环视照片</button>
+        </div>
+      </article>
+      <p class="spot-meta" style="padding:0 4px">离线包未安装时仅文字信息可用 · 可在「我的」中下载场站离线地图（若产品支持）</p>
+    </main>
+    <footer class="app-footer">
+      <button type="button" class="btn" id="btnRetry">恢复网络后刷新</button>
+    </footer>
+    <nav class="app-tabbar" aria-label="主导航">
+      <button type="button" class="tab-item"><span class="ico">⌂</span>首页</button>
+      <button type="button" class="tab-item on"><span class="ico">🅿</span>找车</button>
+      <button type="button" class="tab-item"><span class="ico">○</span>我的</button>
+    </nav>
+  </div>
+  <script>
+    (function () {
+      var chips = document.querySelectorAll('.chip');
+      chips.forEach(function (c) {
+        c.addEventListener('click', function () {
+          chips.forEach(function (x) { x.classList.remove('on'); });
+          c.classList.add('on');
+        });
+      });
+      document.getElementById('btnRetry').addEventListener('click', function () {
+        alert('示例：检测到网络后拉取最新会话并跳转在线会话页。');
+        window.location.href = 'mobile-uc-find-1-session-prototype.html';
+      });
+    })();
+  </script>
+</body>
+</html>

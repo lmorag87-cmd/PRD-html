@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PRD 交互原型库</title>
+  <title>停车场找车 · UC-FIND-1 原型</title>
   <style>
     :root { --font: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif; }
     body { margin: 0; min-height: 100vh; font-family: var(--font); background: #0d1117; color: #e6e9ef; padding: 40px 24px; }
-    main { max-width: 640px; margin: 0 auto; }
+    main { max-width: 720px; margin: 0 auto; }
     h1 { font-size: 28px; margin: 0 0 8px; }
     .sub { color: #9aa3b2; font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
     h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin: 24px 0 12px; font-weight: 600; }
@@ -19,34 +19,30 @@
     a.card:hover { border-color: #2563eb; background: rgba(37,99,235,.1); }
     a.card .id { font-size: 13px; color: #6b7280; font-family: ui-monospace, monospace; margin-top: 6px; }
     a.card .desc { display: block; font-size: 14px; color: #9aa3b2; margin-top: 4px; }
-    .soon { opacity: .45; pointer-events: none; }
   </style>
 </head>
 <body>
   <main>
-    <h1>PRD 交互原型库</h1>
-    <p class="sub">
-      GitHub Pages · 按 PRD 项目分目录 · 仓库
-      <a href="https://github.com/lmorag87-cmd/PRD-html" style="color:#60a5fa">lmorag87-cmd/PRD-html</a>
+    <h1>停车场找车辅助功能</h1>
+    <p class="sub">UC-FIND-1 / PRD §7.5 · 车机 1920×1080 + 手机 390×844 · 低保真 HTML 原型</p>
+
+    <h2>车机 IVI</h2>
+    <a class="card" href="hmi/hmi-find-index-prototype.html">
+      车机原型索引（SCR-FIND-00～05）
+      <span class="id">hmi/hmi-find-index-prototype.html</span>
+      <span class="desc">推荐从「02 找车主页」开始浏览</span>
+    </a>
+
+    <h2>手机 App</h2>
+    <a class="card" href="mobile/mobile-uc-find-1-push-prototype.html">
+      手机原型（PG-FIND-00～04）
+      <span class="id">mobile/mobile-uc-find-1-push-prototype.html</span>
+      <span class="desc">推送落地 → 会话卡 → 导航 → 离线 → 补录</span>
+    </a>
+
+    <p class="sub" style="margin-top:32px">
+      <a href="../" style="color:#60a5fa">← PRD 原型库首页</a>
     </p>
-
-    <h2>已发布</h2>
-    <a class="card" href="cooperative-parking-pay/">
-      合作停车场支付闭环
-      <span class="id">cooperative-parking-pay/</span>
-      <span class="desc">车机 IVI + 手机 App · F-01～F-12 · UC-01/02/03</span>
-    </a>
-
-    <a class="card" href="parking-findcar-uc75/">
-      停车场找车辅助功能
-      <span class="id">parking-findcar-uc75/</span>
-      <span class="desc">车机 IVI + 手机 App · UC-FIND-1 / §7.5</span>
-    </a>
-
-    <h2>规划中</h2>
-    <span class="card soon">
-      （更多 PRD 目录将出现在此处）
-    </span>
   </main>
 </body>
 </html>

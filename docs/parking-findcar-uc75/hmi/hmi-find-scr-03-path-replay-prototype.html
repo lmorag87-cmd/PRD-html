@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-FIND-03 · 轨迹回放</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
+      --frame-border: rgba(255,255,255,.12); --bar-bg: #1c2128;
+      --main-bg: #eceff4; --card-bg: #fff; --text: #1a1d24; --muted: #5c6570;
+      --accent: #2563eb; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); font-size: 18px; }
+    #stage {
+      display: flex; flex-direction: column; border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14; overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border);
+    }
+    .main-wrap { flex: 1; min-height: 0; background: var(--main-bg); padding: 16px 24px 12px; display: flex; flex-direction: column; }
+    .replay-map {
+      flex: 1; min-height: 0; border-radius: var(--radius); border: 1px solid #d8dee9;
+      background: linear-gradient(165deg, #dbeafe, #cbd5e1);
+      position: relative; overflow: hidden;
+    }
+    .route {
+      position: absolute; left: 8%; top: 20%; width: 75%; height: 65%;
+      border: 4px solid var(--accent); border-radius: 40px 120px 80px 60px;
+      border-style: solid; opacity: .85;
+    }
+    .car-dot {
+      position: absolute; left: 42%; top: 48%; width: 28px; height: 28px; border-radius: 50%;
+      background: #111827; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.3);
+      transition: left .3s ease;
+    }
+    .ctrl-bar {
+      flex-shrink: 0; margin-top: 14px; background: var(--card-bg); border-radius: var(--radius);
+      border: 1px solid #d8dee9; padding: 18px 22px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .ctrl-bar p { margin: 0; flex: 1; min-width: 200px; font-size: 19px; }
+    .ctrl-bar button {
+      min-height: 52px; padding: 0 18px; border-radius: 10px; border: 1px solid #d8dee9;
+      background: #fff; font-size: 18px; font-family: inherit; cursor: pointer;
+    }
+    .ctrl-bar button.primary { background: var(--accent); color: #fff; border-color: #1d4ed8; }
+    .expired {
+      display: none; margin-top: 10px; padding: 12px 14px; border-radius: 10px;
+      background: rgba(220,38,38,.08); border: 1px solid rgba(220,38,38,.25); color: #b91c1c; font-size: 18px;
+    }
+    .expired.show { display: block; }
+    .dock {
+      flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8;
+    }
+    .btn-dock {
+      padding: 12px 22px; border-radius: 10px; background: #2d333b; color: #e6e9ef;
+      border: 1px solid #3d4450; min-height: 52px; font-size: 20px; font-family: inherit;
+      text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+  </style>
+</head>
+<body class="hmi-proto-screen" data-nav-current="hmi-find-scr-03-path-replay-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js"></script>
+    <article id="stage" role="application" aria-label="SCR-FIND-03 轨迹回放 1920×1080">
+      <header class="status-bar">
+        <span>16:42 · 5月20日</span>
+        <span>回放 · FC-20260520-A3</span>
+        <span>入库段 · 示例</span>
+      </header>
+      <main class="main-wrap">
+        <section class="replay-map" aria-label="轨迹回放地图">
+          <div class="route" aria-hidden="true"></div>
+          <div class="car-dot" id="carDot" aria-label="回放位置"></div>
+        </section>
+        <p class="expired" id="expiredMsg" role="alert">
+          路径可能因施工变更失效 · 建议重新采集或改用记录点导航（示例）
+        </p>
+        <div class="ctrl-bar">
+          <p><strong>沿原路返回</strong> · 拐点 12 · 长约 186 m（示例）· 非 HPA 全学习路径</p>
+          <button type="button" id="btnPlay" class="primary">播放</button>
+          <button type="button" id="btnSpeed">1×</button>
+          <button type="button" id="btnExpired">模拟路径过期</button>
+        </div>
+      </main>
+      <footer class="dock">
+        <span>默认回放 ingress_path · 终点徘徊段不默认展示</span>
+        <a class="btn-dock primary" href="hmi-find-scr-02-hub-prototype.html">退出回放</a>
+      </footer>
+    </article>
+  </div>
+  <script>
+    (function () {
+      var playing = false;
+      var pos = 42;
+      var car = document.getElementById('carDot');
+      var timer;
+      document.getElementById('btnPlay').addEventListener('click', function () {
+        playing = !playing;
+        this.textContent = playing ? '暂停' : '播放';
+        if (playing) {
+          timer = setInterval(function () {
+            pos = (pos + 2) % 70;
+            if (pos < 20) pos = 20;
+            car.style.left = pos + '%';
+          }, 400);
+        } else {
+          clearInterval(timer);
+        }
+      });
+      document.getElementById('btnSpeed').addEventListener('click', function () {
+        this.textContent = this.textContent === '1×' ? '2×' : '1×';
+      });
+      document.getElementById('btnExpired').addEventListener('click', function () {
+        document.getElementById('expiredMsg').classList.add('show');
+      });
+    })();
+  </script>
+</body>
+</html>

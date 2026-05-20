@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-FIND-04 · 素材详情</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
+      --frame-border: rgba(255,255,255,.12); --bar-bg: #1c2128;
+      --main-bg: #eceff4; --card-bg: #fff; --text: #1a1d24; --muted: #5c6570;
+      --accent: #2563eb; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); font-size: 18px; }
+    #stage {
+      display: flex; flex-direction: column; border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14; overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border);
+    }
+    .main-wrap { flex: 1; min-height: 0; background: var(--main-bg); color: var(--text); padding: 22px 32px; overflow: auto; }
+    .main-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .main-head h1 { margin: 0; font-size: 32px; }
+    .tabs { display: flex; gap: 8px; }
+    .tab {
+      min-height: 48px; padding: 0 20px; border-radius: 10px; border: 1px solid #d8dee9;
+      background: #fff; font-size: 18px; font-family: inherit; cursor: pointer;
+    }
+    .tab.on { background: rgba(37,99,235,.1); border-color: rgba(37,99,235,.4); color: #1d4ed8; font-weight: 600; }
+    .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .tile {
+      border-radius: 12px; border: 1px solid #d8dee9; overflow: hidden; background: #fff;
+    }
+    .tile .img {
+      aspect-ratio: 16/10; background: linear-gradient(145deg, #dbeafe, #94a3b8);
+    }
+    .tile.ch .img { background: linear-gradient(160deg, #334155, #64748b); }
+    .tile .cap { padding: 12px 14px; font-size: 17px; color: var(--muted); }
+    .tile .cap strong { color: var(--text); display: block; font-size: 19px; margin-bottom: 4px; }
+    .optional {
+      margin-top: 20px; padding: 14px 18px; border-radius: 10px; background: #f9fafb;
+      border: 1px dashed #c5cdd8; font-size: 18px; color: var(--muted);
+    }
+    .optional button {
+      margin-top: 10px; min-height: 48px; padding: 0 16px; border-radius: 10px;
+      border: 1px solid #d8dee9; background: #fff; font-size: 17px; font-family: inherit; cursor: pointer;
+    }
+    .dock {
+      flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8;
+    }
+    .btn-dock {
+      padding: 12px 22px; border-radius: 10px; background: var(--accent); border: 1px solid #1d4ed8;
+      color: #fff; min-height: 52px; font-size: 20px; font-family: inherit; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-back {
+      background: #2d333b; border-color: #3d4450; color: #e6e9ef; margin-right: 12px;
+    }
+  </style>
+</head>
+<body class="hmi-proto-screen" data-nav-current="hmi-find-scr-04-media-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js"></script>
+    <article id="stage" role="application" aria-label="SCR-FIND-04 素材 1920×1080">
+      <header class="status-bar">
+        <span>16:43 · 5月20日</span>
+        <span>media_index · 入库段</span>
+        <span>6 项素材（示例）</span>
+      </header>
+      <main class="main-wrap">
+        <div class="main-head">
+          <h1>车位记录素材</h1>
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab on" id="tabS">环视 / 周视</button>
+            <button type="button" class="tab" id="tabC">底盘</button>
+          </div>
+        </div>
+        <div class="media-grid" id="gridS">
+          <article class="tile"><div class="img"></div><div class="cap"><strong>前方</strong>16:38:12</div></article>
+          <article class="tile"><div class="img"></div><div class="cap"><strong>后方</strong>16:38:14</div></article>
+          <article class="tile"><div class="img"></div><div class="cap"><strong>左侧</strong>16:38:15</div></article>
+          <article class="tile"><div class="img"></div><div class="cap"><strong>右侧</strong>16:38:16</div></article>
+          <article class="tile ch"><div class="img"></div><div class="cap"><strong>底盘抓拍</strong>用户触发</div></article>
+          <article class="tile ch"><div class="img"></div><div class="cap"><strong>透明底盘</strong>16:38:18</div></article>
+        </div>
+        <div class="media-grid" id="gridC" hidden>
+          <article class="tile ch" style="grid-column:span 3"><div class="img" style="aspect-ratio:21/9"></div><div class="cap"><strong>底盘全景</strong>近车底环境复核（示例）</div></article>
+        </div>
+        <div class="optional">
+          HPA 终点调整段 · 默认不进入找车主展示
+          <br>
+          <button type="button" id="btnAdjust">查看调整过程（可选）</button>
+        </div>
+      </main>
+      <footer class="dock">
+        <a class="btn-dock btn-back" href="hmi-find-scr-02-hub-prototype.html">返回找车</a>
+        <button type="button" class="btn-dock" id="btnReshoot">补拍一张</button>
+      </footer>
+    </article>
+  </div>
+  <script>
+    (function () {
+      var tabS = document.getElementById('tabS');
+      var tabC = document.getElementById('tabC');
+      var gridS = document.getElementById('gridS');
+      var gridC = document.getElementById('gridC');
+      function show(s) {
+        tabS.classList.toggle('on', s);
+        tabC.classList.toggle('on', !s);
+        gridS.hidden = !s;
+        gridC.hidden = s;
+      }
+      tabS.addEventListener('click', function () { show(true); });
+      tabC.addEventListener('click', function () { show(false); });
+      document.getElementById('btnReshoot').addEventListener('click', function () {
+        alert('示例：终点段最多追加 N 张，进场段优先保留。');
+      });
+      document.getElementById('btnAdjust').addEventListener('click', function () {
+        alert('示例：仅展示终点徘徊段轨迹/素材，不替代默认回放。');
+      });
+    })();
+  </script>
+</body>
+</html>

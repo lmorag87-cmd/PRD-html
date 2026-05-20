@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-FIND-05 · 弱网离线</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
+      --frame-border: rgba(255,255,255,.12); --bar-bg: #1c2128;
+      --main-bg: #eceff4; --card-bg: #fff; --text: #1a1d24; --muted: #5c6570;
+      --accent: #2563eb; --warn: #d97706; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); font-size: 18px; }
+    #stage {
+      display: flex; flex-direction: column; border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14; overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border);
+    }
+    .sess-pill {
+      display: inline-flex; padding: 4px 12px; border-radius: 999px;
+      background: rgba(217,119,6,.2); color: #fcd34d; font-size: 15px;
+    }
+    .main-wrap {
+      flex: 1; min-height: 0; background: var(--main-bg); color: var(--text);
+      padding: 32px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .offline-card {
+      width: 100%; max-width: 880px; background: var(--card-bg); border-radius: var(--radius);
+      border: 1px solid #d8dee9; padding: 28px 32px; text-align: center;
+    }
+    .snapshot {
+      height: 320px; border-radius: 12px; margin-bottom: 20px;
+      background: linear-gradient(160deg, #94a3b8, #cbd5e1);
+      border: 1px solid #d8dee9; position: relative;
+    }
+    .snapshot::after {
+      content: "上次记录快照 · 无地图瓦片";
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,.9);
+      font-size: 16px; color: var(--muted);
+    }
+    .offline-card h1 { margin: 0 0 8px; font-size: 34px; }
+    .offline-card .meta { font-size: 22px; color: var(--muted); margin: 0 0 16px; }
+    .offline-card .spot { font-size: 42px; font-weight: 700; margin: 12px 0; }
+    .warn-line {
+      margin-top: 16px; padding: 12px; border-radius: 10px;
+      background: rgba(217,119,6,.1); color: #92400e; font-size: 18px; display: none;
+    }
+    .warn-line.show { display: block; }
+    .dock {
+      flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8;
+    }
+    .btn-dock {
+      padding: 12px 22px; border-radius: 10px; background: var(--accent); border: 1px solid #1d4ed8;
+      color: #fff; min-height: 52px; font-size: 20px; font-family: inherit; cursor: pointer;
+      text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-back { background: #2d333b; border-color: #3d4450; color: #e6e9ef; }
+  </style>
+</head>
+<body class="hmi-proto-screen" data-nav-current="hmi-find-scr-05-offline-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js"></script>
+    <article id="stage" role="application" aria-label="SCR-FIND-05 弱网 1920×1080">
+      <header class="status-bar">
+        <span>16:44 · 5月20日</span>
+        <span class="sess-pill" role="status">离线</span>
+        <span>地图加载失败 · 示例</span>
+      </header>
+      <main class="main-wrap">
+        <section class="offline-card">
+          <div class="snapshot" role="img" aria-label="离线快照占位"></div>
+          <h1>离线找车信息</h1>
+          <p class="meta">同步于 16:39 · 恢复网络后将更新轨迹与高清图</p>
+          <p class="spot">B2 · A 区 · 车位 128</p>
+          <p class="meta">记录点锚点仍有效 · 可场内步行参考（示例）</p>
+          <p class="warn-line show" id="locWarn" role="alert">
+            连续 3 次定位无效 · 定位可能不准，建议重新采集（示例）
+          </p>
+        </section>
+      </main>
+      <footer class="dock">
+        <a class="btn-dock btn-back" href="hmi-find-scr-02-hub-prototype.html">返回</a>
+        <button type="button" class="btn-dock" id="btnRefresh">刷新</button>
+      </footer>
+    </article>
+  </div>
+  <script>
+    document.getElementById('btnRefresh').addEventListener('click', function () {
+      alert('示例：恢复网络后拉取车云会话并刷新地图。');
+    });
+  </script>
+</body>
+</html>

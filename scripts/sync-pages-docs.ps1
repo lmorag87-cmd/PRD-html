@@ -20,6 +20,8 @@ function Sync-Project($slug) {
       if ($sub -eq "hmi") {
         Copy-Item (Join-Path $from "hmi-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue
         Copy-Item (Join-Path $from "hmi-pay-nav.js") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "hmi-find-proto-common.css") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "hmi-find-nav.js") $to -Force -ErrorAction SilentlyContinue
       }
       if ($sub -eq "mobile") {
         Copy-Item (Join-Path $from "mobile-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue

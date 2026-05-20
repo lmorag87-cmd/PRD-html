@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UC-FIND-1 · 停车场找车 · 车机原型索引</title>
+  <style>
+    .proto-index-wrap h1 { font-size: 28px; margin: 0 0 8px; }
+    .proto-index-wrap .sub { color: #8b95a8; font-size: 16px; margin-bottom: 24px; line-height: 1.5; }
+    .proto-index-wrap ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .proto-index-wrap a {
+      display: block; padding: 14px 18px; border-radius: 10px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      color: #dbeafe; text-decoration: none; font-size: 18px;
+    }
+    .proto-index-wrap a:hover { border-color: #3b82f6; }
+    .proto-index-wrap a strong { color: #fff; }
+    .proto-index-wrap .mobile { margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.1); }
+  </style>
+</head>
+<body class="hmi-proto-index">
+  <div class="proto-index-wrap">
+    <h1>停车场找车 · 车机 IVI 原型</h1>
+    <p class="sub">UC-FIND-1 / PRD §7.5 · 1920×1080 · 示例数据 · 架构见 <code>prototypes/parking-findcar-uc75/architecture.md</code></p>
+    <ul>
+      <li><a href="hmi-find-scr-00-recording-prototype.html"><strong>SCR-FIND-00</strong> 车位记录窗口（采集中）</a></li>
+      <li><a href="hmi-find-scr-01-confirm-prototype.html"><strong>SCR-FIND-01</strong> 采集结果 / 确认 Hub</a></li>
+      <li><a href="hmi-find-scr-02-hub-prototype.html"><strong>SCR-FIND-02</strong> 找车主页（核心）</a></li>
+      <li><a href="hmi-find-scr-03-path-replay-prototype.html"><strong>SCR-FIND-03</strong> 入库轨迹回放</a></li>
+      <li><a href="hmi-find-scr-04-media-prototype.html"><strong>SCR-FIND-04</strong> 素材详情</a></li>
+      <li><a href="hmi-find-scr-05-offline-prototype.html"><strong>SCR-FIND-05</strong> 弱网 / 离线</a></li>
+    </ul>
+    <div class="mobile">
+      <h2 style="font-size:20px;margin:0 0 12px">手机 App 原型（390×844）</h2>
+      <ul>
+        <li><a href="../mobile/mobile-uc-find-1-push-prototype.html"><strong>PG-FIND-00</strong> 推送落地</a></li>
+        <li><a href="../mobile/mobile-uc-find-1-session-prototype.html"><strong>PG-FIND-01</strong> 停车会话卡</a></li>
+        <li><a href="../mobile/mobile-uc-find-1-nav-prototype.html"><strong>PG-FIND-02</strong> 导航找车</a></li>
+        <li><a href="../mobile/mobile-uc-find-1-offline-prototype.html"><strong>PG-FIND-03</strong> 弱网 / 分享</a></li>
+        <li><a href="../mobile/mobile-uc-find-1-supplement-prototype.html"><strong>PG-FIND-04</strong> 补拍补录</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

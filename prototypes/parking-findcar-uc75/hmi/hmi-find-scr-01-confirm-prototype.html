@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-FIND-01 · 确认车位</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
+      --frame-border: rgba(255,255,255,.12); --bar-bg: #1c2128;
+      --main-bg: #eceff4; --card-bg: #fff; --text: #1a1d24; --muted: #5c6570;
+      --accent: #2563eb; --ok: #059669; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); font-size: 18px; }
+    #stage {
+      display: flex; flex-direction: column; border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14; overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border);
+    }
+    .sess-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px;
+      background: rgba(217,119,6,.2); color: #fcd34d; font-size: 15px;
+    }
+    .main-wrap { flex: 1; min-height: 0; background: var(--main-bg); color: var(--text); padding: 24px 36px; overflow: auto; }
+    .main-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .main-head h1 { margin: 0; font-size: 32px; font-weight: 650; }
+    .sync-badge {
+      font-size: 17px; padding: 8px 14px; border-radius: 999px; background: #fff;
+      border: 1px solid rgba(5,150,105,.35); color: var(--ok);
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 420px; gap: 24px; }
+    .thumb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .thumb {
+      aspect-ratio: 1; border-radius: 10px; border: 1px solid #d8dee9;
+      background: linear-gradient(145deg, #dbeafe, #cbd5e1);
+      display: flex; align-items: flex-end; padding: 10px; font-weight: 600; font-size: 17px;
+    }
+    .thumb.ch { background: linear-gradient(160deg, #334155, #64748b); color: #e2e8f0; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab {
+      min-height: 48px; padding: 0 18px; border-radius: 10px; border: 1px solid #d8dee9;
+      background: #fff; font-size: 18px; font-family: inherit; cursor: pointer;
+    }
+    .tab.on { background: rgba(37,99,235,.1); border-color: rgba(37,99,235,.4); color: #1d4ed8; font-weight: 600; }
+    .card {
+      background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9;
+      padding: 24px 28px;
+    }
+    .card h2 { margin: 0 0 16px; font-size: 26px; }
+    .kv { display: grid; grid-template-columns: 100px 1fr; gap: 10px 16px; font-size: 19px; }
+    .kv dt { color: var(--muted); }
+    .kv dd { margin: 0; font-weight: 500; }
+    .field {
+      margin-top: 16px; width: 100%; min-height: 52px; padding: 12px 14px; border-radius: 10px;
+      border: 1px solid #d8dee9; font-size: 22px; font-family: inherit;
+    }
+    .dock {
+      flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8;
+    }
+    .dock-actions { display: flex; gap: 12px; }
+    .btn-dock {
+      padding: 12px 22px; border-radius: 10px; background: #2d333b; color: #e6e9ef;
+      border: 1px solid #3d4450; cursor: pointer; min-height: 52px; font-size: 20px; font-family: inherit;
+      text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+  </style>
+</head>
+<body class="hmi-proto-screen" data-nav-current="hmi-find-scr-01-confirm-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js"></script>
+    <article id="stage" role="application" aria-label="SCR-FIND-01 确认车位 1920×1080">
+      <header class="status-bar">
+        <span>16:39 · 5月20日</span>
+        <span class="sess-pill" role="status">待确认</span>
+        <span>同步车云 · 示例</span>
+      </header>
+      <main class="main-wrap">
+        <div class="main-head">
+          <div>
+            <h1>确认车位记录</h1>
+            <p style="margin:8px 0 0;color:var(--muted)">OCR 预填 · 用户可改错字（示例）</p>
+          </div>
+          <span class="sync-badge" role="status">上传中…</span>
+        </div>
+        <div class="grid-2">
+          <section>
+            <div class="tabs" role="tablist">
+              <button type="button" class="tab on" id="tabS">环视</button>
+              <button type="button" class="tab" id="tabC">底盘</button>
+            </div>
+            <div class="thumb-grid" id="gridS">
+              <div class="thumb">前</div><div class="thumb">后</div><div class="thumb">左</div>
+              <div class="thumb">右</div><div class="thumb ch">抓拍</div><div class="thumb ch">透视</div>
+            </div>
+            <div class="thumb-grid" id="gridC" hidden>
+              <div class="thumb ch" style="grid-column:span 3;aspect-ratio:3/1">底盘区域 · 示例</div>
+            </div>
+          </section>
+          <section class="card">
+            <h2>车位信息</h2>
+            <dl class="kv">
+              <dt>楼层</dt><dd>B2</dd>
+              <dt>区域</dt><dd>A 区</dd>
+              <dt>时间</dt><dd>2026-05-20 16:39</dd>
+            </dl>
+            <label for="spotNo" style="display:block;margin-top:12px;font-size:17px;color:var(--muted)">车位号</label>
+            <input id="spotNo" class="field" type="text" value="128" aria-label="车位号">
+            <p style="margin:14px 0 0;font-size:17px;color:var(--muted)">重新记录不会删除已入库素材（示例）</p>
+          </section>
+        </div>
+      </main>
+      <footer class="dock">
+        <span>仅本车账号可见 · 图像用于找车（示例）</span>
+        <div class="dock-actions">
+          <button type="button" class="btn-dock" id="btnRerecord">重新记录</button>
+          <a class="btn-dock primary" href="hmi-find-scr-02-hub-prototype.html">确认并保存</a>
+        </div>
+      </footer>
+    </article>
+  </div>
+  <script>
+    (function () {
+      var tabS = document.getElementById('tabS');
+      var tabC = document.getElementById('tabC');
+      var gridS = document.getElementById('gridS');
+      var gridC = document.getElementById('gridC');
+      function show(s) {
+        tabS.classList.toggle('on', s);
+        tabC.classList.toggle('on', !s);
+        gridS.hidden = !s;
+        gridC.hidden = s;
+      }
+      tabS.addEventListener('click', function () { show(true); });
+      tabC.addEventListener('click', function () { show(false); });
+      document.getElementById('btnRerecord').addEventListener('click', function () {
+        if (confirm('示例：重新记录将回到采集窗口，不会以轨迹末点覆盖记录点。')) {
+          location.href = 'hmi-find-scr-00-recording-prototype.html';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
