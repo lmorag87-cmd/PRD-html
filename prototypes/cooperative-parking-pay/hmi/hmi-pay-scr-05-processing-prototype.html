@@ -5,40 +5,99 @@
   <link rel="stylesheet" href="hmi-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SCR-PAY-05 · 支付处理中</title>
+  <!-- 1920×1080 #stage；proto-nav 在舞台外 -->
   <style>
-    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; }
-    html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
-    body { display: flex; align-items: center; justify-content: center;  min-height: 100vh; }
-#stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
-    .overlay { position: absolute; inset: 48px 0 80px; background: rgba(236,239,244,.92); display: flex; align-items: center; justify-content: center; z-index: 5; }
-    .panel { background: #fff; border-radius: 16px; padding: 48px 56px; text-align: center; width: 560px; border: 1px solid #d8dee9; color: #1a1d24; }
-    .spinner { width: 64px; height: 64px; margin: 0 auto 24px; border: 5px solid #e5e7eb; border-top-color: var(--accent); border-radius: 50%; animation: spin .9s linear infinite; }
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif;
+      --accent: #2563eb;
+      --topbar-h: 48px;
+      --dock-h: 80px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      background: #0b0f14;
+      overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h);
+      height: var(--topbar-h);
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      background: #1c2128;
+      color: #9aa3b2;
+      font-size: 16px;
+    }
+    .main-wrap {
+      flex: 1;
+      min-height: 0;
+      background: rgba(236,239,244,.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 16px;
+      padding: 48px 56px;
+      text-align: center;
+      width: 560px;
+      border: 1px solid #d8dee9;
+      color: #1a1d24;
+    }
+    .spinner {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 24px;
+      border: 5px solid #e5e7eb;
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .9s linear infinite;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
-    h1 { margin: 0 0 12px; font-size: 30px; }
-    p { font-size: 20px; color: #5c6570; margin: 0; }
-    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: #1c2128; opacity: .6; pointer-events: none; }
+    .panel h1 { margin: 0 0 12px; font-size: 30px; }
+    .panel p { font-size: 20px; color: #5c6570; margin: 0; }
+    .dock {
+      flex: 0 0 var(--dock-h);
+      height: var(--dock-h);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      background: #1c2128;
+      color: #8b95a8;
+      font-size: 17px;
+      opacity: .85;
+    }
   </style>
 </head>
 <body class="hmi-proto-screen" data-nav-current="hmi-pay-scr-05-processing-prototype.html">
-<div class="demo-wrap">
-  <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
-  <script src="hmi-pay-nav.js"></script>
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+    <script src="hmi-pay-nav.js"></script>
 
-  <article id="stage" aria-label="SCR-PAY-05 支付处理中 F-09">
-    <header style="position:absolute;top:0;left:0;right:0;height:48px;background:#1c2128;color:#9aa3b2;display:flex;align-items:center;padding:0 26px;font-size:16px"><span>支付处理中</span></header>
-    <section class="overlay" role="alertdialog" aria-modal="true" aria-labelledby="pay-title">
-      <section class="panel">
-        <span class="spinner" aria-hidden="true"></span>
-        <h1 id="pay-title">支付处理中</h1>
-        <p>请勿重复操作 · 幂等请求 ID（示例）</p>
-        <p style="margin-top:16px;font-size:18px">通道：无感支付</p>
-      </section>
-    </section>
-    <footer class="dock"></footer>
-  </article>
+    <article id="stage" aria-label="SCR-PAY-05 支付处理中 F-09">
+      <header class="status-bar"><span>支付处理中</span></header>
+      <main class="main-wrap">
+        <section class="panel" role="alertdialog" aria-modal="true" aria-labelledby="pay-title">
+          <span class="spinner" aria-hidden="true"></span>
+          <h1 id="pay-title">支付处理中</h1>
+          <p>请勿重复操作 · 幂等请求 ID（示例）</p>
+          <p style="margin-top:16px;font-size:18px">通道：无感支付</p>
+        </section>
+      </main>
+      <footer class="dock"><span>处理中，请勿关闭页面（示例）</span></footer>
+    </article>
+  </div>
   <script>
-    setTimeout(function () { location.href = 'hmi-pay-scr-07-success-prototype.html'; }, 3500);
+    setTimeout(function () { location.href = 'hmi-pay-scr-07-success-prototype.html'; }, 8000);
   </script>
-</div>
 </body>
 </html>
