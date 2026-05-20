@@ -26,6 +26,9 @@ function Sync-Project($slug) {
       if ($sub -eq "mobile") {
         Copy-Item (Join-Path $from "mobile-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue
         Copy-Item (Join-Path $from "mobile-pay-nav.js") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "mobile-find-proto-common.css") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "mobile-find-nav.js") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "mobile-find-index-prototype.html") $to -Force -ErrorAction SilentlyContinue
       }
     }
   }
