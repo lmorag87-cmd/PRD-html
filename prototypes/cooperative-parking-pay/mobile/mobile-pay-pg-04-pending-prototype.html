@@ -2,42 +2,67 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="mobile-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PG-PAY-04 · 悬挂/弱网</title>
   <style>
-    :root { --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px; --warn: #d97706; --app-bg: #f5f6f8; --app-surface: #fff; }
-    html, body { margin: 0; background: #0d1117; font-family: var(--font-app); }
-    body { display: flex; align-items: center; justify-content: center; padding: 44px 24px; min-height: 100vh; }
-    .screen-nav { position: fixed; top: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; font-size: 12px; z-index: 100; }
-    .screen-nav a { padding: 6px 8px; border-radius: 8px; background: rgba(0,0,0,.55); color: #e2e8f0; text-decoration: none; }
-    .screen-nav a.on { background: #2563eb; }
-    #phone-stage { width: 390px; height: 844px; border-radius: 28px; background: var(--app-bg); box-shadow: 0 24px 64px rgba(0,0,0,.5); display: flex; flex-direction: column; overflow: hidden; }
-    .app-header { padding: var(--safe-top) var(--safe-inline) 12px; background: var(--app-surface); border-bottom: 1px solid #e5e7eb; }
-    .app-header h1 { margin: 0; font-size: 24px; }
-    .app-main { flex: 1; padding: 12px var(--safe-inline); }
-    .warn { padding: 12px; border-radius: 10px; background: rgba(217,119,6,.1); border: 1px solid rgba(217,119,6,.35); font-size: 14px; color: #92400e; margin-bottom: 12px; }
-    .card { background: var(--app-surface); border-radius: 14px; padding: 16px; border: 1px solid #e5e7eb; font-size: 15px; color: #6b7280; }
-    .app-footer { padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom)); background: var(--app-surface); border-top: 1px solid #e5e7eb; }
-    .btn { width: 100%; min-height: 48px; border-radius: 12px; background: #2563eb; color: #fff; border: none; font-size: 16px; font-family: inherit; }
+    :root {
+      --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif;
+      --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
+      --warn: #d97706; --app-bg: #f5f6f8; --app-surface: #fff;
+      --text: #1a1d24; --muted: #6b7280; --accent: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: var(--font-app); color: var(--text); }
+    #phone-stage {
+      display: flex; flex-direction: column; overflow: hidden;
+      border-radius: 28px; background: var(--app-bg);
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+    }
+    .app-header {
+      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 12px;
+      background: var(--app-surface); border-bottom: 1px solid #e5e7eb;
+    }
+    .app-header h1 { margin: 0; font-size: 24px; font-weight: 650; line-height: 1.25; }
+    .app-main { flex: 1; min-height: 0; padding: 12px var(--safe-inline); overflow-y: auto; }
+    .warn {
+      padding: 12px; border-radius: 10px; background: rgba(217,119,6,.1);
+      border: 1px solid rgba(217,119,6,.35); font-size: 14px; color: #92400e;
+      margin: 0 0 12px; line-height: 1.5;
+    }
+    .card {
+      background: var(--app-surface); border-radius: 14px; padding: 16px;
+      border: 1px solid #e5e7eb; font-size: 15px; color: var(--muted); line-height: 1.55;
+    }
+    .card p { margin: 0; }
+    .app-footer {
+      flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
+      background: var(--app-surface); border-top: 1px solid #e5e7eb;
+    }
+    .btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 48px; border-radius: 12px;
+      background: var(--accent); color: #fff; border: none;
+      font-size: 16px; font-weight: 600; font-family: inherit;
+    }
   </style>
 </head>
-<body>
-  <nav class="screen-nav">
-    <a href="mobile-pay-pg-01-session-prototype.html">01</a>
-    <a href="mobile-pay-pg-04-pending-prototype.html" class="on">04</a>
-    <a href="../hmi/hmi-pay-scr-09-pending-prototype.html">车机 09</a>
-  </nav>
-  <article id="phone-stage">
-    <header class="app-header"><h1>状态确认</h1></header>
-    <main class="app-main">
-      <p class="warn">确认中：请勿在车机重复支付（F-10 镜像）</p>
-      <section class="card">
-        <p style="margin:0"><strong>弱网快照</strong><br>上次同步 16:38<br>¥24.50 · 待支付（示例 F-04）</p>
-      </section>
-    </main>
-    <footer class="app-footer">
-      <button type="button" class="btn">刷新状态</button>
-    </footer>
-  </article>
+<body class="app-proto-screen" data-nav-current="mobile-pay-pg-04-pending-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+    <script src="mobile-pay-nav.js"></script>
+    <article id="phone-stage" aria-label="PG-PAY-04 悬挂/弱网">
+      <header class="app-header"><h1>状态确认</h1></header>
+      <main class="app-main">
+        <p class="warn">确认中：请勿在车机重复支付（F-10 镜像）</p>
+        <section class="card">
+          <p><strong>弱网快照</strong><br>上次同步 16:38<br>¥24.50 · 待支付（示例 F-04）</p>
+        </section>
+      </main>
+      <footer class="app-footer">
+        <button type="button" class="btn">刷新状态</button>
+      </footer>
+    </article>
+  </div>
 </body>
 </html>

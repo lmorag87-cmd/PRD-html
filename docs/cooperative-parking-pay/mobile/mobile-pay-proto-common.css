@@ -1,0 +1,96 @@
+/* 合作停车场支付 · 手机 App 原型：顶栏索引 + 舞台外布局 */
+:root {
+  --proto-phone-w: 390px;
+  --proto-phone-h: 844px;
+  --proto-page-pad: 12px;
+  --proto-nav-gap: 10px;
+}
+
+html {
+  margin: 0;
+  min-height: 100%;
+}
+
+body.app-proto-screen,
+body.app-proto-index {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--proto-page-pad) var(--proto-page-pad) 32px;
+  background: #0d1117;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.demo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--proto-nav-gap);
+  width: var(--proto-phone-w);
+  max-width: min(var(--proto-phone-w), calc(100vw - var(--proto-page-pad) * 2));
+  flex-shrink: 0;
+}
+
+body.app-proto-screen #phone-stage {
+  width: var(--proto-phone-w);
+  height: var(--proto-phone-h);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.proto-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 10px 12px;
+  width: 100%;
+  background: rgba(13, 17, 23, 0.96);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 15px;
+  font-family: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  box-sizing: border-box;
+  position: sticky;
+  top: var(--proto-page-pad);
+  z-index: 1000;
+}
+
+.proto-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+  line-height: 1.35;
+  font-size: 15px;
+  min-height: 40px;
+}
+
+.proto-nav a:hover {
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.proto-nav a.on {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #fff;
+  font-weight: 600;
+}
+
+.proto-index-wrap {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  color: #e6e9ef;
+  font-family: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif;
+}

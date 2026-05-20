@@ -2,24 +2,35 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="mobile-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合作停车场支付 · App 原型索引</title>
   <style>
-    :root { --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; }
-    body { margin: 0; padding: 40px 24px; background: #0d1117; font-family: var(--font-app); color: #e6e9ef; max-width: 520px; margin-inline: auto; }
-    h1 { font-size: 24px; }
-    .sub { color: #9aa3b2; font-size: 15px; line-height: 1.6; }
-    a { display: block; padding: 14px; margin: 8px 0; border-radius: 12px; background: #161b22; color: #e6e9ef; text-decoration: none; border: 1px solid rgba(255,255,255,.1); min-height: 48px; }
-    a:hover { border-color: #2563eb; }
+    .proto-index-wrap h1 { font-size: 24px; margin: 0 0 8px; }
+    .proto-index-wrap .sub { color: #9aa3b2; font-size: 15px; line-height: 1.6; margin: 0 0 16px; }
+    .proto-index-wrap a.item {
+      display: flex; align-items: center;
+      padding: 14px; margin: 8px 0; border-radius: 12px;
+      background: #161b22; color: #e6e9ef; text-decoration: none;
+      border: 1px solid rgba(255,255,255,.1); min-height: 48px; font-size: 17px;
+    }
+    .proto-index-wrap a.item:hover { border-color: #2563eb; }
+    .proto-index-wrap a.inline { display: inline-flex; padding: 8px 12px; margin-top: 16px; }
   </style>
 </head>
-<body>
-  <h1>停车支付 · 手机 App（只读镜像）</h1>
-  <p class="sub">390×844 · 主支付在车机完成 · 架构 hmi-cooperative-parking-pay-architecture.md §4b</p>
-  <a href="mobile-pay-pg-01-session-prototype.html">PG-PAY-01 停车会话卡</a>
-  <a href="mobile-pay-pg-02-result-prototype.html">PG-PAY-02 支付结果</a>
-  <a href="mobile-pay-pg-03-exit-prototype.html">PG-PAY-03 离场引导</a>
-  <a href="mobile-pay-pg-04-pending-prototype.html">PG-PAY-04 悬挂/弱网</a>
-  <p class="sub" style="margin-top:24px"><a href="../hmi/hmi-pay-index-prototype.html" style="display:inline;padding:8px 12px">车机 IVI 原型索引</a></p>
+<body class="app-proto-index" data-nav-current="mobile-pay-index-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+    <script src="mobile-pay-nav.js"></script>
+    <div class="proto-index-wrap">
+      <h1>停车支付 · 手机 App（只读镜像）</h1>
+      <p class="sub">390×844 · 主支付在车机完成 · 架构 architecture.md §4b</p>
+      <a class="item" href="mobile-pay-pg-01-session-prototype.html">PG-PAY-01 停车会话卡</a>
+      <a class="item" href="mobile-pay-pg-02-result-prototype.html">PG-PAY-02 支付结果</a>
+      <a class="item" href="mobile-pay-pg-03-exit-prototype.html">PG-PAY-03 离场引导</a>
+      <a class="item" href="mobile-pay-pg-04-pending-prototype.html">PG-PAY-04 悬挂 / 弱网</a>
+      <a class="item inline" href="../hmi/hmi-pay-index-prototype.html">车机 IVI 原型索引</a>
+    </div>
+  </div>
 </body>
 </html>

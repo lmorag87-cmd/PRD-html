@@ -21,6 +21,10 @@ function Sync-Project($slug) {
         Copy-Item (Join-Path $from "hmi-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue
         Copy-Item (Join-Path $from "hmi-pay-nav.js") $to -Force -ErrorAction SilentlyContinue
       }
+      if ($sub -eq "mobile") {
+        Copy-Item (Join-Path $from "mobile-pay-proto-common.css") $to -Force -ErrorAction SilentlyContinue
+        Copy-Item (Join-Path $from "mobile-pay-nav.js") $to -Force -ErrorAction SilentlyContinue
+      }
     }
   }
   $idx = Join-Path $src "index.html"
