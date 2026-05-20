@@ -36,6 +36,6 @@ prototypes/
 
 ## 车机原型避坑（必读）
 
-编辑 `*-prototype.html` 前请看 Cursor 规则：**`.cursor/rules/hmi-prototype-html.mdc`**。
+完整清单见 **[HMI-PITFALLS.md](./HMI-PITFALLS.md)**；Cursor 规则：`.cursor/rules/hmi-prototype-html.mdc`。
 
 摘要：顶栏索引用共用 `hmi-pay-nav.js`（13 项全量）、索引在 `#stage` 外；布局只信 `hmi-pay-proto-common.css`，禁止各页内联 `body { align-items:center }`；发布前 sync css/js 并抽查 00/01/05/08。
