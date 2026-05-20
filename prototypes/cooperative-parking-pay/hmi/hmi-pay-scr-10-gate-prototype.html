@@ -6,38 +6,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SCR-PAY-10 · 闸机不一致</title>
   <style>
-    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; --danger: #dc2626; }
-    html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
-#stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #1a0a0a; overflow: hidden; }
-    .fullscreen { position: absolute; inset: 48px 0 80px; background: linear-gradient(180deg,#2a1515,#1a0a0a); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px; text-align: center; color: #fecaca; }
-    .icon { font-size: 64px; margin-bottom: 20px; }
-    h1 { margin: 0 0 16px; font-size: 36px; color: #fca5a5; }
-    p { font-size: 22px; max-width: 720px; line-height: 1.6; margin: 0 0 32px; color: #fda4af; }
-    .cta { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn { padding: 16px 28px; border-radius: 10px; font-size: 20px; min-height: 52px; border: 1px solid #7f1d1d; background: #450a0a; color: #fecaca; cursor: pointer; font-family: inherit; text-decoration: none; }
-    .btn.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
-    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: #1c2128; color: #8b95a8; display: flex; align-items: center; padding: 0 28px; font-size: 17px; }
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif;
+      --accent: #2563eb;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --topbar-h: 48px;
+      --dock-h: 80px;
+      --bar-bg: #1c2128;
+      --main-bg: #eceff4;
+      --text: #1a1d24;
+      --muted: #5c6570;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      background: #0b0f14;
+      overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h);
+      height: var(--topbar-h);
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      background: var(--bar-bg);
+      color: #f87171;
+      font-size: 16px;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .main-wrap {
+      flex: 1;
+      min-height: 0;
+      background: var(--main-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 48px;
+    }
+    .card {
+      width: 880px;
+      max-width: 100%;
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #d8dee9;
+      border-left: 4px solid var(--warn);
+      box-shadow: 0 8px 28px rgba(15,23,42,.06);
+      padding: 40px 48px;
+      text-align: center;
+      color: var(--text);
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: rgba(217,119,6,.12);
+      color: var(--warn);
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .card h1 {
+      margin: 0 0 16px;
+      font-size: 34px;
+      font-weight: 650;
+      color: var(--danger);
+      line-height: 1.25;
+    }
+    .card .desc {
+      margin: 0 0 32px;
+      font-size: 22px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 28px;
+      border-radius: 10px;
+      font-size: 20px;
+      min-height: 52px;
+      line-height: 1.25;
+      border: 1px solid #c5cdd8;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn.primary {
+      background: var(--accent);
+      border-color: #1d4ed8;
+      color: #fff;
+    }
+    .dock {
+      flex: 0 0 var(--dock-h);
+      height: var(--dock-h);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      background: var(--bar-bg);
+      color: #8b95a8;
+      font-size: 17px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
   </style>
 </head>
 <body class="hmi-proto-screen" data-nav-current="hmi-pay-scr-10-gate-prototype.html">
-<div class="demo-wrap">
-  <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
-  <script src="hmi-pay-nav.js"></script>
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+    <script src="hmi-pay-nav.js"></script>
 
-  <article id="stage" aria-label="SCR-PAY-10 闸机不一致 F-12">
-    <header style="position:absolute;top:0;left:0;right:0;height:48px;background:#1c2128;color:#f87171;display:flex;align-items:center;padding:0 26px;font-size:16px"><span>出口未确认缴费</span></header>
-    <main class="fullscreen" role="alert">
-      <span class="icon" aria-hidden="true">⛔</span>
-      <h1>出口未确认缴费</h1>
-      <p>车机显示已支付，闸机校验<strong>未通过</strong>。请以闸机结果为准，请勿驶离。可补付或联系人工（示例 F-10/F-12）。</p>
-      <span class="cta">
-        <a class="btn primary" href="hmi-pay-scr-06-qr-prototype.html">补付 / 扫码</a>
-        <button type="button" class="btn">联系人工</button>
-        <a class="btn" href="hmi-pay-scr-09-pending-prototype.html">重新查询</a>
-      </span>
-    </main>
-    <footer class="dock"><span>无「可离场」主按钮（PRD 约束）</span></footer>
-  </article>
-</div>
+    <article id="stage" aria-label="SCR-PAY-10 闸机不一致 F-10 F-12">
+      <header class="status-bar"><span>出口未确认缴费</span></header>
+      <main class="main-wrap" role="alert">
+        <section class="card">
+          <span class="icon" aria-hidden="true">!</span>
+          <h1>出口未确认缴费</h1>
+          <p class="desc">车机显示已支付，闸机校验<strong>未通过</strong>。请以闸机结果为准，请勿驶离。可补付或联系人工（示例 F-10 / F-12）。</p>
+          <div class="cta">
+            <a class="btn primary" href="hmi-pay-scr-06-qr-prototype.html">补付 / 扫码</a>
+            <button type="button" class="btn">联系人工</button>
+            <a class="btn" href="hmi-pay-scr-09-pending-prototype.html">重新查询</a>
+          </div>
+        </section>
+      </main>
+      <footer class="dock"><span>无「可离场」主按钮（PRD 约束 · 示例）</span></footer>
+    </article>
+  </div>
 </body>
 </html>
