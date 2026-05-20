@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>合作停车场支付 · IVI 原型索引</title>
+  <!-- 索引页；各屏为 1920×1080 #stage；架构见 hmi-cooperative-parking-pay-architecture.md -->
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); color: #e6e9ef; }
+    body { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+    h1 { font-size: 28px; margin: 0 0 8px; }
+    .sub { color: #9aa3b2; font-size: 16px; margin-bottom: 32px; line-height: 1.6; }
+    .sub a { color: #60a5fa; }
+    section { margin-bottom: 28px; }
+    h2 { font-size: 20px; color: #b8c0cc; margin: 0 0 12px; font-weight: 600; }
+    ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    li a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px; border-radius: 12px; background: #161b22;
+      border: 1px solid rgba(255,255,255,.1); color: #e6e9ef; text-decoration: none;
+      font-size: 17px; min-height: 52px;
+    }
+    li a:hover { border-color: #2563eb; background: rgba(37,99,235,.12); }
+    li a span { color: #6b7280; font-size: 14px; }
+    .tag { font-size: 13px; padding: 4px 8px; border-radius: 6px; background: #2d333b; color: #9aa3b2; }
+  </style>
+</head>
+<body>
+  <h1>合作停车场支付 · 车机 IVI 原型</h1>
+  <p class="sub">
+    1920×1080 固定舞台 · 示例数据 · 架构
+    <a href="hmi-cooperative-parking-pay-architecture.md">hmi-cooperative-parking-pay-architecture.md</a>
+    · PRD F-01～F-12
+  </p>
+
+  <section>
+    <h2>M-01 识别与触发</h2>
+    <ul>
+      <li><a href="hmi-pay-scr-00-recognizing-prototype.html">SCR-PAY-00 识别中 <span>F-01</span></a></li>
+      <li><a href="hmi-pay-scr-01-fail-prototype.html">SCR-PAY-01-FAIL 识别失败 <span>F-02</span></a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>M-02～M-04 卡片 · 计费 · 通道</h2>
+    <ul>
+      <li><a href="hmi-pay-scr-01-card-prototype.html">SCR-PAY-01 停车卡片主页 <span>F-03 F-05 F-07</span></a></li>
+      <li><a href="hmi-pay-scr-02-billing-prototype.html">SCR-PAY-02 计费说明 <span>F-05 F-04</span></a></li>
+      <li><a href="hmi-pay-scr-06-qr-prototype.html">SCR-PAY-06 扫码兜底 <span>F-07 F-09 UC-02</span></a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>M-05 支付执行</h2>
+    <ul>
+      <li><a href="hmi-pay-scr-05-processing-prototype.html">SCR-PAY-05 支付处理中 <span>F-09</span></a></li>
+      <li><a href="hmi-pay-scr-07-success-prototype.html">SCR-PAY-07 支付成功 <span>F-09</span></a></li>
+      <li><a href="hmi-pay-scr-08-fail-prototype.html">SCR-PAY-08 支付失败 <span>F-08 F-09</span></a></li>
+      <li><a href="hmi-pay-scr-09-pending-prototype.html">SCR-PAY-09 悬挂补单 <span>F-10 UC-03</span></a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>M-06 离场与同步</h2>
+    <ul>
+      <li><a href="hmi-pay-scr-10-gate-prototype.html">SCR-PAY-10 闸机不一致 <span>F-10 F-12</span></a></li>
+      <li><a href="hmi-pay-scr-11-exit-prototype.html">SCR-PAY-11 离场引导 <span>F-11</span></a></li>
+      <li><a href="hmi-pay-scr-12-ended-prototype.html">SCR-PAY-12 会话结束 <span>F-12</span></a></li>
+    </ul>
+  </section>
+
+  <p class="sub" style="margin-top:32px">手机 App 镜像（只读）见 <a href="../mobile/mobile-pay-index-prototype.html">mobile/mobile-pay-index-prototype.html</a></p>
+</body>
+</html>

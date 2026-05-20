@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>合作停车场支付 · 交互原型</title>
+  <style>
+    :root { --font: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif; }
+    body { margin: 0; min-height: 100vh; font-family: var(--font); background: #0d1117; color: #e6e9ef; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    main { max-width: 520px; width: 100%; }
+    h1 { font-size: 26px; margin: 0 0 8px; }
+    p { color: #9aa3b2; line-height: 1.6; font-size: 15px; }
+    a.card {
+      display: block; margin-top: 16px; padding: 20px 22px; border-radius: 14px;
+      background: #161b22; border: 1px solid rgba(255,255,255,.12); color: #e6e9ef;
+      text-decoration: none; font-size: 18px; min-height: 52px;
+    }
+    a.card:hover { border-color: #2563eb; background: rgba(37,99,235,.12); }
+    a.card span { display: block; font-size: 14px; color: #6b7280; margin-top: 6px; }
+    .back { display: inline-block; margin-bottom: 20px; color: #60a5fa; font-size: 14px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="../">← 全部 PRD 原型</a>
+    <h1>合作停车场支付</h1>
+    <p>入场识别 · 停车卡片 · 多通道支付 · 离场引导（示例数据）</p>
+    <a class="card" href="hmi/hmi-pay-index-prototype.html">
+      车机 IVI（1920×1080）
+      <span>12 屏 · SCR-PAY-00～12</span>
+    </a>
+    <a class="card" href="mobile/mobile-pay-index-prototype.html">
+      手机 App（390×844）
+      <span>只读镜像 · PG-PAY-01～04</span>
+    </a>
+  </main>
+</body>
+</html>

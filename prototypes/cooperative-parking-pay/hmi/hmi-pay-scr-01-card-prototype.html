@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-01 · 停车卡片主页</title>
+  <!-- 1920×1080 #stage；F-03/F-05/F-07；示例数据。架构 hmi-cooperative-parking-pay-architecture.md -->
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px; --nav-w: 280px;
+      --page-bg: #0d1117; --frame-border: rgba(255,255,255,.12);
+      --bar-bg: #1c2128; --nav-bg: #161b22; --main-bg: #eceff4; --card-bg: #fff;
+      --text: #1a1d24; --muted: #5c6570; --accent: #2563eb; --accent-soft: rgba(37,99,235,.12);
+      --ok: #059669; --warn: #d97706; --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--page-bg); font-family: var(--font-hmi); }
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 44px; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); border-bottom: 1px solid rgba(255,255,255,.1); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a:hover, .proto-nav a.on { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; overflow: hidden; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border); background: #0b0f14; }
+    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px); display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border); }
+    .sess-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; background: rgba(5,150,105,.2); color: #6ee7b7; font-size: 15px; }
+    .sess-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+    .shell { position: absolute; top: var(--topbar-h); left: 0; right: 0; bottom: var(--dock-h); display: flex; }
+    .nav { width: var(--nav-w); background: var(--nav-bg); border-right: 1px solid var(--frame-border); padding: 16px 10px; }
+    .nav .brand { font-size: 14px; color: #6b7280; padding: 8px 12px 12px; letter-spacing: .08em; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 10px; font-size: 20px; color: #b8c0cc; text-decoration: none; min-height: 52px; }
+    .nav-item .dot { width: 8px; height: 8px; border-radius: 50%; background: #374151; }
+    .nav-item.active { background: var(--accent-soft); color: #dbeafe; border: 1px solid rgba(37,99,235,.35); }
+    .nav-item.active .dot { background: var(--accent); }
+    .main { flex: 1; background: var(--main-bg); color: var(--text); padding: 24px 32px; overflow: auto; }
+    .banner-offline { padding: 12px 16px; border-radius: 10px; background: rgba(217,119,6,.12); border: 1px solid rgba(217,119,6,.35); font-size: 18px; color: #92400e; margin-bottom: 16px; display: none; }
+    .banner-offline.show { display: block; }
+    .main-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+    .main-head h1 { margin: 0; font-size: 32px; font-weight: 650; }
+    .meta { font-size: 18px; color: var(--muted); margin-top: 8px; }
+    .sync-badge { font-size: 17px; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid #d8dee9; color: var(--muted); }
+    .sync-badge.ok { color: var(--ok); border-color: rgba(5,150,105,.35); background: rgba(5,150,105,.08); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 480px; gap: 22px; }
+    .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9; padding: 24px 28px; box-shadow: 0 8px 28px rgba(15,23,42,.06); }
+    .card h2 { margin: 0 0 16px; font-size: 26px; font-weight: 650; }
+    .kv { display: grid; grid-template-columns: 130px 1fr; gap: 10px 16px; font-size: 19px; }
+    .kv dt { color: var(--muted); margin: 0; }
+    .kv dd { margin: 0; font-weight: 500; }
+    .fee { text-align: center; padding: 12px 0 8px; }
+    .fee .label { font-size: 19px; color: var(--muted); }
+    .fee .num { font-size: 88px; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
+    .fee .currency { font-size: 34px; color: var(--muted); vertical-align: super; }
+    .linklike { margin-top: 8px; font-size: 20px; color: var(--accent); background: none; border: 0; cursor: pointer; text-decoration: underline; font-family: inherit; min-height: 48px; }
+    .ch-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 12px; border: 1px solid #e5e7eb; background: #fafbfc; margin-bottom: 10px; min-height: 72px; }
+    .ch-row .name { font-size: 24px; font-weight: 650; }
+    .ch-row .meta { font-size: 17px; color: var(--muted); margin-top: 4px; }
+    .state { font-size: 17px; padding: 6px 12px; border-radius: 999px; }
+    .state-run { background: rgba(37,99,235,.1); color: #1d4ed8; }
+    .state-idle { background: #eef2f7; color: var(--muted); }
+    .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; margin: 12px 0; overflow: hidden; }
+    .progress-bar i { display: block; height: 100%; width: 45%; background: var(--accent); border-radius: 3px; animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .6; } }
+    .window-note { font-size: 17px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+    .dock { position: absolute; left: 0; right: 0; bottom: 0; height: var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px); display: flex; align-items: center; justify-content: space-between; background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8; font-size: 17px; }
+    .btn-dock { padding: 12px 28px; border-radius: 10px; border: 1px solid #3d4450; background: #2d333b; color: #e6e9ef; font-size: 20px; min-height: 52px; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; }
+    .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav" aria-label="原型导航">
+    <a href="hmi-pay-index-prototype.html">索引</a>
+    <a href="hmi-pay-scr-00-recognizing-prototype.html">00 识别</a>
+    <a href="hmi-pay-scr-01-card-prototype.html" class="on">01 卡片</a>
+    <a href="hmi-pay-scr-06-qr-prototype.html">06 扫码</a>
+    <a href="hmi-pay-scr-07-success-prototype.html">07 成功</a>
+    <a href="hmi-pay-scr-11-exit-prototype.html">11 离场</a>
+  </nav>
+  <div id="stage" role="application" aria-label="SCR-PAY-01 停车卡片 1920×1080">
+    <header class="status-bar">
+      <span>16:42 · 5月20日</span>
+      <span class="sess-pill" role="status">待支付</span>
+      <span>信号 · 电量 · 示例</span>
+    </header>
+    <div class="shell">
+      <aside class="nav" aria-label="停车支付">
+        <div class="brand">停车 / 支付</div>
+        <a class="nav-item active" href="hmi-pay-scr-01-card-prototype.html"><span class="dot"></span>当前会话</a>
+        <a class="nav-item" href="hmi-pay-scr-02-billing-prototype.html"><span class="dot"></span>计费说明</a>
+        <a class="nav-item" href="hmi-pay-scr-06-qr-prototype.html"><span class="dot"></span>扫码兜底</a>
+      </aside>
+      <main class="main">
+        <div class="banner-offline" id="offlineBanner" role="alert">
+          网络不佳，展示上次同步数据 · 16:38（示例）· 恢复后将自动对齐场端
+        </div>
+        <div class="main-head">
+          <div>
+            <h1>朝阳合作停车场 · B2</h1>
+            <p class="meta">京A·DEMO8 · 已停车 1 小时 12 分 · 会话 PS-20260520-A3F2（示例）</p>
+          </div>
+          <span class="sync-badge ok" role="status">已与场端同步 ✓</span>
+        </div>
+        <div class="grid-2">
+          <section class="card">
+            <h2>停车卡片</h2>
+            <dl class="kv">
+              <dt>入场</dt><dd>2026-05-20 15:30</dd>
+              <dt>车牌</dt><dd>京A·DEMO8（示例）</dd>
+              <dt>状态</dt><dd>已入场 · 待支付</dd>
+            </dl>
+            <div class="fee" aria-live="polite">
+              <div class="label">当前应付（示例）</div>
+              <div><span class="currency">¥</span><span class="num">24.50</span></div>
+              <button type="button" class="linklike" onclick="location.href='hmi-pay-scr-02-billing-prototype.html'">查看计费说明 ›</button>
+            </div>
+          </section>
+          <section class="card">
+            <h2>支付通道</h2>
+            <p class="window-note">决策窗口 <b>1–2s</b>：ETC → 无感 → 扫码（示例顺序）</p>
+            <div class="progress-bar" aria-hidden="true"><i></i></div>
+            <div class="ch-row">
+              <div><div class="name">ETC</div><div class="meta">优先通道</div></div>
+              <span class="state state-run">探测中</span>
+            </div>
+            <div class="ch-row">
+              <div><div class="name">无感支付</div><div class="meta">已签约（示例）</div></div>
+              <span class="state state-idle">待触发</span>
+            </div>
+            <div class="ch-row">
+              <div><div class="name">扫码兜底</div><div class="meta">窗口耗尽后自动展开</div></div>
+              <span class="state state-idle">待展示</span>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <footer class="dock">
+      <span>优先尝试 ETC · 请勿重复提交（示例）</span>
+      <div>
+        <button type="button" class="btn-dock" id="toggleOffline">模拟弱网</button>
+        <a class="btn-dock primary" href="hmi-pay-scr-05-processing-prototype.html">去支付</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('toggleOffline').addEventListener('click', function () {
+      document.getElementById('offlineBanner').classList.toggle('show');
+    });
+  </script>
+</body>
+</html>

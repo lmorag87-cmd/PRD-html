@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-11 · 离场引导</title>
+  <style>
+    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; --ok: #059669; }
+    html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
+    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a.on { background: var(--accent); color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    .shell { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; display: flex; background: #eceff4; }
+    .main { flex: 1; padding: 28px 36px; color: #1a1d24; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .sync { font-size: 17px; color: var(--ok); margin-bottom: 20px; }
+    .guide-card { background: #fff; border-radius: 14px; border: 1px solid #d8dee9; padding: 28px; display: grid; grid-template-columns: 1fr 400px; gap: 24px; align-items: center; }
+    .arrow { font-size: 80px; text-align: center; color: var(--accent); }
+    .guide-text { font-size: 24px; line-height: 1.5; }
+    .map-ph { height: 280px; border-radius: 12px; background: linear-gradient(135deg,#dbeafe,#e0e7ff); display: flex; align-items: center; justify-content: center; color: #5c6570; font-size: 18px; }
+    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #1c2128; color: #8b95a8; font-size: 17px; }
+    .btn-dock { padding: 12px 28px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 20px; min-height: 52px; text-decoration: none; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav">
+    <a href="hmi-pay-scr-07-success-prototype.html">07</a>
+    <a href="hmi-pay-scr-11-exit-prototype.html" class="on">11 离场</a>
+    <a href="hmi-pay-scr-12-ended-prototype.html">12</a>
+  </nav>
+  <article id="stage" aria-label="SCR-PAY-11 离场引导 F-11">
+    <header style="position:absolute;top:0;left:0;right:0;height:48px;background:#1c2128;color:#9aa3b2;display:flex;align-items:center;padding:0 26px;font-size:16px"><span>已支付 · 请离场</span></header>
+    <section class="shell">
+      <main class="main">
+        <h1>离场指引</h1>
+        <p class="sync">已同步至手机 App · 场端已授权（示例）</p>
+        <section class="guide-card">
+          <section>
+            <span class="arrow" aria-hidden="true">→</span>
+            <p class="guide-text"><strong>请驶往东区出口</strong><br>距出口约 120 米 · 靠右行驶（场端数据示例）</p>
+          </section>
+          <span class="map-ph" role="img" aria-label="地图联动占位">室内地图（若授权）</span>
+        </section>
+      </main>
+    </section>
+    <footer class="dock">
+      <span>同步失败时可重试（示例）</span>
+      <span>
+        <a class="btn-dock" href="../mobile/mobile-pay-pg-03-exit-prototype.html" style="background:#2d333b;margin-right:10px">App 镜像</a>
+        <a class="btn-dock" href="hmi-pay-scr-12-ended-prototype.html">完成</a>
+      </span>
+    </footer>
+  </article>
+</body>
+</html>

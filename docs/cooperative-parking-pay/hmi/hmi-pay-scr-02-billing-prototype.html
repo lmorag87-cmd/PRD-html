@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-02 · 计费说明</title>
+  <style>
+    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; }
+    html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
+    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a.on { background: var(--accent); color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: 48px; padding: 0 26px; display: flex; align-items: center; background: #1c2128; color: #9aa3b2; font-size: 16px; }
+    .shell { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; display: flex; background: #eceff4; }
+    .main { flex: 1; padding: 28px 40px; overflow: auto; color: #1a1d24; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .sub { font-size: 18px; color: #5c6570; margin-bottom: 20px; }
+    .card { background: #fff; border-radius: 14px; border: 1px solid #d8dee9; padding: 24px 28px; margin-bottom: 16px; font-size: 19px; line-height: 1.6; }
+    .card h2 { margin: 0 0 12px; font-size: 24px; }
+    details { margin-top: 12px; font-size: 18px; }
+    summary { cursor: pointer; color: var(--accent); min-height: 48px; display: flex; align-items: center; }
+    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #1c2128; color: #8b95a8; }
+    .btn-dock { padding: 12px 28px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 20px; min-height: 52px; text-decoration: none; font-family: inherit; }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav">
+    <a href="hmi-pay-index-prototype.html">索引</a>
+    <a href="hmi-pay-scr-01-card-prototype.html">01 卡片</a>
+    <a href="hmi-pay-scr-02-billing-prototype.html" class="on">02 计费</a>
+  </nav>
+  <article id="stage" aria-label="SCR-PAY-02 计费说明 F-05 F-04">
+    <header class="status-bar"><span>计费说明</span></header>
+    <section class="shell">
+      <main class="main">
+        <h1>计费说明</h1>
+        <p class="sub">会话 PS-20260520-A3F2 · 规则版本 v2.1（示例）</p>
+        <section class="card">
+          <h2>当前应付构成</h2>
+          <p>首小时 10 元；之后每 30 分钟 3 元。已停 1h12m，合计 <strong>24.50 元</strong>（示例）。</p>
+        </section>
+        <section class="card">
+          <h2>封顶与夜间</h2>
+          <p>24 小时封顶 80 元；22:00–08:00 按夜间费率（示例字段）。</p>
+          <details>
+            <summary>常见问题 FAQ</summary>
+            <p style="margin-top:12px">调价将以横幅提示；长时间离线展示上次同步快照（F-04）。</p>
+          </details>
+        </section>
+        <section class="card">
+          <h2>操作流水（示例 P1）</h2>
+          <p>16:40 切换至扫码 · 16:38 弱网缓存 · 15:30 入场识别</p>
+        </section>
+      </main>
+    </section>
+    <footer class="dock">
+      <span>数据来自场端/车云接口（示例）</span>
+      <a class="btn-dock" href="hmi-pay-scr-01-card-prototype.html">返回停车卡片</a>
+    </footer>
+  </article>
+</body>
+</html>

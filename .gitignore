@@ -1,0 +1,17 @@
+# local / IDE
+.cursor/
+*.local
+.env
+.env.*
+
+# deps & build
+node_modules/
+feishuCLI/node_modules/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# secrets
+**/credentials*.json
+**/*secret*

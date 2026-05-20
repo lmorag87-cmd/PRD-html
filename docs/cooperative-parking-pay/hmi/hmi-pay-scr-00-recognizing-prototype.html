@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-00 · 识别中</title>
+  <style>
+    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; --topbar-h: 48px; --dock-h: 80px; --bar-bg: #1c2128; --main-bg: #eceff4; --accent: #2563eb; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); }
+    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a.on { background: var(--accent); color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: var(--topbar-h); padding: 0 26px; display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #9aa3b2; background: var(--bar-bg); }
+    .sess-pill { padding: 4px 12px; border-radius: 999px; background: rgba(37,99,235,.25); color: #93c5fd; font-size: 15px; }
+    .main-wrap { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; background: var(--main-bg); display: flex; align-items: center; justify-content: center; }
+    .card { background: #fff; border-radius: 14px; padding: 48px 56px; width: 720px; text-align: center; color: #1a1d24; border: 1px solid #d8dee9; }
+    .card h1 { margin: 0 0 12px; font-size: 32px; }
+    .card p { font-size: 20px; color: #5c6570; margin: 0 0 24px; }
+    .pulse { width: 80px; height: 80px; margin: 0 auto 24px; border-radius: 50%; background: rgba(37,99,235,.2); animation: pulse 1.2s ease-in-out infinite; }
+    @keyframes pulse { 50% { transform: scale(1.08); opacity: .7; } }
+    .sk { height: 16px; background: #e5e7eb; border-radius: 6px; margin: 10px auto; width: 240px; }
+    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: var(--dock-h); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: var(--bar-bg); color: #8b95a8; font-size: 17px; }
+    .btn { padding: 12px 24px; border-radius: 10px; border: 1px solid #3d4450; background: #2d333b; color: #e6e9ef; font-size: 20px; min-height: 52px; text-decoration: none; display: inline-flex; align-items: center; font-family: inherit; margin-left: 10px; }
+    .btn.primary { background: var(--accent); border-color: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav">
+    <a href="hmi-pay-index-prototype.html">索引</a>
+    <a href="hmi-pay-scr-00-recognizing-prototype.html" class="on">00 识别</a>
+    <a href="hmi-pay-scr-01-card-prototype.html">01 卡片</a>
+    <a href="hmi-pay-scr-01-fail-prototype.html">失败</a>
+  </nav>
+  <!-- 1920x1080 stage F-01 -->
+  <article id="stage" role="application" aria-label="SCR-PAY-00 识别中">
+    <header class="status-bar"><span>16:30</span><span class="sess-pill">识别中</span><span>示例</span></header>
+    <main class="main-wrap">
+      <section class="card">
+        <span class="pulse" aria-hidden="true"></span>
+        <h1>正在确认入场</h1>
+        <p>朝阳合作停车场 B2（示例）<br>请勿重复驶离识别区</p>
+        <span class="sk" role="presentation"></span>
+        <span class="sk" style="width:180px;display:block;margin:10px auto" role="presentation"></span>
+        <p style="margin-top:20px;font-size:18px">识别完成后将展示停车卡片</p>
+      </section>
+    </main>
+    <footer class="dock">
+      <span>请保持驻车（示例）</span>
+      <span>
+        <a class="btn" href="hmi-pay-scr-01-fail-prototype.html">模拟失败</a>
+        <a class="btn primary" href="hmi-pay-scr-01-card-prototype.html">识别成功</a>
+      </span>
+    </footer>
+  </article>
+</body>
+</html>

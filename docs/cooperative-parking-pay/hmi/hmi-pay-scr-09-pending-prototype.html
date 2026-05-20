@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-09 · 悬挂补单</title>
+  <style>
+    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; --accent: #2563eb; --warn: #d97706; }
+    html, body { margin: 0; background: #0d1117; font-family: var(--font-hmi); }
+    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a.on { background: var(--accent); color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    .main-wrap { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; background: #eceff4; display: flex; align-items: center; justify-content: center; }
+    .card { background: #fff; border-radius: 14px; padding: 40px 48px; width: 760px; color: #1a1d24; border: 1px solid #d8dee9; }
+    h1 { margin: 0 0 12px; font-size: 30px; }
+    .warn { padding: 14px; border-radius: 10px; background: rgba(217,119,6,.12); border: 1px solid rgba(217,119,6,.4); font-size: 19px; color: #92400e; margin-bottom: 20px; }
+    .bar { height: 10px; background: #e5e7eb; border-radius: 5px; overflow: hidden; margin: 16px 0; }
+    .bar i { display: block; height: 100%; width: 60%; background: var(--accent); animation: grow 2s ease-in-out infinite alternate; }
+    @keyframes grow { from { width: 30%; } to { width: 75%; } }
+    p { font-size: 20px; color: #5c6570; line-height: 1.5; }
+    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #1c2128; color: #8b95a8; font-size: 17px; }
+    .btn-dock { padding: 12px 24px; border-radius: 10px; background: #2d333b; color: #e6e9ef; font-size: 20px; min-height: 52px; text-decoration: none; border: 1px solid #3d4450; font-family: inherit; }
+    .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav">
+    <a href="hmi-pay-scr-09-pending-prototype.html" class="on">09 悬挂</a>
+    <a href="hmi-pay-scr-10-gate-prototype.html">10</a>
+    <a href="hmi-pay-scr-07-success-prototype.html">07</a>
+  </nav>
+  <article id="stage" aria-label="SCR-PAY-09 悬挂补单 UC-03 F-10">
+    <header style="position:absolute;top:0;left:0;right:0;height:48px;background:#1c2128;color:#9aa3b2;display:flex;align-items:center;padding:0 26px;font-size:16px"><span>确认支付结果</span></header>
+    <main class="main-wrap">
+      <section class="card">
+        <h1>正在与停车场确认</h1>
+        <p class="warn" role="alert"><strong>请勿重复支付</strong> · 闸机尚未授权抬杆（示例）</p>
+        <span class="bar" aria-hidden="true"><i></i></span>
+        <p>车机显示成功，场端确认中… 退避轮询第 2 次（示例）</p>
+        <p style="margin-top:16px;font-size:18px">幂等键复用 · 未发起第二笔扣款</p>
+      </section>
+    </main>
+    <footer class="dock">
+      <span>人工通道 · 客服（示例入口）</span>
+      <span>
+        <a class="btn-dock" href="hmi-pay-scr-10-gate-prototype.html">模拟仍不一致</a>
+        <a class="btn-dock primary" href="hmi-pay-scr-11-exit-prototype.html">模拟补单成功</a>
+      </span>
+    </footer>
+  </article>
+</body>
+</html>

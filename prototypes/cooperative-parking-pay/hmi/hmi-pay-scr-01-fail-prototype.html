@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-PAY-01-FAIL · 识别失败</title>
+  <style>
+    :root { --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif; --accent: #2563eb; --danger: #dc2626; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); }
+    body { display: flex; align-items: center; justify-content: center; padding-top: 44px; min-height: 100vh; }
+    .proto-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9; display: flex; gap: 6px; padding: 8px 12px; background: rgba(13,17,23,.92); font-size: 13px; }
+    .proto-nav a { padding: 6px 10px; border-radius: 8px; color: #cbd5e1; text-decoration: none; border: 1px solid rgba(255,255,255,.12); }
+    .proto-nav a.on { background: var(--accent); color: #fff; }
+    #stage { width: 1920px; height: 1080px; position: relative; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.55); background: #0b0f14; overflow: hidden; }
+    .status-bar { position: absolute; top: 0; left: 0; right: 0; height: 48px; padding: 0 26px; display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #9aa3b2; background: #1c2128; }
+    .main-wrap { position: absolute; top: 48px; left: 0; right: 0; bottom: 80px; background: #eceff4; display: flex; align-items: center; justify-content: center; padding: 40px; }
+    .card { background: #fff; border-radius: 14px; padding: 40px 48px; max-width: 880px; width: 100%; border: 1px solid #d8dee9; color: #1a1d24; }
+    .icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(220,38,38,.12); color: var(--danger); font-size: 32px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .reason { font-size: 20px; color: #5c6570; margin-bottom: 24px; }
+    ul { margin: 0 0 28px; padding-left: 22px; font-size: 20px; line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { padding: 14px 24px; border-radius: 10px; font-size: 20px; min-height: 52px; border: 1px solid #c5cdd8; background: #fff; cursor: pointer; font-family: inherit; }
+    .btn.primary { background: var(--accent); color: #fff; border-color: #1d4ed8; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .dock { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #1c2128; color: #8b95a8; font-size: 17px; }
+    .btn-dock { padding: 12px 24px; border-radius: 10px; background: #2d333b; color: #e6e9ef; font-size: 20px; min-height: 52px; text-decoration: none; border: 1px solid #3d4450; font-family: inherit; }
+    dialog { border: none; border-radius: 14px; padding: 28px 32px; max-width: 520px; font-family: inherit; font-size: 18px; }
+    dialog::backdrop { background: rgba(0,0,0,.55); }
+  </style>
+</head>
+<body>
+  <nav class="proto-nav">
+    <a href="hmi-pay-index-prototype.html">索引</a>
+    <a href="hmi-pay-scr-00-recognizing-prototype.html">00</a>
+    <a href="hmi-pay-scr-01-fail-prototype.html" class="on">失败 F-02</a>
+    <a href="hmi-pay-scr-01-card-prototype.html">01</a>
+  </nav>
+  <article id="stage" aria-label="SCR-PAY-01-FAIL">
+    <header class="status-bar"><span>16:31</span><span>识别失败</span><span>示例</span></header>
+    <main class="main-wrap">
+      <section class="card">
+        <span class="icon" aria-hidden="true">!</span>
+        <h1>未能识别入场</h1>
+        <p class="reason">原因：车牌污损 / 逆光（示例分类 F-02）</p>
+        <ul>
+          <li>驶出识别区后重新驶入</li>
+          <li>手动输入车牌（若场站支持）</li>
+          <li>联系场站客服</li>
+        </ul>
+        <p class="reason" id="cooldown" aria-live="polite"></p>
+        <span class="actions">
+          <button type="button" class="btn primary" id="btnRetry">重试</button>
+          <button type="button" class="btn" id="btnCancel">取消会话</button>
+          <a class="btn" href="hmi-pay-scr-00-recognizing-prototype.html">驶出重入</a>
+        </span>
+      </section>
+    </main>
+    <footer class="dock">
+      <span>已中止支付探测（示例）</span>
+      <a class="btn-dock" href="hmi-pay-scr-12-ended-prototype.html">会话已取消</a>
+    </footer>
+  </article>
+  <dialog id="dlgCancel">
+    <p><strong>确认取消？</strong></p>
+    <p>将停止计费与支付探测。</p>
+    <form method="dialog" style="display:flex;gap:12px;margin-top:16px">
+      <button class="btn" value="no">返回</button>
+      <button class="btn primary" value="yes">确认取消</button>
+    </form>
+  </dialog>
+  <script>
+    (function () {
+      var cooldown = 0, btn = document.getElementById('btnRetry'), label = document.getElementById('cooldown');
+      function tick() {
+        if (cooldown > 0) { btn.disabled = true; label.textContent = '请 ' + cooldown + ' 秒后再试（限频示例）'; cooldown--; setTimeout(tick, 1000); }
+        else { btn.disabled = false; label.textContent = ''; }
+      }
+      btn.addEventListener('click', function () { cooldown = 5; tick(); });
+      document.getElementById('btnCancel').addEventListener('click', function () { document.getElementById('dlgCancel').showModal(); });
+      document.getElementById('dlgCancel').addEventListener('close', function () {
+        if (this.returnValue === 'yes') location.href = 'hmi-pay-scr-12-ended-prototype.html';
+      });
+    })();
+  </script>
+</body>
+</html>
