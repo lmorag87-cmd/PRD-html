@@ -1,6 +1,6 @@
 (function () {
   var ITEMS = [
-    { href: "mobile-find-index-prototype.html", label: "索引" },
+    { href: "../hmi/hmi-find-index-prototype.html", label: "索引" },
     { href: "mobile-uc-find-1-push-prototype.html", label: "00 推送" },
     { href: "mobile-uc-find-1-session-prototype.html", label: "01 会话" },
     { href: "mobile-uc-find-1-nav-prototype.html", label: "02 导航" },
