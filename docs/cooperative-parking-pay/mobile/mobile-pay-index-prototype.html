@@ -2,39 +2,23 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <link rel="stylesheet" href="mobile-pay-proto-common.css?v=20260522">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合作停车场支付 · App 原型索引</title>
+  <title>手机 App 原型 · 已移出 PRD</title>
   <style>
-    .proto-index-wrap h1 { font-size: 24px; margin: 0 0 8px; }
-    .proto-index-wrap .sub { color: #9aa3b2; font-size: 15px; line-height: 1.6; margin: 0 0 16px; }
-    .proto-index-wrap a.item {
-      display: flex; align-items: center;
-      padding: 14px; margin: 8px 0; border-radius: 12px;
-      background: #161b22; color: #e6e9ef; text-decoration: none;
-      border: 1px solid rgba(255,255,255,.1); min-height: 48px; font-size: 17px;
-    }
-    .proto-index-wrap a.item:hover { border-color: #2563eb; }
-    .proto-index-wrap a.inline { display: inline-flex; padding: 8px 12px; margin-top: 16px; }
-    .note { font-size: 14px; color: #9aa3b2; line-height: 1.5; margin: 0 0 12px; max-width: 520px; }
+    :root { --font: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif; }
+    body { margin: 0; min-height: 100vh; font-family: var(--font); background: #f5f5f5; color: #1a1d24; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    main { max-width: 390px; padding: 28px 24px; background: #fff; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,.08); }
+    h1 { font-size: 20px; margin: 0 0 12px; }
+    p { font-size: 15px; line-height: 1.6; color: #5c6570; margin: 0 0 16px; }
+    a { color: #1677ff; font-size: 15px; }
   </style>
 </head>
-<body class="app-proto-index" data-nav-current="mobile-pay-index-prototype.html">
-  <div class="demo-wrap">
-    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
-    <script src="mobile-pay-nav.js?v=20260522"></script>
-    <div class="proto-index-wrap">
-      <h1>停车支付 · 手机 App</h1>
-      <p class="sub">390×844 · 停车详情（只读同步）+ 扫码时支付宝/微信收银台</p>
-      <p class="note">保留 PG-PAY-01 停车详情；不含 App 内离场导航与 Tab。主支付仍在车机。</p>
-      <a class="item" href="mobile-pay-pg-01-session-prototype.html">PG-PAY-01 停车详情</a>
-      <a class="item" href="mobile-pay-pg-05-alipay-prototype.html">PG-PAY-05 支付宝收银台</a>
-      <a class="item" href="mobile-pay-pg-02-result-prototype.html">PG-PAY-02 微信收银台</a>
-      <a class="item" href="mobile-pay-pg-03-exit-prototype.html">PG-PAY-03 支付成功</a>
-      <a class="item" href="mobile-pay-pg-04-pending-prototype.html">PG-PAY-04 支付处理中</a>
-      <a class="item inline" href="../hmi/hmi-pay-index-prototype.html">车机 IVI 原型索引</a>
-    </div>
-  </div>
+<body>
+  <main>
+    <h1>已移出 PRD 交付范围</h1>
+    <p>当前 PRD 不包含手机 App 支付界面。支付主路径在车机；扫码由车主在个人手机上的支付宝/微信完成。</p>
+    <p><a href="../hmi/hmi-pay-index-prototype.html">→ 打开车机 IVI 原型索引</a></p>
+    <p><a href="../index.html">→ 返回项目首页</a></p>
+  </main>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>合作停车场支付 · 交互原型</title>
+  <title>停车场支付 · 交互原型</title>
   <style>
     :root { --font: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif; }
     body { margin: 0; min-height: 100vh; font-family: var(--font); background: #0d1117; color: #e6e9ef; display: flex; align-items: center; justify-content: center; padding: 24px; }
@@ -17,21 +17,18 @@
     }
     a.card:hover { border-color: #2563eb; background: rgba(37,99,235,.12); }
     a.card span { display: block; font-size: 14px; color: #6b7280; margin-top: 6px; }
-    .back { display: inline-block; margin-bottom: 20px; color: #60a5fa; font-size: 14px; text-decoration: none; }
+    .note { margin-top: 20px; padding: 14px 16px; border-radius: 10px; background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.25); font-size: 14px; color: #cbd5e1; }
   </style>
 </head>
 <body>
   <main>
-    <h1>合作停车场支付</h1>
-    <p>入场识别 · 停车卡片 · 多通道支付（示例数据）</p>
+    <h1>停车场支付</h1>
+    <p>已对接场站 · 入场识别 · 停车卡片 · 多通道支付（ETC / 无感停车接口 / 扫码兜底，示例数据）</p>
     <a class="card" href="hmi/hmi-pay-index-prototype.html">
       车机 IVI（1920×1080）
       <span>12 屏 · SCR-PAY-00～12</span>
     </a>
-    <a class="card" href="mobile/mobile-pay-index-prototype.html">
-      手机 App（390×844）
-      <span>支付宝/微信收银台 · PG-PAY-01～04</span>
-    </a>
+    <p class="note">本 PRD 交付范围仅含车机 HMI，不包含手机 App 支付界面。扫码由车主在个人手机上的支付宝/微信完成。</p>
   </main>
 </body>
 </html>

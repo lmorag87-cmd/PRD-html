@@ -8,9 +8,8 @@
 |------|-----|
 | **总目录** | https://lmorag87-cmd.github.io/PRD-html/ |
 | 停车场找车 · 架构图 | https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-prd-uc75-findcar-architecture-detail.html |
-| 合作停车场支付 | https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/ |
+| 停车场支付（已对接场站） | https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/ |
 | 车机 IVI 索引 | https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/hmi/hmi-pay-index-prototype.html |
-| 手机 App 索引 | https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/mobile/mobile-pay-index-prototype.html |
 
 ## 开启 Pages
 
@@ -31,7 +30,7 @@ git push
 ```text
 交互原型（GitHub Pages）：
 - 总目录：https://lmorag87-cmd.github.io/PRD-html/
-- 合作停车场支付 / 车机：https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/hmi/hmi-pay-index-prototype.html
+- 停车场支付 / 车机 IVI：https://lmorag87-cmd.github.io/PRD-html/cooperative-parking-pay/hmi/hmi-pay-index-prototype.html
 ```
 
 ## 新增 PRD 项目

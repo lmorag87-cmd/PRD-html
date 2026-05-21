@@ -17,7 +17,7 @@ prototypes/
 
 | 目录 | 说明 |
 |------|------|
-| `cooperative-parking-pay/` | 合作停车场入场—支付—离场（F-01～F-12） |
+| `cooperative-parking-pay/` | 停车场支付·已对接场站（F-01～F-12，仅车机 IVI） |
 
 ## 新增 PRD 原型时
 

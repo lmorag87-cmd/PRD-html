@@ -16,7 +16,7 @@
 | proto-nav 顺序与 PRD 不符 | 按 SCR 编号硬排 | 改 `hmi-pay-nav.js`：00→01-F→01→02→**06→05**→07→08→09→10→11→12（03/04 无原型不占位） |
 | App 索引小且 fixed 错位 | 各页手写 `screen-nav` | 共用 `mobile-pay-nav.js` + `mobile-pay-proto-common.css`，舞台外 `demo-wrap` |
 
-## 固定结构（合作停车场 pay 系列）
+## 固定结构（停车场 pay 系列 · cooperative-parking-pay）
 
 ```text
 body.hmi-proto-screen
