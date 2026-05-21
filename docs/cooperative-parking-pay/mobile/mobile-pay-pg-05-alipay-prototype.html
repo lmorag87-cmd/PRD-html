@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <link rel="stylesheet" href="mobile-pay-proto-common.css?v=20260522">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PG-PAY-05 · 支付宝收银台</title>
+  <style>
+    :root {
+      --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif;
+      --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
+      --ali-blue: #1677ff; --ali-bg: #f5f5f5; --text: #1a1d24; --muted: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: var(--font-app); font-size: 16px; color: var(--text); }
+    #phone-stage {
+      display: flex; flex-direction: column; overflow: hidden;
+      border-radius: 28px; background: var(--ali-bg);
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+    }
+    .pay-top {
+      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 10px;
+      background: var(--ali-blue); color: #fff;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pay-top .logo {
+      width: 28px; height: 28px; border-radius: 6px; background: #fff;
+      color: var(--ali-blue); font-weight: 800; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pay-top h1 { margin: 0; flex: 1; font-size: 18px; font-weight: 600; }
+    .pay-top .close {
+      width: 36px; height: 36px; border: none; border-radius: 8px;
+      background: rgba(255,255,255,.2); color: #fff; font-size: 20px;
+    }
+    .pay-main { flex: 1; min-height: 0; overflow-y: auto; padding: 20px var(--safe-inline); text-align: center; }
+    .merchant { font-size: 15px; color: var(--muted); margin: 0 0 8px; }
+    .amount { font-size: 44px; font-weight: 700; margin: 0 0 4px; letter-spacing: -1px; }
+    .amount small { font-size: 24px; font-weight: 600; }
+    .order {
+      margin: 20px 0; padding: 14px 16px; border-radius: 12px;
+      background: #fff; text-align: left; font-size: 14px; line-height: 1.6;
+    }
+    .order .row { margin: 6px 0; }
+    .order dt { color: var(--muted); display: inline; }
+    .order dd { display: inline; margin: 0; }
+    .hint {
+      font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0;
+      padding: 10px 12px; background: rgba(22,119,255,.08); border-radius: 8px;
+    }
+    .pay-footer {
+      flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
+      background: #fff; border-top: 1px solid #eee;
+    }
+    .btn-pay {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; min-height: 48px; border: none; border-radius: 24px;
+      background: var(--ali-blue); color: #fff; font-size: 17px; font-weight: 600;
+      font-family: inherit; text-decoration: none;
+    }
+  </style>
+</head>
+<body class="app-proto-screen" data-nav-current="mobile-pay-pg-05-alipay-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
+    <script src="mobile-pay-nav.js?v=20260522"></script>
+    <article id="phone-stage" aria-label="PG-PAY-05 支付宝停车缴费">
+      <header class="pay-top">
+        <span class="logo" aria-hidden="true">支</span>
+        <h1>停车缴费</h1>
+        <button type="button" class="close" aria-label="关闭">×</button>
+      </header>
+      <main class="pay-main">
+        <p class="merchant">朝阳合作停车场 B2</p>
+        <p class="amount"><small>¥</small>24.50</p>
+        <p class="merchant">会话 PS-20260520-A3F2 · 示例</p>
+        <dl class="order">
+          <div class="row"><dt>车牌 </dt><dd>京A·DEMO8</dd></div>
+          <div class="row"><dt>入场 </dt><dd>15:30</dd></div>
+          <div class="row"><dt>商户 </dt><dd>北汽合作停车（示例）</dd></div>
+        </dl>
+        <p class="hint">UC-02 扫码兜底：车机展示缴费码后，在本页完成支付宝扣款。</p>
+      </main>
+      <footer class="pay-footer">
+        <a class="btn-pay" href="mobile-pay-pg-04-pending-prototype.html">确认付款</a>
+      </footer>
+    </article>
+  </div>
+</body>
+</html>

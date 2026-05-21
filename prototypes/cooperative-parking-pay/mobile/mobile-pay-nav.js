@@ -1,10 +1,11 @@
 (function () {
   /**
-   * App 支付界面（仅支付宝/微信收银台）
+   * App：01 停车详情 + 05/02 扫码收银台 + 03/04 支付结果
    */
   var ITEMS = [
     { href: "mobile-pay-index-prototype.html", label: "索引" },
-    { href: "mobile-pay-pg-01-session-prototype.html", label: "01 支付宝" },
+    { href: "mobile-pay-pg-01-session-prototype.html", label: "01 停车详情" },
+    { href: "mobile-pay-pg-05-alipay-prototype.html", label: "05 支付宝" },
     { href: "mobile-pay-pg-02-result-prototype.html", label: "02 微信" },
     { href: "mobile-pay-pg-03-exit-prototype.html", label: "03 成功" },
     { href: "mobile-pay-pg-04-pending-prototype.html", label: "04 处理中" }

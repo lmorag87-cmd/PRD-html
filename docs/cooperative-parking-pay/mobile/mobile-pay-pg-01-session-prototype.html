@@ -3,87 +3,105 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <link rel="stylesheet" href="mobile-pay-proto-common.css?v=20260521">
+  <link rel="stylesheet" href="mobile-pay-proto-common.css?v=20260522">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PG-PAY-01 · 支付宝收银台</title>
+  <title>PG-PAY-01 · 停车详情</title>
   <style>
     :root {
       --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", sans-serif;
       --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
-      --ali-blue: #1677ff; --ali-bg: #f5f5f5; --text: #1a1d24; --muted: #6b7280;
+      --fs-title: 24px; --fs-body: 16px; --fs-caption: 14px;
+      --app-bg: #f5f6f8; --app-surface: #fff;
+      --text: #1a1d24; --muted: #6b7280; --accent: #2563eb; --ok: #059669;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; font-family: var(--font-app); font-size: 16px; color: var(--text); }
+    html, body { margin: 0; min-height: 100%; font-family: var(--font-app); font-size: var(--fs-body); color: var(--text); }
     #phone-stage {
       display: flex; flex-direction: column; overflow: hidden;
-      border-radius: 28px; background: var(--ali-bg);
+      border-radius: 28px; background: var(--app-bg);
       box-shadow: 0 24px 64px rgba(0,0,0,.5);
     }
-    .pay-top {
-      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 10px;
-      background: var(--ali-blue); color: #fff;
-      display: flex; align-items: center; gap: 10px;
+    .app-header {
+      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 12px;
+      background: var(--app-surface); border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 12px;
     }
-    .pay-top .logo {
-      width: 28px; height: 28px; border-radius: 6px; background: #fff;
-      color: var(--ali-blue); font-weight: 800; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
+    .app-header h1 { margin: 0; flex: 1; font-size: var(--fs-title); font-weight: 650; line-height: 1.25; }
+    .back {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border: none; border-radius: 12px;
+      background: #f3f4f6; font-size: 20px; font-family: inherit;
     }
-    .pay-top h1 { margin: 0; flex: 1; font-size: 18px; font-weight: 600; }
-    .pay-top .close {
-      width: 36px; height: 36px; border: none; border-radius: 8px;
-      background: rgba(255,255,255,.2); color: #fff; font-size: 20px;
+    .app-main { flex: 1; overflow-y: auto; padding: 12px var(--safe-inline); min-height: 0; }
+    .sync-pill {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px;
+      padding: 6px 12px; border-radius: 999px; font-size: var(--fs-caption); font-weight: 600;
+      background: rgba(5,150,105,.1); color: var(--ok); border: 1px solid rgba(5,150,105,.3);
+      line-height: 1.3;
     }
-    .pay-main { flex: 1; min-height: 0; overflow-y: auto; padding: 20px var(--safe-inline); text-align: center; }
-    .merchant { font-size: 15px; color: var(--muted); margin: 0 0 8px; }
-    .amount { font-size: 44px; font-weight: 700; margin: 0 0 4px; letter-spacing: -1px; }
-    .amount small { font-size: 24px; font-weight: 600; }
-    .order {
-      margin: 20px 0; padding: 14px 16px; border-radius: 12px;
-      background: #fff; text-align: left; font-size: 14px; line-height: 1.6;
+    .card {
+      background: var(--app-surface); border-radius: 14px; border: 1px solid #e5e7eb;
+      padding: 16px; margin-bottom: 12px;
     }
-    .order dt { color: var(--muted); display: inline; }
-    .order dd { display: inline; margin: 0; }
-    .order .row { margin: 6px 0; }
-    .hint {
-      font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0 0 16px;
-      padding: 10px 12px; background: rgba(22,119,255,.08); border-radius: 8px;
+    .card h2 { margin: 0 0 8px; font-size: 18px; line-height: 1.3; }
+    .fee { font-size: 32px; font-weight: 700; margin: 8px 0; line-height: 1.1; }
+    .meta { font-size: var(--fs-caption); color: var(--muted); line-height: 1.5; margin: 0; }
+    .banner {
+      padding: 12px; border-radius: 10px; background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.25); font-size: var(--fs-caption); color: #1d4ed8;
+      margin-bottom: 12px; line-height: 1.5;
     }
-    .pay-footer {
+    .scan-links {
+      display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+    }
+    .scan-links a {
+      flex: 1; min-width: 120px; text-align: center; padding: 10px 12px;
+      border-radius: 10px; font-size: var(--fs-caption); font-weight: 600;
+      text-decoration: none; border: 1px solid #e5e7eb;
+    }
+    .scan-links a.ali { background: rgba(22,119,255,.08); color: #1677ff; border-color: rgba(22,119,255,.3); }
+    .scan-links a.wx { background: rgba(7,193,96,.08); color: #07c160; border-color: rgba(7,193,96,.3); }
+    .app-footer {
       flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
-      background: #fff; border-top: 1px solid #eee;
+      background: var(--app-surface); border-top: 1px solid #e5e7eb;
     }
-    .btn-pay {
+    .cta {
       display: flex; align-items: center; justify-content: center;
-      width: 100%; min-height: 48px; border: none; border-radius: 24px;
-      background: var(--ali-blue); color: #fff; font-size: 17px; font-weight: 600;
-      font-family: inherit; text-decoration: none;
+      width: 100%; min-height: 48px; border: none; border-radius: 12px;
+      background: #e5e7eb; color: var(--muted); font-size: var(--fs-body);
+      font-weight: 600; font-family: inherit;
     }
   </style>
 </head>
 <body class="app-proto-screen" data-nav-current="mobile-pay-pg-01-session-prototype.html">
   <div class="demo-wrap">
     <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
-    <script src="mobile-pay-nav.js?v=20260521"></script>
-    <article id="phone-stage" aria-label="PG-PAY-01 支付宝停车缴费">
-      <header class="pay-top">
-        <span class="logo" aria-hidden="true">支</span>
-        <h1>停车缴费</h1>
-        <button type="button" class="close" aria-label="关闭">×</button>
+    <script src="mobile-pay-nav.js?v=20260522"></script>
+    <article id="phone-stage" aria-label="PG-PAY-01 停车详情">
+      <header class="app-header">
+        <button type="button" class="back" aria-label="返回">←</button>
+        <h1>停车详情</h1>
       </header>
-      <main class="pay-main">
-        <p class="merchant">朝阳合作停车场 B2</p>
-        <p class="amount"><small>¥</small>24.50</p>
-        <p class="merchant">会话 PS-20260520-A3F2 · 示例</p>
-        <dl class="order">
-          <div class="row"><dt>车牌 </dt><dd>京A·DEMO8</dd></div>
-          <div class="row"><dt>入场 </dt><dd>15:30</dd></div>
-          <div class="row"><dt>商户 </dt><dd>北汽合作停车（示例）</dd></div>
-        </dl>
-        <p class="hint">由车机扫码拉起；本页为第三方支付宝收银台，仅完成停车缴费。</p>
+      <main class="app-main">
+        <span class="sync-pill">已与车机同步</span>
+        <p class="banner">请在<strong>车机</strong>完成 ETC / 无感 / 扫码支付（App 主路径不提供扣款按钮）</p>
+        <section class="card">
+          <h2>朝阳合作停车场 B2</h2>
+          <p class="meta">京A·DEMO8 · 入场 15:30 · 示例</p>
+          <p class="fee">¥24.50</p>
+          <p class="meta">状态：待支付 · 会话 PS-20260520-A3F2</p>
+        </section>
+        <section class="card">
+          <h2>说明</h2>
+          <p class="meta">支付结果将同步至本页。弱网时展示上次同步快照（F-04）。扫码缴费场景见下方入口。</p>
+          <div class="scan-links">
+            <a class="ali" href="mobile-pay-pg-05-alipay-prototype.html">支付宝收银台（示例）</a>
+            <a class="wx" href="mobile-pay-pg-02-result-prototype.html">微信收银台（示例）</a>
+          </div>
+        </section>
       </main>
-      <footer class="pay-footer">
-        <a class="btn-pay" href="mobile-pay-pg-04-pending-prototype.html">确认付款</a>
+      <footer class="app-footer">
+        <button type="button" class="cta" disabled>请在车内完成支付</button>
       </footer>
     </article>
   </div>
