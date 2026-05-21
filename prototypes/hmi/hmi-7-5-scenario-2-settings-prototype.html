@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UC-PAY-1 · 费用与支付通道</title>
+  <!-- 布局对齐 hmi-7-5-uc-pay-1-parking：顶栏 + 左深侧栏 + 浅主区 + 深 dock。 -->
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px;
+      --topbar-h: 48px;
+      --dock-h: 80px;
+      --nav-w: 300px;
+      --page-bg: #0d1117;
+      --frame-border: rgba(255,255,255,.12);
+      --bar-bg: #1c2128;
+      --nav-bg: #161b22;
+      --main-bg: #eceff4;
+      --card-bg: #fff;
+      --text: #1a1d24;
+      --muted: #5c6570;
+      --accent: #2563eb;
+      --accent-soft: rgba(37,99,235,.12);
+      --ok: #059669;
+      --warn: #d97706;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--page-bg);
+      font-family: var(--font-hmi);
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14;
+      color: #e6e9ef;
+    }
+    .status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-h);
+      padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #9aa3b2;
+      background: var(--bar-bg);
+      border-bottom: 1px solid var(--frame-border);
+    }
+    .shell {
+      position: absolute;
+      top: var(--topbar-h);
+      left: 0;
+      right: 0;
+      bottom: var(--dock-h);
+      display: flex;
+    }
+    .nav {
+      width: var(--nav-w);
+      background: var(--nav-bg);
+      border-right: 1px solid var(--frame-border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav .brand {
+      font-size: 16px;
+      letter-spacing: .1em;
+      color: #6b7280;
+      padding: 8px 14px 16px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      font-size: 24px;
+      color: #b8c0cc;
+      cursor: default;
+      border: 1px solid transparent;
+    }
+    .nav-item .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #374151;
+    }
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: #dbeafe;
+      border-color: rgba(37,99,235,.35);
+    }
+    .nav-item.active .dot { background: var(--accent); }
+    .main {
+      flex: 1;
+      background: var(--main-bg);
+      color: var(--text);
+      padding: 32px 40px 36px;
+      overflow: auto;
+    }
+    .main-head { margin-bottom: 24px; }
+    .main-head h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+    .meta-line {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 1100px;
+    }
+    .meta-line strong { color: var(--accent); }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+      align-items: start;
+    }
+    .stack { display: flex; flex-direction: column; gap: 20px; }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid #d8dee9;
+      box-shadow: 0 8px 28px rgba(15,23,42,.06);
+      padding: 28px 32px;
+    }
+    .amount-block { text-align: center; padding: 8px 4px 4px; }
+    .amount-block .label { font-size: 19px; color: var(--muted); margin-bottom: 8px; }
+    .amount-block .currency { font-size: 36px; color: var(--muted); vertical-align: super; margin-right: 4px; }
+    .amount-block .num {
+      font-size: 92px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .amount-block .hint { margin-top: 12px; font-size: 18px; color: var(--muted); }
+    .link-btn {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .freeze-banner {
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(217,119,6,.1);
+      border: 1px solid rgba(217,119,6,.35);
+      font-size: 18px;
+      color: #92400e;
+    }
+    .window-bar .t { font-size: 18px; color: var(--muted); margin-bottom: 8px; }
+    .window-bar .bar {
+      height: 12px;
+      border-radius: 6px;
+      background: #eef2f7;
+      overflow: hidden;
+      border: 1px solid #d8dee9;
+    }
+    .window-bar .fill {
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, var(--accent), #34d399);
+      border-radius: 6px;
+    }
+    .window-bar .cap { margin-top: 8px; font-size: 16px; color: var(--muted); }
+    .channels h3 { margin: 0 0 14px; font-size: 22px; font-weight: 650; color: #111827; }
+    .ch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      background: #fafbfc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      min-height: 68px;
+    }
+    .ch-row.active { border-color: rgba(37,99,235,.45); box-shadow: 0 0 0 1px rgba(37,99,235,.12); }
+    .ch-row.fail { border-color: rgba(220,38,38,.35); }
+    .ch-name { font-size: 26px; font-weight: 650; color: #111827; }
+    .ch-name small { display: block; font-size: 17px; color: var(--muted); font-weight: 400; margin-top: 4px; }
+    .st {
+      font-size: 17px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #eef2f7;
+      color: var(--muted);
+      border: 1px solid #d8dee9;
+    }
+    .st.try { color: #1d4ed8; border-color: rgba(37,99,235,.35); background: rgba(37,99,235,.08); }
+    .st.ok { color: var(--ok); border-color: rgba(5,150,105,.35); background: rgba(5,150,105,.08); }
+    .st.fail { color: #b91c1c; border-color: rgba(220,38,38,.3); background: rgba(254,226,226,.5); }
+    .qr-zone {
+      padding: 22px;
+      border-radius: 14px;
+      border: 2px dashed rgba(37,99,235,.4);
+      background: rgba(37,99,235,.06);
+      text-align: center;
+    }
+    .qr-zone .qr {
+      width: 168px;
+      height: 168px;
+      margin: 14px auto;
+      background: repeating-linear-gradient(90deg, #fff 0 8px, #eee 8px 16px),
+        repeating-linear-gradient(0deg, #fff 0 8px, #eee 8px 16px);
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+    }
+    .qr-zone p { margin: 0; font-size: 18px; color: var(--muted); line-height: 1.55; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    button {
+      min-height: 56px;
+      min-width: 148px;
+      padding: 0 22px;
+      border-radius: 12px;
+      border: none;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button.primary { background: var(--accent); color: #fff; }
+    button.ghost { background: #fff; color: var(--text); border: 1px solid #c5cdd8; }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .side h2 { margin: 0 0 12px; font-size: 26px; font-weight: 650; color: #111827; }
+    .side p { margin: 0 0 14px; font-size: 18px; color: var(--muted); line-height: 1.55; }
+    .side ul { margin: 0; padding-left: 22px; font-size: 18px; color: var(--muted); line-height: 1.6; }
+    .dock {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--dock-h);
+      padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bar-bg);
+      border-top: 1px solid var(--frame-border);
+      font-size: 17px;
+      color: #8b95a8;
+    }
+    .dock .hint { opacity: .85; white-space: nowrap; }
+    .dock-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1;
+    }
+    .dock-icons a, .dock-icons span {
+      min-width: 88px;
+      min-height: 52px;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #9aa3b2;
+      text-decoration: none;
+    }
+    .dock-icons a[aria-current="page"] {
+      background: rgba(37,99,235,.2);
+      color: #e6e9ef;
+    }
+    .dock .ico { font-size: 22px; line-height: 1; }
+    .dock-links a { color: #93c5fd; text-decoration: none; }
+    .dock-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div id="stage" role="application" aria-label="车机界面 1920×1080 · UC-PAY-1 费用与通道">
+    <header class="status-bar">
+      <span>14:29</span>
+      <span>停车支付 · 决策窗口内</span>
+      <span>LTE · 93%</span>
+    </header>
+    <div class="shell">
+      <aside class="nav" aria-label="停车流程导航">
+        <div class="brand">停车 / UC-PAY</div>
+        <div class="nav-item"><span class="dot" aria-hidden="true"></span>入场与会话</div>
+        <div class="nav-item active"><span class="dot" aria-hidden="true"></span>费用与通道</div>
+        <div class="nav-item"><span class="dot" aria-hidden="true"></span>支付与离场</div>
+      </aside>
+      <main class="main">
+        <div class="main-head">
+          <h1>费用与支付通道</h1>
+          <p class="meta-line"><strong>UC-PAY-1</strong> · 事件 3：1–2s 内完成支付通道判定；优先 ETC → 超时降级无感 → 无感失败展示扫码。</p>
+        </div>
+        <div class="grid-2">
+          <div class="stack">
+            <section class="card">
+              <div class="amount-block">
+                <div class="label">当前应付（场端计费 · 大字号可读）</div>
+                <div><span class="currency">¥</span><span class="num">12.00</span></div>
+                <p class="hint">阶梯/昼夜/节假日/会员价等以场端下发为准；支持语音播报关键节点（可选）。</p>
+                <span class="link-btn" role="button" tabindex="0">计费说明</span>
+              </div>
+            </section>
+            <section class="card freeze-banner" role="status">
+              场端调价/规则变更时须展示原因与生效时间（禁止静默改价）。场端不可达时：冻结上次合法金额，并提示「以离场扫码/场端为准」等降级文案（示例）。
+            </section>
+            <section class="card">
+              <div class="window-bar">
+                <div class="t">支付通道判定 · 决策窗口（可配置 1–2s，示意进度）</div>
+                <div class="bar" aria-hidden="true"><div class="fill"></div></div>
+                <div class="cap">窗口内自动降级；幂等请求 ID 防重复扣款；进行中禁止重复发起。</div>
+              </div>
+              <div class="channels" style="margin-top:20px">
+                <h3>通道状态（示例顺序）</h3>
+                <div class="ch-row active">
+                  <div class="ch-name">ETC <small>默认优先 · 与本车 OBU/签约状态联动</small></div>
+                  <span class="st try">尝试中</span>
+                </div>
+                <div class="ch-row fail">
+                  <div class="ch-name">无感支付 <small>免密代扣/签约</small></div>
+                  <span class="st fail">失败 · 设备未就绪（示例码）</span>
+                </div>
+                <div class="ch-row">
+                  <div class="ch-name">扫码兜底 <small>车主钱包 / 第三方</small></div>
+                  <span class="st ok">已展示入口</span>
+                </div>
+              </div>
+            </section>
+            <section class="card qr-zone" aria-labelledby="qrh">
+              <strong id="qrh" style="font-size:26px;color:#111827">扫码支付</strong>
+              <div class="qr" aria-hidden="true"></div>
+              <p>二维码可刷新；提示调高亮度对准摄像头；窗口耗尽后显著区展示（PRD）。</p>
+              <div class="actions">
+                <button type="button" class="ghost">手动切换通道</button>
+                <button type="button" class="primary">发起支付（幂等）</button>
+                <button type="button" class="ghost">重试当前通道</button>
+              </div>
+            </section>
+          </div>
+          <aside class="card side">
+            <h2>功能需求 3–4 对齐</h2>
+            <p>费用实时刷新周期与精度以接口约定为准；若场端提供预测接口，可展示离场时间窗内费用波动提示。</p>
+            <ul>
+              <li>每通道失败记录失败码（余额不足、黑名单、场端拒付等），窗口内降级下一通道。</li>
+              <li>用户手动切换通道后，重新拉取应付金额与通道可用性。</li>
+              <li>网络抖动：安全重试与状态轮询。</li>
+            </ul>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <nav class="dock" aria-label="底部 Dock">
+      <span class="hint">音量 / 主页等占位</span>
+      <div class="dock-icons">
+        <span><span class="ico" aria-hidden="true">⌂</span>首页</span>
+        <span><span class="ico" aria-hidden="true">▣</span>车辆</span>
+        <a href="hmi-7-5-scenario-2-settings-prototype.html" aria-current="page"><span class="ico" aria-hidden="true">P</span>停车</a>
+        <span><span class="ico" aria-hidden="true">◎</span>应用</span>
+        <span><span class="ico" aria-hidden="true">⚙</span>设置</span>
+      </div>
+      <span class="dock-links"><a href="hmi-7-5-scenario-1-entry-prototype.html">1 入场与会话</a> · <a href="hmi-7-5-scenario-3-active-prototype.html">3 支付与离场</a></span>
+    </nav>
+  </div>
+</body>
+</html>

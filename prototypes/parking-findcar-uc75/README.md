@@ -8,7 +8,7 @@
 
 - **总览**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/
 - **架构图（PRD §8）**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-prd-uc75-findcar-architecture-detail.html
-- **车机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-find-index-prototype.html
+- **车机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-find-index-prototype.html（含 **00a 入库段** / 00 驻车 / 01 确认）
 - **手机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/mobile/mobile-uc-find-1-push-prototype.html
 
 ## 源码位置

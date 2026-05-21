@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UC-PAY-1 · 支付结果与离场引导</title>
+  <!-- 布局对齐 hmi-7-5-uc-pay-1-parking：顶栏 + 左深侧栏 + 浅主区 + 深 dock。 -->
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px;
+      --topbar-h: 48px;
+      --dock-h: 80px;
+      --nav-w: 300px;
+      --page-bg: #0d1117;
+      --frame-border: rgba(255,255,255,.12);
+      --bar-bg: #1c2128;
+      --nav-bg: #161b22;
+      --main-bg: #eceff4;
+      --card-bg: #fff;
+      --text: #1a1d24;
+      --muted: #5c6570;
+      --accent: #2563eb;
+      --accent-soft: rgba(37,99,235,.12);
+      --ok: #059669;
+      --warn: #d97706;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--page-bg);
+      font-family: var(--font-hmi);
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14;
+      color: #e6e9ef;
+    }
+    .status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-h);
+      padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      color: #9aa3b2;
+      background: var(--bar-bg);
+      border-bottom: 1px solid var(--frame-border);
+    }
+    .shell {
+      position: absolute;
+      top: var(--topbar-h);
+      left: 0;
+      right: 0;
+      bottom: var(--dock-h);
+      display: flex;
+    }
+    .nav {
+      width: var(--nav-w);
+      background: var(--nav-bg);
+      border-right: 1px solid var(--frame-border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav .brand {
+      font-size: 16px;
+      letter-spacing: .1em;
+      color: #6b7280;
+      padding: 8px 14px 16px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      font-size: 24px;
+      color: #b8c0cc;
+      cursor: default;
+      border: 1px solid transparent;
+    }
+    .nav-item .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #374151;
+    }
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: #dbeafe;
+      border-color: rgba(37,99,235,.35);
+    }
+    .nav-item.active .dot { background: var(--accent); }
+    .main {
+      flex: 1;
+      background: var(--main-bg);
+      color: var(--text);
+      padding: 32px 40px 36px;
+      overflow: auto;
+      min-height: 0;
+    }
+    .main-head { margin-bottom: 24px; }
+    .main-head h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+    .meta-line {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 1100px;
+    }
+    .meta-line strong { color: var(--accent); }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid #d8dee9;
+      box-shadow: 0 8px 28px rgba(15,23,42,.06);
+      padding: 28px 32px;
+    }
+    .panel-main {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .success-hero {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .success-hero .sub { margin: 10px 0 0; font-size: 18px; color: var(--muted); line-height: 1.55; }
+    .pill {
+      flex-shrink: 0;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 19px;
+      font-weight: 700;
+      background: rgba(5,150,105,.12);
+      color: var(--ok);
+      border: 1px solid rgba(5,150,105,.4);
+    }
+    .receipt {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 10px 22px;
+      font-size: 19px;
+      padding: 20px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+    .receipt dt { margin: 0; color: var(--muted); }
+    .receipt dd { margin: 0; font-weight: 600; color: #111827; }
+    .receipt dd.mono { font-family: ui-monospace, monospace; font-size: 17px; font-weight: 500; color: #475569; }
+    .guide {
+      margin-top: 20px;
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(37,99,235,.1), #f8fafc);
+      border: 1px solid rgba(37,99,235,.25);
+    }
+    .guide h2 { margin: 0 0 12px; font-size: 26px; font-weight: 650; color: #111827; }
+    .guide .route {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 8px;
+      font-size: 26px;
+      font-weight: 650;
+      color: #111827;
+    }
+    .guide .route .arrow { font-size: 40px; color: var(--accent); }
+    .guide p { margin: 12px 0 0; font-size: 18px; color: var(--muted); line-height: 1.55; }
+    .sync-note {
+      margin-top: 12px;
+      font-size: 17px;
+      color: var(--muted);
+    }
+    .privacy { font-size: 16px; color: var(--muted); margin-top: 16px; line-height: 1.5; }
+    .side {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .side h2 { margin: 0 0 12px; font-size: 26px; font-weight: 650; color: #111827; }
+    .side > p { margin: 0 0 14px; font-size: 18px; color: var(--muted); line-height: 1.55; }
+    .feed { flex: 1; min-height: 0; display: flex; flex-direction: column; margin-top: 8px; }
+    .feed h2 { margin: 0 0 12px; font-size: 22px; font-weight: 650; color: #111827; }
+    .timeline {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+    .event {
+      padding: 14px 16px;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      border-left: 3px solid var(--accent);
+      font-size: 18px;
+      line-height: 1.5;
+      color: #111827;
+    }
+    .event.ok { border-left-color: var(--ok); }
+    .event time { display: block; font-size: 16px; color: var(--muted); margin-bottom: 4px; }
+    .btn-stack { margin-top: auto; display: flex; flex-direction: column; gap: 12px; padding-top: 20px; }
+    button {
+      min-height: 56px;
+      border-radius: 12px;
+      border: none;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button.primary { background: var(--accent); color: #fff; }
+    button.ghost { background: #fff; color: var(--text); border: 1px solid #c5cdd8; }
+    button.warn { background: rgba(217,119,6,.12); color: #92400e; border: 1px solid rgba(217,119,6,.4); }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .dock {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--dock-h);
+      padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bar-bg);
+      border-top: 1px solid var(--frame-border);
+      font-size: 17px;
+      color: #8b95a8;
+    }
+    .dock .hint { opacity: .85; white-space: nowrap; }
+    .dock-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1;
+    }
+    .dock-icons a, .dock-icons span {
+      min-width: 88px;
+      min-height: 52px;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #9aa3b2;
+      text-decoration: none;
+    }
+    .dock-icons a[aria-current="page"] {
+      background: rgba(37,99,235,.2);
+      color: #e6e9ef;
+    }
+    .dock .ico { font-size: 22px; line-height: 1; }
+    .dock-links a { color: #93c5fd; text-decoration: none; }
+    .dock-links a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div id="stage" role="application" aria-label="车机界面 1920×1080 · UC-PAY-1 支付与离场">
+    <header class="status-bar">
+      <span>14:29</span>
+      <span>支付成功 · 待离场</span>
+      <span>LTE · 93%</span>
+    </header>
+    <div class="shell">
+      <aside class="nav" aria-label="停车流程导航">
+        <div class="brand">停车 / UC-PAY</div>
+        <div class="nav-item"><span class="dot" aria-hidden="true"></span>入场与会话</div>
+        <div class="nav-item"><span class="dot" aria-hidden="true"></span>费用与通道</div>
+        <div class="nav-item active"><span class="dot" aria-hidden="true"></span>支付与离场</div>
+      </aside>
+      <main class="main">
+        <div class="main-head">
+          <h1>支付成功</h1>
+          <p class="meta-line"><strong>UC-PAY-1</strong> · 事件 4：支付与状态反馈；同步车机 / App / 场站后台；离场引导。</p>
+        </div>
+        <div class="grid-2">
+          <section class="card panel-main">
+            <div class="success-hero">
+              <div>
+                <p class="sub" style="margin-top:0">功能需求 5：明确进度态；与场端/清分双向确认。若车机成功、场端未确认 → 对账恢复（轮询/补单/人工），限制重复离场指令。</p>
+              </div>
+              <div class="pill" role="status">已支付</div>
+            </div>
+            <dl class="receipt">
+              <dt>交易流水号</dt>
+              <dd class="mono">PAY_20260513_142906_9c4e</dd>
+              <dt>支付时间</dt>
+              <dd>2026-05-13 14:29:06</dd>
+              <dt>通道类型</dt>
+              <dd>ETC（示例）</dd>
+              <dt>实付金额</dt>
+              <dd style="font-size:32px;color:var(--ok)">¥ 12.00</dd>
+            </dl>
+            <div class="guide" aria-labelledby="gh">
+              <h2 id="gh">离场引导</h2>
+              <div class="route" aria-label="动线示意">
+                <span>当前车位区</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>出口 B1</span>
+                <span class="arrow" aria-hidden="true">→</span>
+                <span>约 180 m</span>
+              </div>
+              <p>箭头/动线/剩余距离以场端是否下发导航数据为准；可同步至已登录同一账号的手机 App 与推送（若项目开通）。</p>
+              <p class="sync-note">向场站后台/车云同步支付结果、会话关闭与出口授权；失败时本地重试队列 + 退避，避免已付费无法抬杆。出口再次校验时若与车机不一致，以闸机授权为准并引导人工通道。</p>
+            </div>
+            <p class="privacy">会话结束后按安全与 UX 要求清理敏感展示（卡号尾号、二维码等）驻留时间；电子发票/凭证跳转遵守隐私最小化（若场端/通道提供）。</p>
+          </section>
+          <aside class="card side">
+            <h2>流水与异常</h2>
+            <p>功能需求 6 与卡片流水：通道切换、重试、悬挂态处理可追溯。</p>
+            <div class="feed">
+              <h2>同步时间线（示例）</h2>
+              <div class="timeline">
+                <article class="event"><time>14:27:06</time>场站识别 → 停车会话建立</article>
+                <article class="event"><time>14:27:08</time>停车卡片生成，计费开始</article>
+                <article class="event"><time>14:29:01</time>1–2s 窗口内通道判定完成</article>
+                <article class="event ok"><time>14:29:06</time>支付成功，清分确认中 → 已确认</article>
+                <article class="event ok"><time>14:29:07</time>出口授权已下发（示例）</article>
+              </div>
+            </div>
+            <div class="btn-stack">
+              <button type="button" class="ghost">电子发票 / 凭证</button>
+              <button type="button" class="warn">对账恢复 / 人工协助</button>
+              <button type="button" class="primary">结束会话并回首页</button>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <nav class="dock" aria-label="底部 Dock">
+      <span class="hint">音量 / 主页等占位</span>
+      <div class="dock-icons">
+        <span><span class="ico" aria-hidden="true">⌂</span>首页</span>
+        <span><span class="ico" aria-hidden="true">▣</span>车辆</span>
+        <a href="hmi-7-5-scenario-3-active-prototype.html" aria-current="page"><span class="ico" aria-hidden="true">P</span>停车</a>
+        <span><span class="ico" aria-hidden="true">◎</span>应用</span>
+        <span><span class="ico" aria-hidden="true">⚙</span>设置</span>
+      </div>
+      <span class="dock-links"><a href="hmi-7-5-scenario-1-entry-prototype.html">1 入场与会话</a> · <a href="hmi-7-5-scenario-2-settings-prototype.html">2 费用与通道</a></span>
+    </nav>
+  </div>
+</body>
+</html>

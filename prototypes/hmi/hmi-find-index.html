@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css?v=20260521">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <title>UC-FIND-1 · 停车场找车 · 原型索引</title>
+  <style>
+    .proto-index-shell {
+      width: min(920px, calc(100vw - 24px));
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .proto-index-wrap { color: #e6e9ef; }
+    .proto-index-wrap h1 { font-size: 28px; margin: 0 0 8px; }
+    .proto-index-wrap .sub { color: #8b95a8; font-size: 16px; margin-bottom: 8px; line-height: 1.55; }
+    .proto-index-wrap .badge {
+      display: inline-block; margin-bottom: 20px; padding: 6px 12px; border-radius: 8px;
+      background: rgba(36,91,219,.18); border: 1px solid rgba(96,165,250,.45);
+      color: #93c5fd; font-size: 14px; font-weight: 600;
+    }
+    .proto-index-wrap section { margin-bottom: 26px; }
+    .proto-index-wrap h2 {
+      font-size: 18px; color: #b8c0cc; margin: 0 0 10px; font-weight: 600;
+    }
+    .proto-index-wrap ul {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .proto-index-wrap li a {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      color: #dbeafe; text-decoration: none; font-size: 17px; min-height: 52px;
+    }
+    .proto-index-wrap li a:hover { border-color: #3b82f6; background: rgba(37,99,235,.12); }
+    .proto-index-wrap li a strong { color: #fff; font-weight: 650; }
+    .proto-index-wrap li a .tag {
+      flex-shrink: 0; font-size: 13px; padding: 4px 8px; border-radius: 6px;
+      background: #2d333b; color: #9aa3b2;
+    }
+    .proto-index-wrap li a .tag.new {
+      background: rgba(36,91,219,.25); color: #bfdbfe;
+    }
+    .proto-index-wrap .back { margin-top: 8px; font-size: 15px; }
+    .proto-index-wrap .back a { color: #60a5fa; text-decoration: none; }
+  </style>
+</head>
+<body class="hmi-proto-index" data-nav-current="hmi-find-index.html">
+  <div class="proto-index-shell">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js?v=20260521"></script>
+    <div class="proto-index-wrap">
+      <h1>停车场找车 · 车机 IVI 原型</h1>
+      <p class="sub">UC-FIND-1 / PRD §6.4 · <strong>入库段稀疏关键帧</strong> + <strong>P 挡驻车静态拍照</strong> · 合并 media_index</p>
+      <span class="badge">V2026.05.21 · 含 SCR-FIND-00a · 分组素材</span>
+
+      <section>
+        <h2>架构</h2>
+        <ul>
+          <li>
+            <a href="hmi-prd-uc75-findcar-architecture-detail.html?v=20260521">
+              <span><strong>功能架构图</strong> · 行车相机 + 找车</span>
+              <span class="tag">§8</span>
+            </a>
+          </li>
+          <li>
+            <a href="../index.html?v=20260521">
+              <span><strong>项目总览</strong> · parking-findcar-uc75</span>
+              <span class="tag">根目录</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>车机 IVI（1920×1080）</h2>
+        <ul>
+          <li>
+            <a href="hmi-find-scr-00a-ingress-prototype.html?v=20260521">
+              <span><strong>SCR-FIND-00a</strong> 入库段环境锚点</span>
+              <span class="tag new">新增</span>
+            </a>
+          </li>
+          <li>
+            <a href="hmi-find-scr-00-recording-prototype.html?v=20260521">
+              <span><strong>SCR-FIND-00</strong> 驻车 · 车位记录窗口</span>
+              <span class="tag">P 挡</span>
+            </a>
+          </li>
+          <li>
+            <a href="hmi-find-scr-01-confirm-prototype.html?v=20260521">
+              <span><strong>SCR-FIND-01</strong> 确认车位（入库+驻车分组）</span>
+              <span class="tag">分组</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>手机 App（390×844）</h2>
+        <ul>
+          <li>
+            <a href="../mobile/mobile-uc-find-1-session-prototype.html?v=20260521">
+              <span><strong>PG-FIND-01</strong> 停车会话卡</span>
+              <span class="tag new">入库+驻车</span>
+            </a>
+          </li>
+          <li>
+            <a href="../mobile/mobile-uc-find-1-push-prototype.html?v=20260521">
+              <span><strong>PG-FIND-00</strong> 推送落地</span>
+              <span class="tag">入口</span>
+            </a>
+          </li>
+          <li>
+            <a href="../mobile/mobile-uc-find-1-nav-prototype.html?v=20260521">
+              <span><strong>PG-FIND-02</strong> 导航找车</span>
+              <span class="tag">步行</span>
+            </a>
+          </li>
+          <li>
+            <a href="../mobile/mobile-uc-find-1-offline-prototype.html?v=20260521">
+              <span><strong>PG-FIND-03</strong> 弱网 / 分享</span>
+              <span class="tag">降级</span>
+            </a>
+          </li>
+          <li>
+            <a href="../mobile/mobile-uc-find-1-supplement-prototype.html?v=20260521">
+              <span><strong>PG-FIND-04</strong> 补拍补录</span>
+              <span class="tag">App</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <p class="back"><a href="../index.html?v=20260521">← 返回项目总览</a></p>
+    </div>
+  </div>
+</body>
+</html>

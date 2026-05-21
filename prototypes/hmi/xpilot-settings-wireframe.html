@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>车机 · 辅助驾驶设置 — 低保真原型</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --bg-map: #c5d3e3;
+      --bar: #1a2332;
+      --bar-text: #e2e8f0;
+      --rail: #2d3a4d;
+      --rail-icon: #5a6a7d;
+      --accent: #3b82f6;
+      --card: #f4f6f8;
+      --card-border: #cbd5e1;
+      --inner-nav: #eef2f6;
+      --white: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --pill-on: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #0f1419;
+      font-family: var(--font-hmi);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .hint {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #94a3b8;
+      font-size: 16px;
+      max-width: 90vw;
+    }
+    .stage {
+      width: min(100%, 1280px);
+      aspect-ratio: 16 / 9;
+      background: var(--bg-map);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,.45);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .status {
+      height: 5.185%;
+      min-height: 36px;
+      background: var(--bar);
+      color: var(--bar-text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25%;
+      font-size: clamp(15px, 1.15vw, 17px);
+    }
+    .status .center { opacity: .55; }
+    .main {
+      flex: 1;
+      display: flex;
+      padding: 0.85% 0.65%;
+      gap: 0.65%;
+      min-height: 0;
+    }
+    .rail {
+      width: 2.9%;
+      min-width: 40px;
+      background: var(--rail);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      gap: 14px;
+    }
+    .rail .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--rail-icon);
+    }
+    .rail .dot.on {
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+    }
+    .shell {
+      flex: 1;
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      box-shadow: 0 4px 24px rgba(15,23,42,.06);
+    }
+    .shell-head {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .close {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 26px;
+      text-align: center;
+      cursor: default;
+    }
+    .shell-body {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+    .subnav {
+      width: 15%;
+      min-width: 120px;
+      background: var(--inner-nav);
+      padding: 12px 10px;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .subnav button {
+      text-align: left;
+      padding: 8px 10px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      font-size: clamp(18px, 1.1vw, 26px);
+      cursor: default;
+    }
+    .subnav button.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+    .content {
+      flex: 1;
+      padding: 14px 16px;
+      overflow: auto;
+    }
+    .section-title {
+      font-size: clamp(24px, 1.35vw, 34px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .grid-b {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .feature {
+      background: var(--white);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .feature .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .feature h3 {
+      font-size: clamp(22px, 1.15vw, 28px);
+      font-weight: 600;
+      color: var(--text);
+    }
+    .feature .sub {
+      font-size: clamp(16px, .95vw, 18px);
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .toggle {
+      width: 36px;
+      height: 20px;
+      border-radius: 10px;
+      background: var(--pill-on);
+      position: relative;
+    }
+    .toggle::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      right: 4px;
+    }
+    .info {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #cbd5e1;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+    }
+    .btn-ghost {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 20px;
+    }
+    .illus {
+      height: 72px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .badge {
+      align-self: flex-end;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .row-foot {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .link {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .dock {
+      height: 5.55%;
+      min-height: 40px;
+      background: var(--bar);
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25%;
+      font-size: clamp(16px, 1.05vw, 18px);
+      border-top: 1px solid #2d3748;
+    }
+    @media (max-width: 900px) {
+      .grid-2, .grid-b { grid-template-columns: 1fr; }
+      .subnav { width: 28%; min-width: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <p class="hint">1920×1080 等比缩放预览 · 本地文件 · 无网络依赖</p>
+  <div class="stage" role="img" aria-label="车机辅助驾驶设置低保真线框">
+    <header class="status">
+      <span>16:20 · 1月21日</span>
+      <span class="center">状态栏占位（电量 / 信号 / 媒体等）</span>
+      <span>···</span>
+    </header>
+    <div class="main">
+      <nav class="rail" aria-label="全局导航">
+        <span class="dot"></span>
+        <span class="dot on"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </nav>
+      <div class="shell">
+        <div class="shell-head">
+          <span class="close" title="关闭">×</span>
+        </div>
+        <div class="shell-body">
+          <aside class="subnav" aria-label="设置分类">
+            <button type="button">常用</button>
+            <button type="button">车外灯</button>
+            <button type="button">氛围灯</button>
+            <button type="button" class="active">辅助驾驶</button>
+            <button type="button">车辆设置</button>
+            <button type="button">车辆状况</button>
+          </aside>
+          <main class="content">
+            <p class="section-title">XPILOT Parking · 辅助泊车</p>
+            <div class="grid-2">
+              <div class="feature">
+                <div class="row">
+                  <h3>超级智能辅助泊车</h3>
+                  <span class="toggle" title="开"></span>
+                  <span class="info">i</span>
+                </div>
+                <span class="btn-ghost">重温指南</span>
+                <div class="illus">3D 示意占位</div>
+              </div>
+              <div class="feature">
+                <div class="row">
+                  <h3>停车场记忆泊车</h3>
+                  <span class="toggle"></span>
+                  <span class="info">i</span>
+                </div>
+                <p class="sub">地下停车场设定路线的辅助驾驶</p>
+                <span class="btn-ghost">重温指南</span>
+                <div class="illus">路径示意占位</div>
+                <span class="badge">测试版</span>
+              </div>
+            </div>
+            <p class="section-title">XPILOT Driving · 辅助驾驶</p>
+            <div class="grid-b">
+              <div class="feature">
+                <div class="row">
+                  <h3>车道居中辅助</h3>
+                  <span class="toggle"></span>
+                  <span class="info">i</span>
+                </div>
+                <p class="sub">辅助保持车辆沿车道线居中行驶</p>
+                <span class="btn-ghost">重温指南</span>
+                <div class="illus">车道示意</div>
+              </div>
+              <div class="feature">
+                <div class="row">
+                  <h3>智能辅助变道</h3>
+                  <span class="toggle"></span>
+                  <span class="info">i</span>
+                </div>
+                <p class="sub">拨动转向灯拨杆智能辅助变道</p>
+                <div class="illus">变道示意</div>
+              </div>
+            </div>
+            <div class="feature" style="max-width: 520px;">
+              <div class="row">
+                <h3>高速导航辅助驾驶</h3>
+                <span class="toggle"></span>
+                <span class="info">i</span>
+              </div>
+            </div>
+            <div class="row-foot" style="margin-top: 12px;">
+              <span class="link">自定义 NGP</span>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+    <footer class="dock">
+      <span>音量 / 主页等</span>
+      <span>返回地图 ▼</span>
+    </footer>
+  </div>
+</body>
+</html>

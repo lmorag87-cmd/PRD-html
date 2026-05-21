@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UC-PAY-1 · 三屏架构原型（SCR-PAY-01～03）</title>
+  <!-- 1920×1080 #stage；body 深色居中；依据 prototypes/hmi/hmi-uc-pay-1-architecture.md；hash #/01|#/02|#/03 切换屏；示例数据。 -->
+  <style>
+    :root {
+      --safe-inset: 16px;
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --fs-section: 32px;
+      --fs-card-title: 26px;
+      --fs-nav: 24px;
+      --fs-button: 20px;
+      --fs-body: 18px;
+      --fs-caption: 17px;
+      --fs-status: 16px;
+      --topbar-h: 48px;
+      --dock-h: 80px;
+      --nav-w: 300px;
+      --page-bg: #0d1117;
+      --frame-border: rgba(255,255,255,.12);
+      --bar-bg: #1c2128;
+      --nav-bg: #161b22;
+      --main-bg: #eceff4;
+      --card-bg: #fff;
+      --text: #1a1d24;
+      --muted: #5c6570;
+      --accent: #2563eb;
+      --accent-soft: rgba(37,99,235,.12);
+      --ok: #059669;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--page-bg);
+      font-family: var(--font-hmi);
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stage {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14;
+      color: #e6e9ef;
+    }
+    .status-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-h);
+      padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: var(--fs-status);
+      color: #9aa3b2;
+      background: var(--bar-bg);
+      border-bottom: 1px solid var(--frame-border);
+    }
+    .status-bar .center { opacity: .55; font-size: 15px; }
+    .park-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(5,150,105,.15);
+      color: #a7f3d0;
+      font-size: var(--fs-caption);
+    }
+    .park-dot i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 0 3px rgba(5,150,105,.25);
+    }
+    .shell {
+      position: absolute;
+      top: var(--topbar-h);
+      left: 0;
+      right: 0;
+      bottom: var(--dock-h);
+      display: flex;
+    }
+    .nav {
+      width: var(--nav-w);
+      background: var(--nav-bg);
+      border-right: 1px solid var(--frame-border);
+      padding: 20px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav .brand {
+      font-size: 16px;
+      letter-spacing: .08em;
+      color: #6b7280;
+      padding: 8px 14px 16px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      font-size: var(--fs-nav);
+      color: #b8c0cc;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      width: 100%;
+    }
+    .nav-item .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #374151;
+      flex-shrink: 0;
+    }
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: #dbeafe;
+      border-color: rgba(37,99,235,.35);
+    }
+    .nav-item.active .dot { background: var(--accent); }
+    .main {
+      flex: 1;
+      background: var(--main-bg);
+      color: var(--text);
+      padding: 28px 40px 36px;
+      overflow: auto;
+    }
+    .demo-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .demo-tabs span {
+      font-size: var(--fs-caption);
+      color: var(--muted);
+    }
+    .demo-tabs a, .demo-tabs button.tab {
+      font-size: var(--fs-button);
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid #c5cdd8;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      min-height: 48px;
+      font: inherit;
+    }
+    .demo-tabs a.active, .demo-tabs button.tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: #1d4ed8;
+    }
+    .view { display: none; }
+    .view.active { display: block; }
+    .main-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+    .main-head h1 {
+      margin: 0;
+      font-size: var(--fs-section);
+      font-weight: 650;
+      letter-spacing: -.02em;
+    }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .badge {
+      font-size: var(--fs-caption);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #d8dee9;
+      color: var(--muted);
+    }
+    .badge strong { color: var(--text); font-weight: 600; }
+    .pill-live {
+      font-size: var(--fs-caption);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.1);
+      color: #1d4ed8;
+      border: 1px solid rgba(37,99,235,.28);
+      white-space: nowrap;
+    }
+    .pill-live.ok {
+      background: rgba(5,150,105,.12);
+      color: var(--ok);
+      border-color: rgba(5,150,105,.35);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 24px;
+      align-items: start;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid #d8dee9;
+      box-shadow: 0 8px 28px rgba(15,23,42,.06);
+      padding: 28px 32px;
+    }
+    .card h2 {
+      margin: 0 0 18px;
+      font-size: var(--fs-card-title);
+      font-weight: 650;
+      color: #111827;
+    }
+    .kv {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px 18px;
+      font-size: var(--fs-body);
+    }
+    .kv dt { color: var(--muted); }
+    .kv dd { margin: 0; font-weight: 500; }
+    .fee {
+      text-align: center;
+      padding: 16px 8px 8px;
+      margin-top: 8px;
+    }
+    .fee .label { font-size: 19px; color: var(--muted); margin-bottom: 6px; }
+    .fee .currency { font-size: 34px; color: var(--muted); vertical-align: super; margin-right: 4px; }
+    .fee .num {
+      font-size: 88px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .fee .sub { margin-top: 10px; font-size: var(--fs-body); color: var(--muted); }
+    .linklike {
+      margin-top: 8px;
+      font-size: var(--fs-button);
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+      background: none;
+      border: 0;
+      padding: 0;
+      font: inherit;
+    }
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 20px;
+      padding: 20px 16px;
+      background: #fafbfc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding: 0 8px;
+    }
+    .step::after {
+      content: "";
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      width: 100%;
+      height: 3px;
+      background: #e5e7eb;
+      z-index: 0;
+    }
+    .step:last-child::after { display: none; }
+    .step .bubble {
+      position: relative;
+      z-index: 1;
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .step.done .bubble { background: var(--ok); color: #fff; }
+    .step.run .bubble { background: var(--accent); color: #fff; animation: pulse 1.2s ease-in-out infinite; }
+    .step.fail .bubble { background: var(--danger); color: #fff; }
+    @keyframes pulse { 50% { transform: scale(1.06); } }
+    .step .lab { font-size: var(--fs-body); font-weight: 650; color: #111827; }
+    .step .sub { font-size: 15px; color: var(--muted); margin-top: 4px; }
+    .banner-warn {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(217,119,6,.1);
+      border: 1px solid rgba(217,119,6,.35);
+      font-size: var(--fs-body);
+      color: #92400e;
+    }
+    .banner-danger {
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(220,38,38,.08);
+      border: 1px solid rgba(220,38,38,.28);
+      font-size: var(--fs-body);
+      color: #991b1b;
+    }
+    .qr-hero {
+      max-width: 520px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .qr-box {
+      width: 240px;
+      height: 240px;
+      margin: 20px auto 12px;
+      border-radius: 16px;
+      background: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 10px, #f3f4f6 10px, #f3f4f6 20px);
+      border: 2px solid #d1d5db;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
+    .chip {
+      font-size: var(--fs-body);
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 1px solid #d8dee9;
+      background: #fff;
+      cursor: pointer;
+      min-height: 48px;
+      font: inherit;
+    }
+    .chip.on { border-color: var(--accent); background: var(--accent-soft); color: #1e40af; font-weight: 650; }
+    .success-hero {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .ok-ring {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: rgba(5,150,105,.15);
+      border: 4px solid var(--ok);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      color: var(--ok);
+      flex-shrink: 0;
+    }
+    .exit-guide {
+      margin-top: 24px;
+      padding: 24px 28px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+      border: 1px solid #bfdbfe;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .exit-guide .arrow {
+      font-size: 64px;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .exit-guide p { margin: 0; font-size: var(--fs-body); color: #1e3a5f; max-width: 720px; line-height: 1.55; }
+    .sensitive-note {
+      margin-top: 16px;
+      font-size: var(--fs-caption);
+      color: var(--muted);
+    }
+    .dock {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--dock-h);
+      padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--bar-bg);
+      border-top: 1px solid var(--frame-border);
+      font-size: var(--fs-caption);
+      color: #8b95a8;
+    }
+    .dock .hint { flex: 1; min-width: 0; opacity: .85; font-size: var(--fs-body); }
+    .dock-mid { display: flex; align-items: center; gap: 10px; }
+    .dock-home {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      border: 1px solid #3d4450;
+      background: #2d333b;
+      color: #cbd5e1;
+      cursor: pointer;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dock-home:focus-visible, .btn:focus-visible, .nav-item:focus-visible, .demo-tabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .dock-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      font-size: var(--fs-button);
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: 1px solid #4b5563;
+      background: #2d333b;
+      color: #e6e9ef;
+      cursor: pointer;
+      min-height: 52px;
+      font: inherit;
+    }
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: #1d4ed8;
+    }
+    .btn.ghost {
+      background: transparent;
+      border-color: #4b5563;
+    }
+    .toast {
+      position: absolute;
+      bottom: calc(var(--dock-h) + 16px);
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      padding: 14px 22px;
+      background: #111827;
+      color: #f9fafb;
+      border-radius: 12px;
+      font-size: var(--fs-body);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 50;
+      max-width: 80%;
+      text-align: center;
+    }
+    .toast.show { opacity: .96; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+  <div id="stage" role="application" aria-label="车机 1920×1080 · UC-PAY-1 架构三屏原型">
+    <header class="status-bar">
+      <span id="clock">16:42 · 5月14日</span>
+      <span class="center">示例 · 信号 / 电量 / 媒体</span>
+      <span style="display:flex;align-items:center;gap:14px">
+        <span class="park-dot" id="parkBadge" title="停车会话"><i aria-hidden="true"></i>停车中</span>
+        <span id="payStateTag">待支付</span>
+      </span>
+    </header>
+    <div class="shell">
+      <aside class="nav" aria-label="影像记录 · 导航">
+        <div class="brand">影像记录</div>
+        <button type="button" class="nav-item"><span class="dot" aria-hidden="true"></span>首页</button>
+        <button type="button" class="nav-item"><span class="dot" aria-hidden="true"></span>预览</button>
+        <button type="button" class="nav-item active"><span class="dot" aria-hidden="true"></span>停车 / 支付</button>
+        <button type="button" class="nav-item"><span class="dot" aria-hidden="true"></span>设置</button>
+        <button type="button" class="nav-item"><span class="dot" aria-hidden="true"></span>回看</button>
+      </aside>
+      <main class="main">
+        <div class="demo-tabs" role="navigation" aria-label="演示用屏切换">
+          <span>架构屏（演示）：</span>
+          <a href="#/01" class="tab" data-route>SCR-PAY-01 卡片与通道</a>
+          <a href="#/02" class="tab" data-route>SCR-PAY-02 扫码兜底</a>
+          <a href="#/03" class="tab" data-route>SCR-PAY-03 结果与离场</a>
+        </div>
+
+        <!-- SCR-PAY-01 -->
+        <section class="view active" id="view-01" aria-labelledby="t01">
+          <div class="main-head">
+            <div>
+              <h1 id="t01">停车卡片 · 计费与通道判定</h1>
+              <div class="badge-row">
+                <span class="badge"><strong>UseCase</strong> UC-PAY-1</span>
+                <span class="badge">会话 <strong>PS-20260514-3C91</strong></span>
+                <span class="badge">场站 <strong>示例 · 合作停车场 B2</strong></span>
+              </div>
+            </div>
+            <div class="pill-live" id="pill01" role="status">会话状态：已入场</div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h2>停车卡片</h2>
+              <dl class="kv">
+                <dt>车牌</dt>
+                <dd>京A·DEMO0（示例）</dd>
+                <dt>入场时间</dt>
+                <dd>2026-05-14 15:42</dd>
+                <dt>计费起点</dt>
+                <dd>与入场一致（示例）</dd>
+                <dt>通道占位</dt>
+                <dd>ETC 优先 · 无感备选 · 扫码兜底</dd>
+              </dl>
+              <div class="fee" aria-live="polite">
+                <div class="label">当前应付（示例）</div>
+                <div><span class="currency">¥</span><span class="num">18.00</span></div>
+                <div class="sub">刷新周期与精度以场端接口为准</div>
+                <button type="button" class="linklike">查看计费说明</button>
+              </div>
+              <div class="banner-warn hidden" id="freeze01" role="alert">
+                场端暂不可达：已冻结上次合法金额。离场请以场端扫码或闸机为准（示例）。
+              </div>
+            </div>
+            <div class="card">
+              <h2>1–2s 决策窗口</h2>
+              <p style="margin:0 0 8px;font-size:var(--fs-body);color:var(--muted);line-height:1.5">
+                按 PRD 优先级尝试：<b>ETC → 无感 → 扫码</b>。以下为静态示意，非真实扣款。
+              </p>
+              <div class="stepper" role="list" aria-label="通道步骤">
+                <div class="step done" role="listitem">
+                  <div class="bubble">1</div>
+                  <div class="lab">ETC</div>
+                  <div class="sub">已尝试</div>
+                </div>
+                <div class="step run" role="listitem">
+                  <div class="bubble">2</div>
+                  <div class="lab">无感</div>
+                  <div class="sub">处理中</div>
+                </div>
+                <div class="step" role="listitem">
+                  <div class="bubble">3</div>
+                  <div class="lab">扫码</div>
+                  <div class="sub">待展示</div>
+                </div>
+              </div>
+              <p style="margin-top:16px;font-size:var(--fs-caption);color:var(--muted)">
+                失败码示例：<code style="font-size:15px">ETC_TIMEOUT</code> — 自动降级下一通道（架构 §4）。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCR-PAY-02 -->
+        <section class="view" id="view-02" aria-labelledby="t02">
+          <div class="main-head">
+            <div>
+              <h1 id="t02">扫码补付 · 通道切换与重试</h1>
+              <div class="badge-row">
+                <span class="badge">失败码 <strong>NO_BIND</strong>（示例）</span>
+                <span class="badge">应付 <strong>¥18.00</strong></span>
+              </div>
+            </div>
+            <div class="pill-live" role="status">通道：扫码兜底</div>
+          </div>
+          <div class="banner-danger" role="alert">
+            ETC 与无感在决策窗口内不可用，已展示扫码入口。请调高屏幕亮度以便扫码（PRD 示例文案）。
+          </div>
+          <div class="card qr-hero">
+            <h2 style="text-align:center">扫码支付</h2>
+            <div class="qr-box" role="img" aria-label="二维码占位图"></div>
+            <p style="margin:0;font-size:var(--fs-body);color:var(--muted)">二维码自动刷新 · 示例</p>
+            <div class="chips" role="group" aria-label="手动切换通道（若允许）">
+              <button type="button" class="chip">ETC</button>
+              <button type="button" class="chip">无感</button>
+              <button type="button" class="chip on">扫码</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCR-PAY-03 -->
+        <section class="view" id="view-03" aria-labelledby="t03">
+          <div class="main-head">
+            <div>
+              <h1 id="t03">支付结果 · 离场引导</h1>
+              <div class="badge-row">
+                <span class="badge">流水 <strong>TX2026051416428801</strong></span>
+                <span class="badge">通道 <strong>无感支付</strong></span>
+              </div>
+            </div>
+            <div class="pill-live ok" role="status">已支付</div>
+          </div>
+          <div class="card">
+            <div class="success-hero">
+              <div class="ok-ring" aria-hidden="true">✓</div>
+              <div style="flex:1;min-width:240px">
+                <h2 style="margin-top:0">支付成功（示例）</h2>
+                <dl class="kv">
+                  <dt>实付金额</dt>
+                  <dd><strong style="font-size:28px">¥ 18.00</strong></dd>
+                  <dt>支付时间</dt>
+                  <dd>2026-05-14 16:42:08</dd>
+                  <dt>交易流水号</dt>
+                  <dd>TX2026051416428801</dd>
+                </dl>
+              </div>
+            </div>
+            <div class="exit-guide">
+              <span class="arrow" aria-hidden="true">→</span>
+              <p><strong>离场引导（占位）。</strong>请沿 B2 主通道驶向出口；剩余约 <strong>120 m</strong>（示例）。若场端下发导航数据，可切换为地图动线。支付结果已同步车云 / 场站（成功路径示例）。</p>
+            </div>
+            <p class="sensitive-note" id="sensitiveNote">卡号尾号 · 二维码等敏感展示将于 <strong id="secLeft">12</strong> 秒后弱化隐藏（UX 示例）。</p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer class="dock" id="dock">
+      <span class="hint" id="dockHint">决策中优先 ETC · 1–2s 窗口（示例）</span>
+      <div class="dock-mid">
+        <button type="button" class="dock-home" title="主页" aria-label="主页">⌂</button>
+      </div>
+      <div class="dock-cta" id="dockCta"></div>
+    </footer>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <script>
+    (function () {
+      var routes = {
+        '/01': { view: 'view-01', hint: '决策中优先 ETC · 1–2s 窗口（示例）', ctas: [
+          { text: '手动选通道', class: 'btn ghost', href: '#/02' },
+          { text: '刷新', class: 'btn', act: 'toast', msg: '已请求刷新应付金额（示例）' },
+          { text: '打开扫码', class: 'btn primary', href: '#/02' }
+        ]},
+        '/02': { view: 'view-02', hint: '扫码补付 · 轮询场端确认（示例）', ctas: [
+          { text: '返回', class: 'btn ghost', href: '#/01' },
+          { text: '我已支付', class: 'btn', act: 'toast', msg: '开始轮询支付结果（示例）' },
+          { text: '确认成功', class: 'btn primary', href: '#/03' }
+        ]},
+        '/03': { view: 'view-03', hint: '离场请按指引行驶 · 同步失败时可重试（架构 §5）', ctas: [
+          { text: '导航离场', class: 'btn primary', act: 'toast', msg: '拉起导航至出口（示例）' },
+          { text: '完成', class: 'btn ghost', href: '#/01' }
+        ]}
+      };
+
+      function normalizeHash() {
+        var h = location.hash || '#/01';
+        if (h.indexOf('#') !== 0) h = '#/' + h;
+        if (h === '#' || h === '#/') h = '#/01';
+        return h.replace(/^#\/?/, '/');
+      }
+
+      function showToast(msg) {
+        var t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(showToast._id);
+        showToast._id = setTimeout(function () { t.classList.remove('show'); }, 2200);
+      }
+
+      function renderDock(cfg) {
+        var hint = document.getElementById('dockHint');
+        var cta = document.getElementById('dockCta');
+        hint.textContent = cfg.hint;
+        cta.innerHTML = '';
+        cfg.ctas.forEach(function (c) {
+          var b = document.createElement(c.href ? 'a' : 'button');
+          b.className = c.class;
+          b.textContent = c.text;
+          if (c.href) {
+            b.href = c.href;
+            b.setAttribute('role', 'button');
+          } else {
+            b.type = 'button';
+          }
+          if (c.act === 'toast') {
+            b.addEventListener('click', function () { showToast(c.msg); });
+          }
+          cta.appendChild(b);
+        });
+      }
+
+      var sensTimer = null;
+      function route() {
+        clearInterval(sensTimer);
+        sensTimer = null;
+        var key = normalizeHash();
+        if (!routes[key]) { location.hash = '#/01'; return; }
+        var cfg = routes[key];
+        document.querySelectorAll('.view').forEach(function (el) {
+          el.classList.toggle('active', el.id === cfg.view);
+        });
+        document.querySelectorAll('.demo-tabs a[data-route]').forEach(function (a) {
+          var k = a.getAttribute('href').replace(/^#\/?/, '/');
+          a.classList.toggle('active', k === key);
+        });
+        renderDock(cfg);
+        var tag = document.getElementById('payStateTag');
+        var badge = document.getElementById('parkBadge');
+        if (key === '/03') {
+          tag.textContent = '已支付';
+          badge.style.background = 'rgba(37,99,235,.15)';
+          badge.style.color = '#bfdbfe';
+        } else {
+          tag.textContent = key === '/02' ? '扫码中' : '待支付';
+          badge.style.background = 'rgba(5,150,105,.15)';
+          badge.style.color = '#a7f3d0';
+        }
+        var nNote = document.getElementById('sensitiveNote');
+        var elSec = document.getElementById('secLeft');
+        if (nNote) nNote.style.opacity = '1';
+        if (elSec) elSec.textContent = '12';
+        if (key === '/03' && elSec) {
+          var left = 12;
+          sensTimer = setInterval(function () {
+            left -= 1;
+            elSec.textContent = String(Math.max(0, left));
+            if (left <= 0) {
+              clearInterval(sensTimer);
+              sensTimer = null;
+              if (nNote) nNote.style.opacity = '0.45';
+            }
+          }, 1000);
+        }
+      }
+
+      window.addEventListener('hashchange', route);
+      if (!location.hash) location.hash = '#/01';
+      route();
+    })();
+  </script>
+</body>
+</html>
