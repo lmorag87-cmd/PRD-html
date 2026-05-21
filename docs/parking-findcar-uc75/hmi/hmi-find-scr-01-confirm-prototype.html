@@ -37,19 +37,14 @@
       border: 1px solid rgba(5,150,105,.35); color: var(--ok);
     }
     .grid-2 { display: grid; grid-template-columns: 1fr 420px; gap: 24px; }
-    .thumb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .thumb-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .thumb {
       aspect-ratio: 1; border-radius: 10px; border: 1px solid #d8dee9;
       background: linear-gradient(145deg, #dbeafe, #cbd5e1);
       display: flex; align-items: flex-end; padding: 10px; font-weight: 600; font-size: 17px;
     }
     .thumb.ch { background: linear-gradient(160deg, #334155, #64748b); color: #e2e8f0; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
-    .tab {
-      min-height: 48px; padding: 0 18px; border-radius: 10px; border: 1px solid #d8dee9;
-      background: #fff; font-size: 18px; font-family: inherit; cursor: pointer;
-    }
-    .tab.on { background: rgba(37,99,235,.1); border-color: rgba(37,99,235,.4); color: #1d4ed8; font-weight: 600; }
+    .thumb.chassis-one { grid-column: 1 / -1; aspect-ratio: 3 / 1; }
     .card {
       background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9;
       padding: 24px 28px;
@@ -95,17 +90,11 @@
           <span class="sync-badge" role="status">上传中…</span>
         </div>
         <div class="grid-2">
-          <section>
-            <div class="tabs" role="tablist">
-              <button type="button" class="tab on" id="tabS">环视</button>
-              <button type="button" class="tab" id="tabC">底盘</button>
-            </div>
-            <div class="thumb-grid" id="gridS">
-              <div class="thumb">前</div><div class="thumb">后</div><div class="thumb">左</div>
-              <div class="thumb">右</div><div class="thumb ch">抓拍</div><div class="thumb ch">透视</div>
-            </div>
-            <div class="thumb-grid" id="gridC" hidden>
-              <div class="thumb ch" style="grid-column:span 3;aspect-ratio:3/1">底盘区域 · 示例</div>
+          <section aria-label="环境照片预览">
+            <p style="margin:0 0 12px;font-size:17px;color:var(--muted)">环视四向 + 车底环境（采集窗口自动帧，可补拍）</p>
+            <div class="thumb-grid">
+              <div class="thumb">前</div><div class="thumb">后</div><div class="thumb">左</div><div class="thumb">右</div>
+              <div class="thumb ch chassis-one">车底环境</div>
             </div>
           </section>
           <section class="card">
@@ -131,25 +120,11 @@
     </article>
   </div>
   <script>
-    (function () {
-      var tabS = document.getElementById('tabS');
-      var tabC = document.getElementById('tabC');
-      var gridS = document.getElementById('gridS');
-      var gridC = document.getElementById('gridC');
-      function show(s) {
-        tabS.classList.toggle('on', s);
-        tabC.classList.toggle('on', !s);
-        gridS.hidden = !s;
-        gridC.hidden = s;
+    document.getElementById('btnRerecord').addEventListener('click', function () {
+      if (confirm('示例：重新记录将回到采集窗口，更新车位记录点。')) {
+        location.href = 'hmi-find-scr-00-recording-prototype.html';
       }
-      tabS.addEventListener('click', function () { show(true); });
-      tabC.addEventListener('click', function () { show(false); });
-      document.getElementById('btnRerecord').addEventListener('click', function () {
-        if (confirm('示例：重新记录将回到采集窗口，不会以轨迹末点覆盖记录点。')) {
-          location.href = 'hmi-find-scr-00-recording-prototype.html';
-        }
-      });
-    })();
+    });
   </script>
 </body>
 </html>

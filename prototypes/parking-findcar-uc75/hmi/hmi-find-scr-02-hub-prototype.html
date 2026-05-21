@@ -46,11 +46,6 @@
       position: absolute; inset: 0;
       background: linear-gradient(165deg, #dbeafe 0%, #e2e8f0 45%, #cbd5e1 100%);
     }
-    .path-line {
-      position: absolute; left: 12%; top: 72%; width: 55%; height: 4px;
-      background: var(--accent); border-radius: 4px; transform: rotate(-18deg);
-      box-shadow: 0 0 0 2px rgba(37,99,235,.2);
-    }
     .pin {
       position: absolute; left: 62%; top: 38%; width: 36px; height: 36px;
       background: var(--accent); border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
@@ -81,6 +76,10 @@
     .mini {
       flex: 0 0 72px; height: 52px; border-radius: 8px; background: linear-gradient(145deg, #dbeafe, #94a3b8);
       border: 1px solid #d8dee9;
+    }
+    .mini.chassis {
+      flex: 0 0 96px;
+      background: linear-gradient(160deg, #334155, #64748b);
     }
     .dock {
       flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
@@ -114,8 +113,7 @@
         <div class="hub-grid">
           <section class="map-panel" aria-label="地图与记录点">
             <div class="map-bg"></div>
-            <div class="path-line" aria-hidden="true" title="入库参考轨迹 ingress_path"></div>
-            <div class="pin" aria-label="记录点 record_point"></div>
+            <div class="pin" aria-label="记录点"></div>
             <div class="map-tools">
               <button type="button" id="toggleNorth">指北</button>
               <button type="button" onclick="location.href='hmi-find-scr-05-offline-prototype.html'">弱网快照</button>
@@ -125,24 +123,25 @@
             <section class="card">
               <h2>我的车位</h2>
               <p class="spot-big">B2 · A-128</p>
-              <p class="poi">距电梯厅约 <strong>86 m</strong> · 沿入库轨迹原路返回（示例）</p>
-              <p class="poi" style="font-size:16px">记录点 16:39 · 非轨迹末点</p>
+              <p class="poi">距电梯厅约 <strong>86 m</strong> · 直线指引（示例）</p>
+              <p class="poi" style="font-size:16px">记录于 16:39</p>
             </section>
             <section class="card">
-              <h2>环境与路径</h2>
+              <h2>环境照片</h2>
               <div class="actions">
-                <a class="link-btn" href="hmi-find-scr-04-media-prototype.html">查看环视 / 底盘素材 <span>›</span></a>
-                <a class="link-btn" href="hmi-find-scr-03-path-replay-prototype.html">回放入库参考轨迹 <span>›</span></a>
+                <a class="link-btn" href="hmi-find-scr-04-media-prototype.html">查看环境照片 <span>›</span></a>
               </div>
-              <div class="thumb-row" aria-hidden="true">
-                <div class="mini"></div><div class="mini"></div><div class="mini"></div>
+              <div class="thumb-row" aria-label="环境照片缩略图">
+                <div class="mini" title="前"></div><div class="mini" title="后"></div>
+                <div class="mini" title="左"></div><div class="mini" title="右"></div>
+                <div class="mini chassis" title="车底环境"></div>
               </div>
             </section>
           </aside>
         </div>
       </main>
       <footer class="dock">
-        <span>图钉=记录点 · 蓝线=ingress_path（示例）</span>
+        <span>地图图钉 = 车位记录点（示例）</span>
         <div class="dock-actions">
           <button type="button" class="btn-dock btn-home" aria-label="Home">⌂</button>
           <a class="btn-dock" href="hmi-find-scr-00-recording-prototype.html">重新记录</a>
