@@ -1,7 +1,8 @@
 (function () {
   var ITEMS = [
     { href: "hmi-find-index-prototype.html", label: "索引" },
-    { href: "hmi-find-scr-00-recording-prototype.html", label: "00 采集中" },
+    { href: "hmi-find-scr-00a-ingress-prototype.html", label: "00a 入库段" },
+    { href: "hmi-find-scr-00-recording-prototype.html", label: "00 驻车" },
     { href: "hmi-find-scr-01-confirm-prototype.html", label: "01 确认" }
   ];
 

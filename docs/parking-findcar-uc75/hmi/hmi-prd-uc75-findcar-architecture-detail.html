@@ -447,7 +447,7 @@
         <span class="tag">UC 7.5 · 共用视觉与存储</span>
       </div>
       <p class="section-desc">
-        在第一节同一套「多路视觉 + 车机存储/相册能力」之上，增加车位记录编排、底盘锚点素材、定位/地图与车云 App；无透明底盘能力时按 PRD 降级。<strong>挪车后再次满足 P 挡零速采集条件时，新一轮静态拍照与记录点覆盖上一版</strong>，车机/App 仅保留最新有效版本。
+        在第一节同一套「多路视觉 + 车机存储/相册能力」之上，增加<strong>入库段稀疏关键帧（P 挡前）</strong>与 P 挡车位记录窗口，合并写入车机本地 media_index；底盘锚点、POI 识别、定位/地图与车云 App。无透明底盘能力时按 PRD 降级。<strong>不录找车长视频</strong>，不写入循环/紧急相册。<strong>挪车后再采集时，入库段与驻车素材、记录点一并覆盖上一版</strong>。
       </p>
 
       <div class="arrows-row" style="grid-template-columns:repeat(6,1fr)" aria-hidden="true">
@@ -473,9 +473,9 @@
           <div class="card">
             <strong>车位卡片 / 会话 UI</strong>
             <ul>
-              <li>环视缩略图 + 底盘素材 Tab/入口</li>
-              <li>P 挡零速「车位记录」与手动重录</li>
-              <li>仅展示当前有效一版（挪车后再拍覆盖旧素材）</li>
+              <li>分组展示：入库段锚点 + 驻车记录（各 1～2 张代表图）</li>
+              <li>POI 标签（电梯厅/分区牌/柱子等）</li>
+              <li>P 挡「车位记录窗口」与手动重录；仅最新一版</li>
             </ul>
           </div>
         </section>
@@ -487,7 +487,8 @@
             <strong>车位记录编排器</strong>
             <ul>
               <li>会话 ID、与停车事件绑定、置信度与质量提示</li>
-              <li>P 挡零速触发采集窗口；检测车辆位移/再驻车后<strong>再采集则覆盖</strong>上一版素材与记录点（重录同逻辑）</li>
+              <li>入库段：停车场 ODD + 低速事件稀疏关键帧 + POI 识别（上限 N_ingress）</li>
+              <li>驻车段：P 挡零速触发环视/底盘静态照；再采集则<strong>覆盖</strong>入库段+驻车素材与记录点</li>
             </ul>
           </div>
           <div class="card">
@@ -516,7 +517,7 @@
           <div class="card">
             <strong>底盘拍照 / 抓拍</strong>
             <ul>
-              <li>用户触发静止帧或短录像写入锚点库</li>
+              <li>用户触发底盘静止帧写入锚点库（找车侧不录短视频）</li>
             </ul>
           </div>
         </section>
@@ -527,8 +528,8 @@
           <div class="card">
             <strong>车位记录素材库</strong>
             <ul>
-              <li>与循环/相册索引并存；元数据含楼层/车位/时间</li>
-              <li>同会话内<strong>单活跃版本</strong>：再采集时替换索引与缩略图，不并列保留未区分多版</li>
+              <li>media_index：入库段关键帧 + 驻车静态照；元数据含 POI/置信度/楼层</li>
+              <li>车机本地存储；同会话<strong>单活跃版本</strong>，覆盖时整包替换</li>
             </ul>
           </div>
           <div class="card">
@@ -572,8 +573,8 @@
       <div class="flow-note">
         <strong class="flow-note-title">扩展主链路（摘要）</strong>
         找车入口
-        <code>→</code> 车位记录编排器（P 挡零速窗口；挪车后再拍<strong>覆盖</strong>上一版）
-        <code>→</code> 复用环视/周视（+ 透明底盘 + 底盘抓拍）写入素材库
+        <code>→</code> 车位记录编排器（入库段稀疏关键帧 → P 挡窗口；覆盖含两阶段素材）
+        <code>→</code> 环视/周视 + POI 识别 + 透明底盘/底盘拍照 → 车机 media_index
         <code>→</code> 单活跃版本索引 + 记录点
         <code>→</code> 定位与地图呈现
         <code>→</code> 车云与 App（仅同步/展示最新版）；与第一节共用存储、账号与合规横切。

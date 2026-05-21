@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="hmi-find-proto-common.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-FIND-00a · 入库段环境锚点</title>
+  <style>
+    :root {
+      --font-hmi: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+      --safe-inset: 16px; --topbar-h: 48px; --dock-h: 80px;
+      --frame-border: rgba(255,255,255,.12); --bar-bg: #1c2128;
+      --main-bg: #eceff4; --card-bg: #fff; --text: #1a1d24; --muted: #5c6570;
+      --accent: #245bdb; --accent-soft: rgba(36,91,219,.12); --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #0d1117; font-family: var(--font-hmi); font-size: 18px; }
+    #stage {
+      display: flex; flex-direction: column; border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.55), 0 0 0 1px var(--frame-border);
+      background: #0b0f14; overflow: hidden;
+    }
+    .status-bar {
+      flex: 0 0 var(--topbar-h); padding: 0 calc(var(--safe-inset) + 10px);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16px; color: #9aa3b2; background: var(--bar-bg); border-bottom: 1px solid var(--frame-border);
+    }
+    .sess-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px;
+      background: var(--accent-soft); color: #93c5fd; font-size: 15px;
+    }
+    .sess-pill::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%; background: #60a5fa;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: .4; } }
+    .main-wrap {
+      flex: 1; min-height: 0; background: var(--main-bg); color: var(--text);
+      padding: 28px 40px; overflow: auto;
+    }
+    .main-wrap h1 { margin: 0 0 8px; font-size: 32px; font-weight: 650; }
+    .sub { margin: 0 0 20px; color: var(--muted); font-size: 19px; max-width: 920px; line-height: 1.45; }
+    .info-bar {
+      padding: 14px 18px; border-radius: 12px; margin-bottom: 20px;
+      background: var(--accent-soft); border: 1px solid rgba(36,91,219,.35);
+      color: #1e3a8a; font-size: 18px; line-height: 1.45;
+    }
+    .kf-row {
+      display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .kf {
+      flex: 0 0 280px; border-radius: 12px; border: 2px solid #d8dee9;
+      background: linear-gradient(145deg, #dbeafe, #94a3b8);
+      overflow: hidden; position: relative;
+    }
+    .kf-img {
+      aspect-ratio: 16/10; display: flex; align-items: flex-end; padding: 12px 14px;
+      font-size: 18px; font-weight: 600; color: #334155;
+    }
+    .kf-meta {
+      padding: 10px 14px 12px; background: var(--card-bg); border-top: 1px solid #e5e7eb;
+      font-size: 16px; line-height: 1.4;
+    }
+    .poi {
+      display: inline-block; margin-top: 6px; padding: 3px 10px; border-radius: 999px;
+      background: rgba(36,91,219,.15); color: #1d4ed8; font-size: 14px; font-weight: 600;
+    }
+    .poi.low { background: rgba(217,119,6,.15); color: #92400e; }
+    .progress-card {
+      background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9;
+      padding: 24px 28px; max-width: 820px;
+    }
+    .progress-card p { margin: 0 0 10px; font-size: 20px; }
+    .progress-card ul { margin: 8px 0 0; padding-left: 1.2em; font-size: 17px; color: var(--muted); line-height: 1.5; }
+    .dock {
+      flex: 0 0 var(--dock-h); padding: 0 calc(var(--safe-inset) + 12px);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bar-bg); border-top: 1px solid var(--frame-border); color: #8b95a8; font-size: 17px;
+    }
+    .dock-actions { display: flex; gap: 12px; }
+    .btn-dock {
+      padding: 12px 22px; border-radius: 10px; background: #2d333b; color: #e6e9ef;
+      border: 1px solid #3d4450; cursor: pointer; min-height: 52px; font-size: 20px;
+      font-family: inherit; text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-dock.primary { background: var(--accent); border-color: #1d4ed8; color: #fff; }
+  </style>
+</head>
+<body class="hmi-proto-screen" data-nav-current="hmi-find-scr-00a-ingress-prototype.html">
+  <div class="demo-wrap">
+    <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
+    <script src="hmi-find-nav.js"></script>
+    <article id="stage" role="application" aria-label="SCR-FIND-00a 入库段环境锚点 1920×1080">
+      <header class="status-bar">
+        <span>16:36 · 5月20日</span>
+        <span class="sess-pill" role="status">入库段 · 低速采集</span>
+        <span>车速 6 km/h · D 挡 · 示例</span>
+      </header>
+      <main class="main-wrap">
+        <h1>入库段环境锚点</h1>
+        <p class="sub">停车场 ODD 内、接近车位时按事件稀疏采集静态关键帧，识别电梯厅/分区牌/柱子等 POI；写入车机本地素材索引，<strong>不录找车长视频</strong>，不写入影像记录循环/紧急相册。</p>
+        <div class="info-bar" role="status">
+          已采集 3 / N_ingress（示例）· 置信度 ≥ θ 的帧已入库 · 旁车车牌识别默认关闭
+        </div>
+        <div class="kf-row" aria-label="入库段关键帧示例">
+          <figure class="kf">
+            <div class="kf-img">过道 · 前视</div>
+            <figcaption class="kf-meta">
+              16:35:42
+              <span class="poi">电梯厅指示牌</span>
+            </figcaption>
+          </figure>
+          <figure class="kf">
+            <div class="kf-img">立柱 · 右视</div>
+            <figcaption class="kf-meta">
+              16:35:58
+              <span class="poi">B2 · A 区</span>
+            </figcaption>
+          </figure>
+          <figure class="kf">
+            <div class="kf-img">通道 · 左视</div>
+            <figcaption class="kf-meta">
+              16:36:08
+              <span class="poi low">柱子 · 待确认</span>
+            </figcaption>
+          </figure>
+        </div>
+        <section class="progress-card">
+          <p><strong>与驻车记录合并</strong> · 同一 parking_session / media_index</p>
+          <ul>
+            <li>驻车后进入 SCR-FIND-00「车位记录窗口」补采环视/底盘静态照</li>
+            <li>挪车后再采集时，入库段关键帧与驻车素材一并覆盖上一版</li>
+          </ul>
+        </section>
+      </main>
+      <footer class="dock">
+        <span>后台采集 · 无需用户操作（示例）</span>
+        <div class="dock-actions">
+          <a class="btn-dock" href="hmi-find-scr-00-recording-prototype.html">下一屏：P 挡记录</a>
+        </div>
+      </footer>
+    </article>
+  </div>
+</body>
+</html>

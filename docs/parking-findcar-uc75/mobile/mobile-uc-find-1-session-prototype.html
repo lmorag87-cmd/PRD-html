@@ -80,6 +80,19 @@
     .thumb.chassis {
       flex: 0 0 120px; background: linear-gradient(160deg, #334155, #64748b); color: #e2e8f0;
     }
+    .thumb.ingress { flex: 0 0 108px; position: relative; }
+    .poi-tag {
+      position: absolute; top: 6px; left: 6px; font-size: 10px; font-weight: 700;
+      padding: 2px 6px; border-radius: 6px; background: rgba(255,255,255,.94); color: #1d4ed8;
+    }
+    .media-section { margin-bottom: 14px; }
+    .media-section:last-child { margin-bottom: 0; }
+    .media-label {
+      margin: 0 0 8px; font-size: var(--fs-caption); font-weight: 650; color: var(--accent);
+    }
+    .poi-line {
+      margin: 0 0 10px; font-size: var(--fs-caption); color: var(--muted); line-height: 1.4;
+    }
     .app-tabbar {
       flex-shrink: 0; display: flex; border-top: 1px solid #e5e7eb; background: var(--app-surface);
       padding: 8px var(--safe-inline) calc(8px + var(--safe-bottom));
@@ -125,19 +138,31 @@
           <span class="map-label">示例 · B2 室内地图</span>
         </div>
         <p class="spot-title">B2 · A区 · 车位 128</p>
-        <p class="spot-meta">2026-05-18 16:41 驻车记录</p>
+        <p class="spot-meta">2026-05-20 16:41 · 入库段 + 驻车记录</p>
+        <p class="poi-line">识别：电梯厅指示牌 · B2 A 区 · 柱子（1 项待确认，示例）</p>
         <p class="dist">86 m</p>
         <p class="spot-meta">直线距离至车辆（示例）</p>
       </article>
       <article class="card">
-        <p class="spot-title" style="margin-bottom:4px">环境照片</p>
-        <p class="photo-hint">环视四向 + 车底环境一张</p>
-        <div class="scroll-x" aria-label="环境照片">
-          <div class="thumb">前</div>
-          <div class="thumb">后</div>
-          <div class="thumb">左</div>
-          <div class="thumb">右</div>
-          <div class="thumb chassis">车底环境</div>
+        <p class="spot-title" style="margin-bottom:10px">车位记录素材</p>
+        <div class="media-section">
+          <p class="media-label">入库段锚点</p>
+          <p class="photo-hint">代表图 2 张 · 低速接近时稀疏关键帧</p>
+          <div class="scroll-x" aria-label="入库段锚点">
+            <div class="thumb ingress"><span class="poi-tag">电梯厅</span>过道</div>
+            <div class="thumb ingress"><span class="poi-tag">A 区</span>立柱</div>
+          </div>
+        </div>
+        <div class="media-section">
+          <p class="media-label">驻车记录</p>
+          <p class="photo-hint">P 挡窗口 · 环视四向 + 车底环境</p>
+          <div class="scroll-x" aria-label="驻车记录">
+            <div class="thumb">前</div>
+            <div class="thumb">后</div>
+            <div class="thumb">左</div>
+            <div class="thumb">右</div>
+            <div class="thumb chassis">车底</div>
+          </div>
         </div>
       </article>
       <p class="spot-meta" style="padding:0 4px">会话 FC-20260518-A3 · 仅本账号可见（示例）</p>
