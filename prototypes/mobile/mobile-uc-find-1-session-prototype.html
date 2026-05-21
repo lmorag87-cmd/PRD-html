@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="mobile-find-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>UC-FIND-1 · PG-FIND-01 停车会话</title>
-  <!-- 390×844 #phone-stage；外深背景居中；--font-app 思源黑体；§7.5 示例。 -->
+  <!-- 390×844 · UC-FIND-1 §6.4 · 静态拍照找车 -->
   <style>
     :root {
       --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
@@ -67,12 +67,7 @@
     .spot-title { margin: 0 0 4px; font-size: var(--fs-card-title); font-weight: 650; }
     .spot-meta { margin: 0; color: var(--muted); font-size: var(--fs-caption); }
     .dist { font-size: 36px; font-weight: 700; color: var(--accent); margin: 10px 0 4px; line-height: 1; }
-    .tabs { display: flex; gap: 8px; margin: 12px 0 10px; }
-    .tab {
-      flex: 1; min-height: 44px; border-radius: 10px; border: 1px solid #e5e7eb;
-      background: #f9fafb; font-size: var(--fs-caption); font-weight: 600; cursor: pointer; font-family: inherit;
-    }
-    .tab.on { background: var(--accent-soft); border-color: rgba(37,99,235,.35); color: #1d4ed8; }
+    .photo-hint { margin: 0 0 10px; font-size: var(--fs-caption); color: var(--muted); }
     .scroll-x {
       display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch;
     }
@@ -82,8 +77,9 @@
       display: flex; align-items: flex-end; padding: 6px 8px;
       font-size: 12px; font-weight: 600; color: #475569;
     }
-    .thumb.chassis { background: linear-gradient(160deg, #334155, #64748b); color: #e2e8f0; }
-    .panel-hidden { display: none !important; }
+    .thumb.chassis {
+      flex: 0 0 120px; background: linear-gradient(160deg, #334155, #64748b); color: #e2e8f0;
+    }
     .app-tabbar {
       flex-shrink: 0; display: flex; border-top: 1px solid #e5e7eb; background: var(--app-surface);
       padding: 8px var(--safe-inline) calc(8px + var(--safe-bottom));
@@ -134,20 +130,14 @@
         <p class="spot-meta">直线距离至车辆（示例）</p>
       </article>
       <article class="card">
-        <p class="spot-title" style="margin-bottom:8px">环境素材</p>
-        <div class="tabs" role="tablist">
-          <button type="button" class="tab on" id="tabS">环视</button>
-          <button type="button" class="tab" id="tabC">底盘</button>
-        </div>
-        <div id="panelS" class="scroll-x">
+        <p class="spot-title" style="margin-bottom:4px">环境照片</p>
+        <p class="photo-hint">环视四向 + 车底环境一张</p>
+        <div class="scroll-x" aria-label="环境照片">
           <div class="thumb">前</div>
           <div class="thumb">后</div>
           <div class="thumb">左</div>
           <div class="thumb">右</div>
-        </div>
-        <div id="panelC" class="scroll-x panel-hidden">
-          <div class="thumb chassis" style="flex:0 0 140px">底盘抓拍</div>
-          <div class="thumb chassis" style="flex:0 0 140px">透明底盘</div>
+          <div class="thumb chassis">车底环境</div>
         </div>
       </article>
       <p class="spot-meta" style="padding:0 4px">会话 FC-20260518-A3 · 仅本账号可见（示例）</p>
@@ -163,23 +153,9 @@
     </article>
   </div>
   <script>
-    (function () {
-      var tabS = document.getElementById('tabS');
-      var tabC = document.getElementById('tabC');
-      var panelS = document.getElementById('panelS');
-      var panelC = document.getElementById('panelC');
-      function show(surround) {
-        tabS.classList.toggle('on', surround);
-        tabC.classList.toggle('on', !surround);
-        panelS.classList.toggle('panel-hidden', !surround);
-        panelC.classList.toggle('panel-hidden', surround);
-      }
-      tabS.addEventListener('click', function () { show(true); });
-      tabC.addEventListener('click', function () { show(false); });
-      document.getElementById('btnShare').addEventListener('click', function () {
-        alert('示例：分享位置/照片粒度以产品与法务定稿为准。');
-      });
-    })();
+    document.getElementById('btnShare').addEventListener('click', function () {
+      alert('示例：分享位置/照片粒度以产品与法务定稿为准。');
+    });
   </script>
 </body>
 </html>
