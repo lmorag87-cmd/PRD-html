@@ -4,46 +4,40 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="mobile-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PG-PAY-04 · 悬挂/弱网</title>
+  <title>PG-PAY-04 · 支付处理中</title>
   <style>
     :root {
       --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif;
       --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
-      --warn: #d97706; --app-bg: #f5f6f8; --app-surface: #fff;
-      --text: #1a1d24; --muted: #6b7280; --accent: #2563eb;
+      --ali-blue: #1677ff; --text: #1a1d24; --muted: #6b7280;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; font-family: var(--font-app); color: var(--text); }
     #phone-stage {
       display: flex; flex-direction: column; overflow: hidden;
-      border-radius: 28px; background: var(--app-bg);
+      border-radius: 28px; background: #fff;
       box-shadow: 0 24px 64px rgba(0,0,0,.5);
     }
-    .app-header {
-      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 12px;
-      background: var(--app-surface); border-bottom: 1px solid #e5e7eb;
+    .pay-main {
+      flex: 1; min-height: 0; padding: calc(var(--safe-top) + 40px) var(--safe-inline);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
     }
-    .app-header h1 { margin: 0; font-size: 24px; font-weight: 650; line-height: 1.25; }
-    .app-main { flex: 1; min-height: 0; padding: 12px var(--safe-inline); overflow-y: auto; }
+    .spinner {
+      width: 48px; height: 48px; border: 4px solid #e5e7eb;
+      border-top-color: var(--ali-blue); border-radius: 50%;
+      animation: spin 0.9s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .pay-main h1 { margin: 0; font-size: 20px; font-weight: 650; }
+    .lead { margin: 10px 0 0; font-size: 15px; color: var(--muted); line-height: 1.5; max-width: 280px; }
     .warn {
-      padding: 12px; border-radius: 10px; background: rgba(217,119,6,.1);
-      border: 1px solid rgba(217,119,6,.35); font-size: 14px; color: #92400e;
-      margin: 0 0 12px; line-height: 1.5;
+      margin-top: 24px; padding: 12px 14px; border-radius: 10px; width: 100%;
+      background: rgba(217,119,6,.08); border: 1px solid rgba(217,119,6,.3);
+      font-size: 14px; color: #92400e; line-height: 1.5; text-align: left;
     }
-    .card {
-      background: var(--app-surface); border-radius: 14px; padding: 16px;
-      border: 1px solid #e5e7eb; font-size: 15px; color: var(--muted); line-height: 1.55;
-    }
-    .card p { margin: 0; }
-    .app-footer {
+    .pay-footer {
       flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
-      background: var(--app-surface); border-top: 1px solid #e5e7eb;
-    }
-    .btn {
-      display: flex; align-items: center; justify-content: center;
-      width: 100%; min-height: 48px; border-radius: 12px;
-      background: var(--accent); color: #fff; border: none;
-      font-size: 16px; font-weight: 600; font-family: inherit;
+      border-top: 1px solid #eee; font-size: 13px; color: var(--muted); text-align: center;
     }
   </style>
 </head>
@@ -51,16 +45,15 @@
   <div class="demo-wrap">
     <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
     <script src="mobile-pay-nav.js"></script>
-    <article id="phone-stage" aria-label="PG-PAY-04 悬挂/弱网">
-      <header class="app-header"><h1>状态确认</h1></header>
-      <main class="app-main">
-        <p class="warn">确认中：请勿在车机重复支付（F-10 镜像）</p>
-        <section class="card">
-          <p><strong>弱网快照</strong><br>上次同步 16:38<br>¥24.50 · 待支付（示例 F-04）</p>
-        </section>
+    <article id="phone-stage" aria-label="PG-PAY-04 支付处理中">
+      <main class="pay-main">
+        <div class="spinner" role="status" aria-label="处理中"></div>
+        <h1>支付处理中</h1>
+        <p class="lead">正在与停车场确认扣款结果，请稍候…</p>
+        <p class="warn"><strong>请勿重复支付。</strong>确认结果将回传车机。</p>
       </main>
-      <footer class="app-footer">
-        <button type="button" class="btn">刷新状态</button>
+      <footer class="pay-footer">
+        <a href="mobile-pay-pg-03-exit-prototype.html" style="color:#1677ff;text-decoration:none">示例：跳转支付成功</a>
       </footer>
     </article>
   </div>

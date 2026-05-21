@@ -4,40 +4,45 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="mobile-pay-proto-common.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PG-PAY-03 · 离场引导</title>
+  <title>PG-PAY-03 · 支付成功</title>
   <style>
     :root {
       --font-app: "Source Han Sans SC", "Noto Sans SC", "思源黑体", sans-serif;
       --safe-top: 47px; --safe-bottom: 34px; --safe-inline: 16px;
-      --accent: #2563eb; --app-bg: #f5f6f8; --app-surface: #fff; --text: #1a1d24;
+      --ok: #07c160; --bg: #fff; --text: #1a1d24; --muted: #6b7280;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; font-family: var(--font-app); color: var(--text); }
     #phone-stage {
       display: flex; flex-direction: column; overflow: hidden;
-      border-radius: 28px; background: var(--app-bg);
+      border-radius: 28px; background: var(--bg);
       box-shadow: 0 24px 64px rgba(0,0,0,.5);
     }
-    .app-header {
-      flex-shrink: 0; padding: var(--safe-top) var(--safe-inline) 12px;
-      background: var(--app-surface); border-bottom: 1px solid #e5e7eb;
+    .pay-main {
+      flex: 1; min-height: 0; padding: calc(var(--safe-top) + 24px) var(--safe-inline) 24px;
+      text-align: center; display: flex; flex-direction: column; align-items: center;
     }
-    .app-header h1 { margin: 0; font-size: 24px; font-weight: 650; line-height: 1.25; }
-    .app-main { flex: 1; min-height: 0; padding: 12px var(--safe-inline); overflow-y: auto; }
+    .ok-icon {
+      width: 64px; height: 64px; border-radius: 50%; background: rgba(7,193,96,.12);
+      color: var(--ok); font-size: 36px; line-height: 64px; margin-bottom: 16px;
+    }
+    .pay-main h1 { margin: 0; font-size: 22px; font-weight: 650; }
+    .lead { margin: 8px 0 0; font-size: 15px; color: var(--muted); line-height: 1.5; }
     .card {
-      background: var(--app-surface); border-radius: 14px; padding: 16px;
-      border: 1px solid #e5e7eb; font-size: 16px; line-height: 1.5;
+      width: 100%; margin-top: 24px; padding: 16px; border-radius: 12px;
+      background: #f9fafb; border: 1px solid #e5e7eb; text-align: left;
+      font-size: 14px; line-height: 1.6;
     }
-    .arrow { display: block; font-size: 40px; color: var(--accent); line-height: 1; margin-bottom: 8px; }
-    .card p { margin: 0; }
-    .app-footer {
+    .card p { margin: 0 0 8px; }
+    .card p:last-child { margin: 0; }
+    .pay-footer {
       flex-shrink: 0; padding: 12px var(--safe-inline) calc(12px + var(--safe-bottom));
-      background: var(--app-surface); border-top: 1px solid #e5e7eb;
+      border-top: 1px solid #eee;
     }
-    .btn {
+    .btn-done {
       display: flex; align-items: center; justify-content: center;
-      width: 100%; min-height: 48px; border-radius: 12px;
-      border: 1px solid #e5e7eb; background: #fff;
+      width: 100%; min-height: 48px; border-radius: 8px;
+      border: 1px solid #d1d5db; background: #fff;
       font-size: 16px; font-family: inherit; color: var(--text);
     }
   </style>
@@ -46,16 +51,19 @@
   <div class="demo-wrap">
     <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
     <script src="mobile-pay-nav.js"></script>
-    <article id="phone-stage" aria-label="PG-PAY-03 离场引导">
-      <header class="app-header"><h1>离场指引</h1></header>
-      <main class="app-main">
+    <article id="phone-stage" aria-label="PG-PAY-03 第三方支付成功页">
+      <main class="pay-main">
+        <span class="ok-icon" aria-hidden="true">✓</span>
+        <h1>支付成功</h1>
+        <p class="lead">¥24.50 · 朝阳合作停车场 B2</p>
         <section class="card">
-          <span class="arrow" aria-hidden="true">→</span>
-          <p><strong>驶往东区出口</strong><br>约 120 米（场端示例 · F-11 镜像）</p>
+          <p><strong>流水号</strong> TXN-20260520-9B2C</p>
+          <p><strong>时间</strong> 16:48</p>
+          <p>支付结果将后台同步至车机；请关闭本页返回支付宝/微信。</p>
         </section>
       </main>
-      <footer class="app-footer">
-        <button type="button" class="btn" onclick="location.href='mobile-pay-index-prototype.html'">完成</button>
+      <footer class="pay-footer">
+        <button type="button" class="btn-done" onclick="location.href='mobile-pay-index-prototype.html'">完成</button>
       </footer>
     </article>
   </div>

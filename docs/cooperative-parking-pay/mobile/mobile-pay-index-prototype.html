@@ -2,7 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="mobile-pay-proto-common.css">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <link rel="stylesheet" href="mobile-pay-proto-common.css?v=20260521">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>合作停车场支付 · App 原型索引</title>
   <style>
@@ -16,6 +17,7 @@
     }
     .proto-index-wrap a.item:hover { border-color: #2563eb; }
     .proto-index-wrap a.inline { display: inline-flex; padding: 8px 12px; margin-top: 16px; }
+    .note { font-size: 14px; color: #fbbf24; line-height: 1.5; margin: 0 0 12px; max-width: 520px; }
   </style>
 </head>
 <body class="app-proto-index" data-nav-current="mobile-pay-index-prototype.html">
@@ -23,12 +25,13 @@
     <nav class="proto-nav" id="proto-nav" aria-label="全部界面索引"></nav>
     <script src="mobile-pay-nav.js"></script>
     <div class="proto-index-wrap">
-      <h1>停车支付 · 手机 App（只读镜像）</h1>
-      <p class="sub">468×1013（390×844 @1.2×）· 主支付在车机完成 · 架构 architecture.md §4b</p>
-      <a class="item" href="mobile-pay-pg-01-session-prototype.html">PG-PAY-01 停车会话卡</a>
-      <a class="item" href="mobile-pay-pg-02-result-prototype.html">PG-PAY-02 支付结果</a>
-      <a class="item" href="mobile-pay-pg-03-exit-prototype.html">PG-PAY-03 离场引导</a>
-      <a class="item" href="mobile-pay-pg-04-pending-prototype.html">PG-PAY-04 悬挂 / 弱网</a>
+      <h1>停车支付 · 手机 App（第三方支付界面 · 已修订）</h1>
+      <p class="sub">390×844 · 主支付在车机 · 扫码后在支付宝/微信内完成缴费</p>
+      <p class="note">评审修订：App 仅展示支付宝/微信收银台与支付结果，不含导航、离场指引、Tab 与会话页。</p>
+      <a class="item" href="mobile-pay-pg-01-session-prototype.html">PG-PAY-01 支付宝收银台</a>
+      <a class="item" href="mobile-pay-pg-02-result-prototype.html">PG-PAY-02 微信收银台</a>
+      <a class="item" href="mobile-pay-pg-03-exit-prototype.html">PG-PAY-03 支付成功（第三方 App 内）</a>
+      <a class="item" href="mobile-pay-pg-04-pending-prototype.html">PG-PAY-04 支付处理中</a>
       <a class="item inline" href="../hmi/hmi-pay-index-prototype.html">车机 IVI 原型索引</a>
     </div>
   </div>

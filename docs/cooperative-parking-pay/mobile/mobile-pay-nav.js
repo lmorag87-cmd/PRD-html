@@ -1,14 +1,13 @@
 (function () {
   /**
-   * App 只读镜像 · 顺序对齐 PRD §4b / architecture：
-   * 01 会话 → 02 支付结果 → 03 离场引导 → 04 悬挂/弱网
+   * App 支付界面（仅支付宝/微信收银台）
    */
   var ITEMS = [
     { href: "mobile-pay-index-prototype.html", label: "索引" },
-    { href: "mobile-pay-pg-01-session-prototype.html", label: "01 会话" },
-    { href: "mobile-pay-pg-02-result-prototype.html", label: "02 结果" },
-    { href: "mobile-pay-pg-03-exit-prototype.html", label: "03 离场" },
-    { href: "mobile-pay-pg-04-pending-prototype.html", label: "04 悬挂" }
+    { href: "mobile-pay-pg-01-session-prototype.html", label: "01 支付宝" },
+    { href: "mobile-pay-pg-02-result-prototype.html", label: "02 微信" },
+    { href: "mobile-pay-pg-03-exit-prototype.html", label: "03 成功" },
+    { href: "mobile-pay-pg-04-pending-prototype.html", label: "04 处理中" }
   ];
 
   var nav = document.getElementById("proto-nav");
