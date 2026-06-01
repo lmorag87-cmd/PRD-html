@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -117,11 +117,13 @@
       </section>
       <section class="guide">
         <strong>步行指引（示例）</strong>
-        向东北方向前进 · 途经 A 区扶梯 · 最近电梯厅约 40 m。直线距离指引，非泊车轨迹回放。
+        向东北方向前进 · 途经 A 区扶梯 · 最近电梯厅约 40 m。基于本地记录点直线距离，非泊车轨迹回放。
       </section>
+      <p class="spot-meta" style="margin:0;padding:0 4px">无公网时使用 App 本地库与地图快照；闪灯鸣笛经蓝牙短距下发（PRD §7.5.3）</p>
     </main>
     <footer class="app-footer">
-      <button type="button" class="btn btn-primary" id="btnMap">打开第三方地图导航</button>
+      <button type="button" class="btn btn-primary" id="btnFlash">闪灯鸣笛（蓝牙短距）</button>
+      <button type="button" class="btn btn-secondary" id="btnMap">打开第三方地图导航</button>
       <button type="button" class="btn btn-secondary" id="btnEnd">结束找车</button>
     </footer>
     <nav class="app-tabbar" aria-label="主导航">
@@ -132,6 +134,9 @@
     </article>
   </div>
   <script>
+    document.getElementById('btnFlash').addEventListener('click', function () {
+      alert('示例：经蓝牙/数字钥匙向车端下发闪灯鸣笛，不依赖公网。');
+    });
     document.getElementById('btnMap').addEventListener('click', function () {
       alert('示例：跳转高德/百度等第三方地图，携带脱敏坐标或场站 deep link（PRD FR-4）。');
     });

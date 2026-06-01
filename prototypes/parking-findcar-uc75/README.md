@@ -1,4 +1,4 @@
-# 停车场找车（UC-FIND-1 / §6.4）
+﻿# 停车场找车（UC-FIND-1 / §7.5）
 
 - **PRD**：[影像记录 PRD](https://baic.feishu.cn/docx/LK9ddVMlio0oamxWOTScarFXnXd)
 - **信息架构**：[architecture.md](./architecture.md)（IVI + 手机双端）
@@ -8,12 +8,14 @@
 
 - **总览**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/
 - **架构图（PRD §8）**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-prd-uc75-findcar-architecture-detail.html
-- **车机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-find-index-prototype.html（含 **00a 入库段** / 00 驻车 / 01 确认）
-- **手机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/mobile/mobile-uc-find-1-push-prototype.html
+- **车机索引**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/hmi/hmi-find-index.html?v=20260602（**00 驻车** / 01 确认）
+- **手机**：https://lmorag87-cmd.github.io/PRD-html/parking-findcar-uc75/mobile/mobile-uc-find-1-session-prototype.html
+
+> 旧链接 `hmi-find-index-prototype.html` 仍会自动跳转到 `hmi-find-index.html`。
 
 ## 源码位置
 
 | 终端 | 目录 |
 |------|------|
-| 车机 IVI | `hmi/hmi-find-*`（同步副本；开发源文件亦在 `../hmi/`） |
+| 车机 IVI | `hmi/hmi-find-*` |
 | 手机 App | `mobile/mobile-uc-find-1-*.html` |

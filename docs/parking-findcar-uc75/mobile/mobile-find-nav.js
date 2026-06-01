@@ -1,5 +1,5 @@
-(function () {
-  var V = "20260521";
+﻿(function () {
+  var V = "20260602";
 
   function withV(href) {
     if (!href || href.indexOf("?v=") >= 0) return href;

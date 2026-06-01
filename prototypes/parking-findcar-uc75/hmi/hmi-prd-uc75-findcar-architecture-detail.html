@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -447,7 +447,7 @@
         <span class="tag">UC 7.5 · 共用视觉与存储</span>
       </div>
       <p class="section-desc">
-        在第一节同一套「多路视觉 + 车机存储/相册能力」之上，增加<strong>入库段稀疏关键帧（P 挡前）</strong>与 P 挡车位记录窗口，合并写入车机本地 media_index；底盘锚点、POI 识别、定位/地图与车云 App。无透明底盘能力时按 PRD 降级。<strong>不录找车长视频</strong>，不写入循环/紧急相册。<strong>挪车后再采集时，入库段与驻车素材、记录点一并覆盖上一版</strong>。
+        在第一节同一套「多路视觉 + 车机存储/相册能力」之上，增加 <strong>P 挡车位记录窗口</strong>内静态拍照，写入车机本地 media_index；离车前后经<strong>蓝牙/数字钥匙</strong>将最小停车包推至 App 本地库（§7.5.3 离线可用）。底盘锚点、POI/OCR、定位/地图与车云 App（增强通道，非前置）。<strong>不在进场/入库过程中采集找车照片</strong>。无透明底盘能力时按 PRD 降级。<strong>不录找车长视频</strong>，不写入循环/紧急相册。<strong>挪车后再采集时，驻车素材与记录点一并覆盖上一版</strong>。
       </p>
 
       <div class="arrows-row" style="grid-template-columns:repeat(6,1fr)" aria-hidden="true">
@@ -473,8 +473,8 @@
           <div class="card">
             <strong>车位卡片 / 会话 UI</strong>
             <ul>
-              <li>分组展示：入库段锚点 + 驻车记录（各 1～2 张代表图）</li>
-              <li>POI 标签（电梯厅/分区牌/柱子等）</li>
+              <li>展示驻车记录缩略图（环视/车底等，UE 定稿）</li>
+              <li>POI/OCR 标签（楼层/分区/车位号等）</li>
               <li>P 挡「车位记录窗口」与手动重录；仅最新一版</li>
             </ul>
           </div>
@@ -487,8 +487,7 @@
             <strong>车位记录编排器</strong>
             <ul>
               <li>会话 ID、与停车事件绑定、置信度与质量提示</li>
-              <li>入库段：停车场 ODD + 低速事件稀疏关键帧 + POI 识别（上限 N_ingress）</li>
-              <li>驻车段：P 挡零速触发环视/底盘静态照；再采集则<strong>覆盖</strong>入库段+驻车素材与记录点</li>
+              <li>驻车段：P 挡零速触发环视/底盘静态照；再采集则<strong>覆盖</strong>驻车素材与记录点</li>
             </ul>
           </div>
           <div class="card">
@@ -528,7 +527,7 @@
           <div class="card">
             <strong>车位记录素材库</strong>
             <ul>
-              <li>media_index：入库段关键帧 + 驻车静态照；元数据含 POI/置信度/楼层</li>
+              <li>media_index：驻车静态照；元数据含 POI/置信度/楼层</li>
               <li>车机本地存储；同会话<strong>单活跃版本</strong>，覆盖时整包替换</li>
             </ul>
           </div>
@@ -573,7 +572,7 @@
       <div class="flow-note">
         <strong class="flow-note-title">扩展主链路（摘要）</strong>
         找车入口
-        <code>→</code> 车位记录编排器（入库段稀疏关键帧 → P 挡窗口；覆盖含两阶段素材）
+        <code>→</code> 车位记录编排器（P 挡窗口驻车采集；覆盖整包替换）
         <code>→</code> 环视/周视 + POI 识别 + 透明底盘/底盘拍照 → 车机 media_index
         <code>→</code> 单活跃版本索引 + 记录点
         <code>→</code> 定位与地图呈现

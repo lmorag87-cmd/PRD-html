@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -54,12 +54,6 @@
       font-size: 14px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
       background: rgba(36,91,219,.12); color: #1d4ed8;
     }
-    .ingress-grid { display: flex; gap: 12px; flex-wrap: wrap; }
-    .ingress-grid .thumb { flex: 0 0 140px; aspect-ratio: 4/3; position: relative; }
-    .poi-tag {
-      position: absolute; top: 8px; left: 8px; font-size: 12px; font-weight: 600;
-      padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,.92); color: #1d4ed8;
-    }
     .card {
       background: var(--card-bg); border-radius: var(--radius); border: 1px solid #d8dee9;
       padding: 24px 28px;
@@ -89,7 +83,7 @@
 <body class="hmi-proto-screen" data-nav-current="hmi-find-scr-01-confirm-prototype.html">
   <div class="demo-wrap">
     <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
-    <script src="hmi-find-nav.js?v=20260521"></script>
+    <script src="hmi-find-nav.js?v=20260602"></script>
     <article id="stage" role="application" aria-label="SCR-FIND-01 确认车位 1920×1080">
       <header class="status-bar">
         <span>16:39 · 5月20日</span>
@@ -106,14 +100,6 @@
         </div>
         <div class="grid-2">
           <section aria-label="车位记录素材预览">
-            <div class="media-group">
-              <h3>入库段锚点 <span>2 张代表图</span></h3>
-              <p style="margin:0 0 10px;font-size:16px;color:var(--muted)">低速接近时稀疏关键帧 · POI 已标注（示例）</p>
-              <div class="ingress-grid">
-                <div class="thumb"><span class="poi-tag">电梯厅</span>过道</div>
-                <div class="thumb"><span class="poi-tag">A 区</span>立柱</div>
-              </div>
-            </div>
             <div class="media-group">
               <h3>驻车记录 <span>P 挡窗口</span></h3>
               <p style="margin:0 0 10px;font-size:16px;color:var(--muted)">环视四向 + 车底环境（可补拍）</p>
@@ -132,7 +118,7 @@
             </dl>
             <label for="spotNo" style="display:block;margin-top:12px;font-size:17px;color:var(--muted)">车位号</label>
             <input id="spotNo" class="field" type="text" value="128" aria-label="车位号">
-            <p style="margin:14px 0 0;font-size:17px;color:var(--muted)">重新记录将覆盖入库段与驻车素材及记录点（示例）</p>
+            <p style="margin:14px 0 0;font-size:17px;color:var(--muted)">重新记录将覆盖驻车素材及记录点（示例）</p>
             <p style="margin:14px 0 0;font-size:17px;color:var(--ok)">保存后请在手机 App 查看记录点并导航找车</p>
           </section>
         </div>
@@ -140,7 +126,6 @@
       <footer class="dock">
         <span>仅本车账号可见 · 图像用于找车（示例）</span>
         <div class="dock-actions">
-          <a class="btn-dock" href="hmi-find-scr-00a-ingress-prototype.html">入库段</a>
           <button type="button" class="btn-dock" id="btnRerecord">重新记录</button>
           <a class="btn-dock primary" href="../mobile/mobile-uc-find-1-session-prototype.html">确认并保存</a>
         </div>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -85,7 +85,7 @@
 <body class="hmi-proto-screen" data-nav-current="hmi-find-scr-00-recording-prototype.html">
   <div class="demo-wrap">
     <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
-    <script src="hmi-find-nav.js?v=20260521"></script>
+    <script src="hmi-find-nav.js?v=20260602"></script>
     <article id="stage" role="application" aria-label="SCR-FIND-00 车位记录 1920×1080">
       <header class="status-bar">
         <span>16:38 · 5月20日</span>
@@ -94,7 +94,7 @@
       </header>
       <main class="main-wrap">
         <h1>驻车 · 车位记录窗口</h1>
-        <p class="sub">P 挡 + 车速 0：环视 / 周视 / 底盘静态拍照；入库段关键帧已在后台写入同一素材索引（示例）</p>
+        <p class="sub">P 挡 + 车速 0：环视 / 周视 / 底盘静态拍照；<strong>写入车机本地 media_index，不依赖联网</strong>（示例）</p>
         <div class="warn-bar" id="qualityWarn" role="alert">
           记录质量受限：光照不足 · 可补拍或手动输入车位号（示例）
         </div>
@@ -107,13 +107,12 @@
         <section class="progress-card">
           <p><strong>采集进度</strong> · 静态照片写入索引（示例）</p>
           <div class="bar" aria-hidden="true"><i></i></div>
-          <p style="margin-top:14px;color:var(--muted);font-size:17px">稳定驻车后生成记录点；覆盖时含入库段关键帧 + 本窗口素材（示例）</p>
+          <p style="margin-top:14px;color:var(--muted);font-size:17px">稳定驻车后生成记录点；离车前后经蓝牙将最小停车包推至 App 本地库（示例）。重录时覆盖本窗口素材与记录点。</p>
         </section>
       </main>
       <footer class="dock">
-        <span>请保持驻车 · 可稍后补录（示例）</span>
+        <span>已保存车机本地 · 无需联网 · 可稍后补录（示例）</span>
         <div class="dock-actions">
-          <a class="btn-dock" href="hmi-find-scr-00a-ingress-prototype.html">入库段</a>
           <button type="button" class="btn-dock" id="btnLater">稍后</button>
           <a class="btn-dock primary" href="hmi-find-scr-01-confirm-prototype.html">确认车位</a>
         </div>

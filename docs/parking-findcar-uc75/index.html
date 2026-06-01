@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -24,7 +24,7 @@
 <body>
   <main>
     <h1>停车场找车辅助功能</h1>
-    <p class="sub">UC-FIND-1 / PRD §6.4 · 入库段稀疏关键帧 + P 挡静态拍照 · 车机 1920×1080 + 手机 390×844</p>
+    <p class="sub">UC-FIND-1 / PRD §7.5 · 驻车后 P 挡静态拍照 · 离线可用（本地缓存 + 蓝牙短距）· 车机 1920×1080 + 手机 390×844</p>
 
     <h2>架构与原型</h2>
     <a class="card" href="hmi/hmi-prd-uc75-findcar-architecture-detail.html">
@@ -35,21 +35,21 @@
 
     <h2>车机 IVI</h2>
     <a class="card" href="hmi/hmi-find-index.html">
-      车机原型索引（SCR-FIND-00a / 00 / 01）
+      车机原型索引（SCR-FIND-00 / 01）
       <span class="id">hmi/hmi-find-index.html</span>
-      <span class="desc">00a 入库段 → 00 驻车 → 01 确认；找车见手机 App</span>
+      <span class="desc">00 驻车 → 01 确认；找车见手机 App</span>
     </a>
 
     <h2>手机 App</h2>
     <a class="card" href="mobile/mobile-uc-find-1-session-prototype.html">
-      PG-FIND-01 停车会话卡（入库段 + 驻车分组素材）
+      PG-FIND-01 停车会话卡（驻车照片）
       <span class="id">mobile/mobile-uc-find-1-session-prototype.html</span>
-      <span class="desc">推荐入口 · 与 PRD 分组展示一致</span>
+      <span class="desc">推荐入口 · 与 PRD 驻车采集一致</span>
     </a>
     <a class="card" href="hmi/hmi-find-index.html">
       双端完整索引（车机 + 手机全部页面）
       <span class="id">hmi/hmi-find-index.html</span>
-      <span class="desc">00a → 00 → 01；推送 / 导航 / 离线 / 补录</span>
+      <span class="desc">00 → 01；推送 / 导航 / 离线找车 / 补录</span>
     </a>
 
     <p class="sub" style="margin-top:32px">

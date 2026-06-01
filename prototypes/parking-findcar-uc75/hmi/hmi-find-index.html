@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="hmi-find-proto-common.css?v=20260521">
+  <link rel="stylesheet" href="hmi-find-proto-common.css?v=20260602">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
@@ -53,23 +53,23 @@
 <body class="hmi-proto-index" data-nav-current="hmi-find-index.html">
   <div class="proto-index-shell">
     <nav class="proto-nav" id="proto-nav" aria-label="找车界面索引"></nav>
-    <script src="hmi-find-nav.js?v=20260521"></script>
+    <script src="hmi-find-nav.js?v=20260602"></script>
     <div class="proto-index-wrap">
       <h1>停车场找车 · 车机 IVI 原型</h1>
-      <p class="sub">UC-FIND-1 / PRD §6.4 · <strong>入库段稀疏关键帧</strong> + <strong>P 挡驻车静态拍照</strong> · 合并 media_index</p>
-      <span class="badge">V2026.05.21 · 含 SCR-FIND-00a · 分组素材</span>
+      <p class="sub">UC-FIND-1 / PRD §7.5 · <strong>驻车后静态拍照</strong>（车机本地 media_index）· <strong>离线可用</strong>（本地缓存 + 蓝牙短距 · 见 §7.5.3）</p>
+      <span class="badge">V2026.06.02 · 00 驻车 → 01 确认 · 离线找车</span>
 
       <section>
         <h2>架构</h2>
         <ul>
           <li>
-            <a href="hmi-prd-uc75-findcar-architecture-detail.html?v=20260521">
+            <a href="hmi-prd-uc75-findcar-architecture-detail.html?v=20260602">
               <span><strong>功能架构图</strong> · 行车相机 + 找车</span>
               <span class="tag">§8</span>
             </a>
           </li>
           <li>
-            <a href="../index.html?v=20260521">
+            <a href="../index.html?v=20260602">
               <span><strong>项目总览</strong> · parking-findcar-uc75</span>
               <span class="tag">根目录</span>
             </a>
@@ -81,21 +81,15 @@
         <h2>车机 IVI（1920×1080）</h2>
         <ul>
           <li>
-            <a href="hmi-find-scr-00a-ingress-prototype.html?v=20260521">
-              <span><strong>SCR-FIND-00a</strong> 入库段环境锚点</span>
-              <span class="tag new">新增</span>
-            </a>
-          </li>
-          <li>
-            <a href="hmi-find-scr-00-recording-prototype.html?v=20260521">
+            <a href="hmi-find-scr-00-recording-prototype.html?v=20260602">
               <span><strong>SCR-FIND-00</strong> 驻车 · 车位记录窗口</span>
               <span class="tag">P 挡</span>
             </a>
           </li>
           <li>
-            <a href="hmi-find-scr-01-confirm-prototype.html?v=20260521">
-              <span><strong>SCR-FIND-01</strong> 确认车位（入库+驻车分组）</span>
-              <span class="tag">分组</span>
+            <a href="hmi-find-scr-01-confirm-prototype.html?v=20260602">
+              <span><strong>SCR-FIND-01</strong> 确认车位（驻车素材）</span>
+              <span class="tag">确认</span>
             </a>
           </li>
         </ul>
@@ -105,31 +99,31 @@
         <h2>手机 App（390×844）</h2>
         <ul>
           <li>
-            <a href="../mobile/mobile-uc-find-1-session-prototype.html?v=20260521">
+            <a href="../mobile/mobile-uc-find-1-session-prototype.html?v=20260602">
               <span><strong>PG-FIND-01</strong> 停车会话卡</span>
-              <span class="tag new">入库+驻车</span>
+              <span class="tag new">驻车照片</span>
             </a>
           </li>
           <li>
-            <a href="../mobile/mobile-uc-find-1-push-prototype.html?v=20260521">
+            <a href="../mobile/mobile-uc-find-1-push-prototype.html?v=20260602">
               <span><strong>PG-FIND-00</strong> 推送落地</span>
               <span class="tag">入口</span>
             </a>
           </li>
           <li>
-            <a href="../mobile/mobile-uc-find-1-nav-prototype.html?v=20260521">
+            <a href="../mobile/mobile-uc-find-1-nav-prototype.html?v=20260602">
               <span><strong>PG-FIND-02</strong> 导航找车</span>
               <span class="tag">步行</span>
             </a>
           </li>
           <li>
-            <a href="../mobile/mobile-uc-find-1-offline-prototype.html?v=20260521">
-              <span><strong>PG-FIND-03</strong> 弱网 / 分享</span>
-              <span class="tag">降级</span>
+            <a href="../mobile/mobile-uc-find-1-offline-prototype.html?v=20260602">
+              <span><strong>PG-FIND-03</strong> 无网找车 / 分享</span>
+              <span class="tag new">离线</span>
             </a>
           </li>
           <li>
-            <a href="../mobile/mobile-uc-find-1-supplement-prototype.html?v=20260521">
+            <a href="../mobile/mobile-uc-find-1-supplement-prototype.html?v=20260602">
               <span><strong>PG-FIND-04</strong> 补拍补录</span>
               <span class="tag">App</span>
             </a>
@@ -137,7 +131,7 @@
         </ul>
       </section>
 
-      <p class="back"><a href="../index.html?v=20260521">← 返回项目总览</a></p>
+      <p class="back"><a href="../index.html?v=20260602">← 返回项目总览</a></p>
     </div>
   </div>
 </body>
